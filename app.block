@@ -1,0 +1,435 @@
+    *
+
+// github.anuv.me blockfile
+
+// define custom blocks
+!break
+    init
+        {
+            return Block('span').add('br');
+        }
+    load
+        {
+            data('val', function (val) {
+                for (var i = 1; i < val; i++)
+                    block.add('br');
+            });
+        }
+!text
+    init
+        {
+            return Block('span');
+        }
+    load
+        {
+            data('val', function (val) {
+                block.node().appendChild(document.createTextNode(val));
+            });
+            data('html', function (html) {
+                block.html(html);
+            });
+        }
+!image
+    init
+        {
+            return Block('div');
+        }
+    load
+        {
+            var src = data('src');
+            var height = data('height');
+            var width = data('width');
+            var alt = data('alt');
+            if (src != null) {
+                block.css('background-image', "url('" + src + "')")
+                    .css('background-repeat', 'no-repeat')
+                    .css('background-size', 'contain')
+                ;
+            }
+            if (height !== null) block.css('height', height);
+            else block.css('height', 'auto');
+            if (width !== null) block.css('width', width);
+            else block.css('width', 'auto');
+            if (alt !== null) block.attribute('title', alt);
+        }
+!social-icon
+    init
+        {
+            return Block('div')
+                .add(Block('a', 'link')
+                    .add('image', 1)
+                    .data({
+                        target: '_blank'
+                    })
+                )
+                .css({
+                    display: 'inline-block',
+                    margin: '0 10px 10px',
+                    cursor: 'pointer',
+                    transition: 'opacity 0.25s ease'
+                })
+                .on('mouseover', function (e, b) {
+                    b.css('opacity', '0.7');
+                })
+                .on('mouseout', function (e, b) {
+                    b.css('opacity', '0.45');
+                })
+                .on('mouseout')
+            ;
+        }
+    load
+        {
+            var src = 'img/social-icons/' + block.mark() + '.png';
+            data('src', function (_src) {
+                src = _src;
+            });
+            block.child('link/image').data({
+                src: src,
+                height: '55px',
+                width: '55px'
+            });
+            data('href', function (href) {
+                block.child('link').data({
+                    href: href
+                });
+            });
+            data('target', function (target) {
+                block.child('link').data({
+                    target: target
+                });
+            });
+            data('alt', function (alt) {
+                block.attribute('title', alt);
+            });
+        }
+// app content layer
+app
+    :open
+        {
+            block
+                .css('transition', 'opacity 0.5s ease')
+                .css('opacity', '1')
+            ;
+        }
+    css
+        width 100%
+        opacity 0
+        transition opacity 1s ease
+        position relative
+        // padding-bottom 20px
+        overflow-x hidden
+    div intro
+        css
+            width 400px
+            position fixed
+            left 0
+            top 0
+            height 100%
+            background-color white
+            border-right 1px solid #eee
+    div tiles
+        css
+            height auto
+            font-size 0
+            margin 0
+        $num 3
+        $tileWidth 100
+        @query window width > 1350
+            $num 3
+        @query window width <= 1350
+            $num 2
+        @query window height != 0
+            {
+                var introWidth = block.sibling('intro').$().width();
+                var tilesWidth = window.innerWidth - introWidth;
+                block.css({
+                    marginLeft: introWidth + 'px',
+                    width: (tilesWidth) + 'px'
+                });
+                var tileWidth = tilesWidth / block.key('num') - 2;
+                block.key('tileWidth', tileWidth);
+            }
+        !tile
+            init
+                {
+                    var block = Block('div');
+                    return block
+                        .key('repo', false)
+                        .key('secondaryLink', false)
+                        .css({
+                            position: 'relative',
+                            margin: '0',
+                            borderRight: '1.5px solid #eee',
+                            borderBottom: '1.5px solid #eee',
+                            float: 'left',
+                            padding: '0',
+                            outline: '0'
+                        })
+                        .query('window height != 0', function () {
+                            var size = block.parent().key('tileWidth');
+                            block.css({
+                                height: size + 'px',
+                                width: size + 'px'
+                            });
+                            if (size > 350) {
+                                block.child('content/title').css('font-size', '40px');
+                                block.child('content/desc').css('font-size', '16px').css('padding-bottom', '15px');
+                                block.child('content/secondButton/text').css('font-size', '18px')
+                                block.child('content/sourceButton/text').css('font-size', '18px');
+                                block.child('content/hr').css('width', '100px');
+                            } else {
+                                block.child('content/title').css('font-size', '35px');
+                                block.child('content/desc').css('font-size', '14px').css('padding-bottom', '5px');
+                                block.child('content/secondButton/text').css('font-size', '16px');
+                                block.child('content/sourceButton/text').css('font-size', '16px');
+                                block.child('content/hr').css('width', '75px');
+                            }
+                        })
+                        .add(Block('div', 'background')
+                            .css({
+                                background: 'url("img/projects/default.png") no-repeat center center scroll',
+                                backgroundSize: 'cover',
+                                height: '100%',
+                                width: '100%',
+                                position: 'absolute',
+                                top: '0',
+                                left: '0',
+                                zIndex: '3',
+                                opacity: '1',
+                                transition: 'opacity 0.4s ease'
+                            })
+                            .on('show', function (e, b) {
+                                b.css('opacity', '0.99');
+                            })
+                            .on('hide', function (e, b) {
+                                b.css('opacity', '0.05');
+                            })
+                            // .on('medium', function (e, b) {
+                            //     b.css('opacity', '0.85');
+                            // })
+                        )
+                        .add(Block('block', 'content')
+                            .key('active', true)
+                            .css({
+                                position: 'absolute',
+                                height: '100%',
+                                width: '100%',
+                                top: '0',
+                                left: '0',
+                                zIndex: '4',
+                                opacity: '1',
+                                transition: 'opacity 0.4s ease',
+                                textAlign: 'center',
+                                cursor: 'pointer'
+                            })
+                            .on('mouseover', function (e, b) {
+                                b.sibling('background').on('hide');
+                                b.on('show');
+                            })
+                            .on('mouseout', function (e, b) {
+                                b.sibling('background').on('show');
+                                b.on('hide');
+                            })
+                            .on('show', function (e, b) {
+                                // if (!b.key('active')) {
+                                //     b.css('display', 'table');
+                                //     setTimeout(function () {
+                                //         b.css('opacity', '1');
+                                //     }, 50);
+                                //     b.key('active', true);
+                                // }
+                                b.css('opacity', '1');
+                            })
+                            .on('hide', function (e, b) {
+                                // if (b.key('active')) {
+                                //     b.css('opacity', '0');
+                                //     setTimeout(function () {
+                                //         b.css('display', 'none');
+                                //     }, 400);
+                                //     b.key('active', false);
+                                // }
+                                b.css('opacity', '0');
+                            })
+                            .add(Block('text', 'title')
+                                .data('Project Title')
+                                .css({
+                                    color: 'black',
+                                    fontSize: '40px',
+                                    display: 'inline-block',
+                                    padding: '25px 2px 10px 2px',
+                                    // borderBottom: '1px solid #ddd'
+                                })
+                            )
+                            .add(Block('hr', 1)
+                                .css({
+                                    width: '100px',
+                                    opacity: '0.4'
+                                })
+                            )
+                            .add(Block('text', 'desc')
+                                .data('This is the project description. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.')
+                                .css({
+                                    color: 'black',
+                                    fontSize: '16px',
+                                    display: 'block',
+                                    padding: '15px 30px 15px 30px',
+                                    // borderBottom: '1px solid #ddd'
+                                })
+                            )
+                            .add(Block('div', 'secondButton')
+                                .css({
+                                    borderRadius: '4px',
+                                    border: '1px solid #888',
+                                    padding: '10px 20px',
+                                    display: 'none',
+                                    backgroundColor: 'rgba(10, 10, 10, 0)',
+                                    cursor: 'pointer',
+                                    transition: 'background-color 0.3s ease',
+                                    margin: '5px 7px'
+                                })
+                                .add(Block('text', 1)
+                                    .data('Secondary')
+                                    .css({
+                                        fontSize: '18px',
+                                        color: '#111'
+                                    })
+                                )
+                                .on('mouseover', function (e, b) {
+                                    b.css('background-color', 'rgba(10, 10, 10, 0.075)');
+                                })
+                                .on('mouseout', function (e, b) {
+                                    b.css('background-color', 'rgba(10, 10, 10, 0)');
+                                })
+                                .on('click', function (e, b) {
+                                    if (block.key('secondaryLink') != false)
+                                        window.open('' + block.key('secondaryLink'), '_blank');
+                                    e.stopPropagation();
+                                })
+                            )
+                            .add(Block('div', 'sourceButton')
+                                .css({
+                                    borderRadius: '4px',
+                                    border: '1px solid #888',
+                                    padding: '10px 20px',
+                                    display: 'none',
+                                    backgroundColor: 'rgba(10, 10, 10, 0)',
+                                    cursor: 'pointer',
+                                    transition: 'background-color 0.3s ease',
+                                    margin: '5px 7px'
+                                })
+                                .add(Block('text', 1)
+                                    .data('Source')
+                                    .css({
+                                        fontSize: '18px',
+                                        color: '#111'
+                                    })
+                                )
+                                .on('mouseover', function (e, b) {
+                                    b.css('background-color', 'rgba(10, 10, 10, 0.075)');
+                                })
+                                .on('mouseout', function (e, b) {
+                                    b.css('background-color', 'rgba(10, 10, 10, 0)');
+                                })
+                                .on('click', function (e, b) {
+                                    if (block.key('repo') != false) {
+                                        if (block.key('repo').substring(0, 4) == 'http')
+                                            window.open(block.key('repo'), '_blank');
+                                        else window.open('https://github.com/anuvgupta/' + block.key('repo'), '_blank');
+                                    }
+                                    e.stopPropagation();
+                                })
+                            )
+                            .add(Block('div', 'spacerEnd')
+                                .css('height', '20px')
+                            )
+                            .on('hide')
+                        )
+                    ;
+                }
+            load
+                {
+                    var b = block;
+                    var img = b.mark();
+                    app.loadImage('img/projects/' + img + '.png', function () {
+                        b.child('background').css('background-image', 'url("img/projects/' + img + '.png")').on('show');
+                    });
+                    data('title', function (title) {
+                        block.child('content/title').html(title);
+                    });
+                    data('desc', function (desc) {
+                        block.child('content/desc').html(desc);
+                    });
+                    data('repo', function (repo) {
+                        block.child('content/sourceButton').css('display', 'inline-block');
+                        block.key('repo', repo);
+                    });
+                    data('buttonName', function (buttonName) {
+                        block.child('content/secondButton/text').html(buttonName);
+                        block.child('content/secondButton').css('display', 'inline-block');
+                    });
+                    data('buttonLink', function (buttonLink) {
+                        block.key('secondaryLink', buttonLink);
+                    });
+                }
+        tile anuvme
+            title anuv.me
+            desc Personal website detailing personal interests and projects. Completely original design & images. Built entirely from scratch with block.js (see next).
+            repo anuv.me
+            buttonName Site
+            buttonLink http://anuv.me
+        tile blockjs
+            title block.js
+            desc Lightweight JavaScript library for designing responsive web pages. Combines HTML/CSS/JS into a minimalistic hybrid syntax, allows generating customizable element “blocks”, integrates DOM events & responsive sizing.
+            repo block.js
+        tile p2p
+            title peer2peer
+            repo https://github.com/p2p-app/p2p-about
+            desc Created RESTful PHP backend for Peer2Peer—iOS app that connects volunteer tutors to students based on subjects and physical proximity. <i>"Uber for tutors."</i> Won 1st place team for CA-18 in 2016 Congressional App Challenge, featured in local news.
+            buttonName Video
+            buttonLink https://www.youtube.com/watch?v=PQ4SMc8Uc-E
+        tile lancerhacks
+            title LancerHacks
+            desc Tech Director for 12-hour hackathon organized and hosted by <a href = 'http://sfhacks.club' target = '_blank'>sfhacks</a>. Created home website, live site, CTF system, and RSVP system from scratch with block.js (see previous) & Firebase. First hackathon hosted by SFHS/any Catholic high school in the Bay Area.
+            buttonName Home Site
+            buttonLink http://lancerhacks.com
+        tile pocketjs
+            title pocketjs
+            desc Lightweight WebSocket library for implementing realtime applications in PHP & JavaScript. Utilizes an event-driven flow model to promote minimalistic design and simplify operations.
+            buttonName Demo
+            buttonLink pocketjs
+            repo pocketjs
+        tile hackintosh
+            title Hackintosh
+            desc Custom-built PC from parts, installed dual-boot Windows 10 and OS X Yosemite (using <a target = '_blank' href = 'https://www.tonymacx86.com/threads/unibeast-install-macos-high-sierra-on-any-supported-intel-based-pc.235474/'>tonymacx86</a>'s tools) and a file transfer/storage partition in between.
+            buttonName Specs
+            buttonLink hackintosh.html
+        tile rubbr
+            title rubbr.io
+            desc Realtime online multiplayer browser-based car racing themed video game. Inspired by .io game proliferation. Built with pocketjs (see previous).
+            buttonName Play
+            buttonLink http://rubbr.anuv.me
+            repo rubbr
+        tile murk
+            title murk
+            desc Text/console-based fantasy mini-RPG in Java, involving quests and minigames.
+            repo murk
+        tile sitarhero
+            title sitar hero
+            desc Music/video game using Java and MIDI Sitar. Similar to Guitar Hero, except hitting notes actually plays the melody on the instrument, which is also a sitar rather than a guitar.
+            repo sitarhero
+        tile sfgpa
+            title sfgpa
+            desc Mobile-friendly web-based GPA and Final Grade Calculator, based on SFHS grading system.
+            repo sfgpa
+            buttonName Visit
+            buttonLink sfgpa
+        tile chessroom
+            title chessroom
+            desc Online multiplayer realtime chessroom (with spectating capabilities) built with Firebase.
+            repo chessroom.ml
+            buttonName Play
+            buttonLink http://chessroom.ml
+        tile pi
+            title pi
+            desc Approximating π with Java.
+            repo pi
