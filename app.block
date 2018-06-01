@@ -125,14 +125,283 @@ app
             top 0
             background-color white
             border-right 1px solid #eee
+            z-index 50
+            box-shadow rgba(204, 204, 204, 0.5) 0px 3px 4px
         @query window width > 1100
             css
-                width 350px
+                width 375px
                 height 100%
         @query window width <= 1100
             css
                 width 100%
                 height 200px
+        div spacerTop
+            @query window width > 1100
+                css
+                    height 75px
+            @query window width <= 1100
+                css
+                    height 8px
+            @query window width <= 625
+                css
+                    height 0
+        div title
+            @query window width > 625
+                css
+                    padding 20px 0 30px 50px
+                    text-align left
+            @query window width <= 625
+                css
+                    padding 10px 0 30px 0
+                    text-align center
+            text main
+                val Anuv
+                css
+                    font-size 70px
+                    font-weight 400
+                    letter-spacing 6px
+                    color #555
+                    display block
+            text sub
+                val Tech Projects
+                css
+                    font-size 28px
+                    font-weight 300
+                    letter-spacing 1px
+                    color #444
+                    display block
+                @query window width > 625
+                    css
+                        margin-top 0
+                @query window width <= 625
+                    css
+                        margin-top -10px
+        div spacerMid1
+            css
+                height 30px
+            @query window width > 1100
+                css
+                    display block
+            @query window width <= 1100
+                css
+                    display none
+        div desc
+            css
+                padding 5px 49px 0 50px
+            text text
+                html I'm a Computer Engineering student at UT Austin passionate about web development and building new things. Check out some of my projects!
+                css
+                    font-size 18px
+            @query window width > 1100
+                css
+                    display block
+            @query window width <= 1100
+                css
+                    display none
+        div spacerMid2
+            css
+                height 40px
+            @query window width > 1100
+                css
+                    display block
+            @query window width <= 1100
+                css
+                    display none
+        div menu
+            @query window width > 1100
+                css
+                    position static
+                    height auto
+                    right 0
+            @query window width <= 1100
+                css
+                    position absolute
+                    right 45px
+                    top 0
+                    height 100%
+            @query window width <= 770
+                css
+                    position absolute
+                    right 25px
+                    left auto
+                    top 0
+                    height 100%
+                    width auto
+                    margin 0
+            @query window width <= 625
+                css
+                    position absolute
+                    right 0
+                    left 0
+                    top auto
+                    bottom 35px
+                    height 20px
+                    width 90%
+                    margin 0 5%
+            !item
+                init
+                    {
+                        var block = Block('block');
+                        return block
+                            .key('link', false)
+                            .key('alt', false)
+                            .css({
+                                cursor: 'pointer'
+                            })
+                            .query('window width > 1100', function () {
+                                if (block.key('alt')) {
+                                    block.child('text').html(block.key('title'));
+                                }
+                                block.css({
+                                    display: 'table',
+                                    width: '100%',
+                                    height: '40px',
+                                    margin: '30px 5px 30px 15px'
+                                });
+                                block.child('text').css({
+                                    fontSize: '20px',
+                                    paddingLeft: '25px'
+                                });
+                                block.__child('content').css('text-align', 'left');
+                                block.on('mouseout');
+                            })
+                            .query('window width <= 1100', function () {
+                                if (block.key('alt')) {
+                                    block.child('text').html(block.key('alt'));
+                                }
+                                block.css({
+                                    display: 'inline-table',
+                                    width: 'auto',
+                                    height: '100%',
+                                    margin: '0'
+                                });
+                                block.child('text').css({
+                                    fontSize: '23px',
+                                    paddingLeft: '30px'
+                                });
+                                block.__child('content').css('text-align', 'left');
+                                block.on('mouseout');
+                            })
+                            .query('window width <= 770', function () {
+                                if (block.key('alt')) {
+                                    block.child('text').html(block.key('alt'));
+                                }
+                                block.css({
+                                    display: 'inline-table',
+                                    width: 'auto',
+                                    height: '100%',
+                                    margin: '0'
+                                });
+                                block.child('text').css({
+                                    fontSize: '20px',
+                                    paddingLeft: '20px'
+                                });
+                                block.__child('content').css('text-align', 'left');
+                                block.on('mouseout');
+                            })
+                            .query('window width <= 625', function () {
+                                if (block.key('alt')) {
+                                    block.child('text').html(block.key('alt'));
+                                }
+                                block.css({
+                                    display: 'inline-table',
+                                    width: '33%',
+                                    height: '100%',
+                                    margin: '0'
+                                });
+                                block.child('text').css({
+                                    fontSize: '20px',
+                                    paddingLeft: '0'
+                                });
+                                block.__child('content').css('text-align', 'center');
+                                block.on('mouseout');
+                            })
+                            .add(Block('text', 1)
+                                .data('Menu Item')
+                                .css({
+                                    fontSize: '20px',
+                                    textDecoration: 'none',
+                                    paddingLeft: '25px',
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '5px'
+                                })
+                            )
+                            .on('mouseover', function (e, b) {
+                                if (window.innerWidth > 1100) {
+                                    block.css('borderLeft', '8px solid #555')
+                                        .child('text').css('color', '#555')
+                                    ;
+                                } else {
+                                    block.css('borderLeft', 'none')
+                                        block.child('text').css('color', '#777');
+                                    ;
+                                }
+                            })
+                            .on('mouseout', function (e, b) {
+                                if (window.innerWidth > 1100) {
+                                    block.css('borderLeft', '8px solid rgba(0, 0, 0, 0)')
+                                        .child('text').css('color', '#222')
+                                    ;
+                                } else {
+                                    block.css('borderLeft', 'none')
+                                        block.child('text').css('color', '#222');
+                                    ;
+                                }
+                            })
+                            .on('mouseout')
+                            .on('click', function (e, b) {
+                                var link = block.key('link');
+                                if (block.key('link')) {
+                                    window.open(link, '_blank');
+                                }
+                            })
+                        ;
+                    }
+                load
+                    {
+                        data('title', function (title) {
+                            block.key('title', title);
+                            block.child('text').html(title);
+                        });
+                        data('altTitle', function (altTitle) {
+                            block.key('alt', altTitle);
+                        });
+                        data('link', function (link) {
+                            block.key('link', link);
+                        });
+                    }
+            item github
+                title GitHub Profile
+                altTitle GitHub
+                link http://github.com/anuvgupta
+            item home
+                title Home Website
+                altTitle Home
+                link http://anuv.me
+            item resume
+                title Resume
+                link https://drive.google.com/file/d/1AJCGXVfqq4k5zzNvlEjZMQHkH1dHxvUH/view
+        div copyright
+            css
+                text-align center
+                position absolute
+                bottom 70px
+                left 0
+                width 100%
+            @query window width > 1100
+                css
+                    display block
+            @query window width <= 1100
+                css
+                    display none
+            text text
+                css
+                    color #333
+                    font-size 17px
+                    letter-spacing 2px
+                {
+                    block.html('Copyright &copy; ' + (new Date().getFullYear()) + ' Anuv Gupta');
+                }
     div tiles
         css
             height auto
@@ -237,9 +506,9 @@ app
                                 left: '0',
                                 zIndex: '4',
                                 opacity: '1',
-                                transition: 'opacity 0.4s ease',
+                                transition: 'opacity 0.7s ease',
                                 textAlign: 'center',
-                                cursor: 'pointer'
+                                // cursor: 'pointer'
                             })
                             .on('mouseover', function (e, b) {
                                 b.sibling('background').on('hide');
@@ -286,12 +555,12 @@ app
                                 })
                             )
                             .add(Block('text', 'desc')
-                                .data('This is the project description. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.')
+                                .data('This is the project description. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.')
                                 .css({
                                     color: 'black',
                                     fontSize: '16px',
                                     display: 'block',
-                                    padding: '15px 30px 15px 30px',
+                                    padding: '15px 12% 15px 12%',
                                     // borderBottom: '1px solid #ddd'
                                 })
                             )
@@ -320,7 +589,7 @@ app
                                     b.css('background-color', 'rgba(10, 10, 10, 0)');
                                 })
                                 .on('click', function (e, b) {
-                                    if (block.key('secondaryLink') != false)
+                                    if (block.key('secondaryLink'))
                                         window.open('' + block.key('secondaryLink'), '_blank');
                                     e.stopPropagation();
                                 })
@@ -350,7 +619,7 @@ app
                                     b.css('background-color', 'rgba(10, 10, 10, 0)');
                                 })
                                 .on('click', function (e, b) {
-                                    if (block.key('repo') != false) {
+                                    if (block.key('repo')) {
                                         if (block.key('repo').substring(0, 4) == 'http')
                                             window.open(block.key('repo'), '_blank');
                                         else window.open('https://github.com/anuvgupta/' + block.key('repo'), '_blank');
@@ -392,7 +661,7 @@ app
                 }
         tile anuvme
             title anuv.me
-            desc Personal website detailing personal interests and projects. Completely original design & images. Built entirely from scratch with block.js (see next).
+            desc Personal website detailing personal interests and projects. Completely original design and images. Built entirely from scratch with block.js (see next).
             repo anuv.me
             buttonName Site
             buttonLink http://anuv.me
