@@ -120,13 +120,19 @@ app
         overflow-x hidden
     div intro
         css
-            width 400px
             position fixed
             left 0
             top 0
-            height 100%
             background-color white
             border-right 1px solid #eee
+        @query window width > 1100
+            css
+                width 350px
+                height 100%
+        @query window width <= 1100
+            css
+                width 100%
+                height 200px
     div tiles
         css
             height auto
@@ -138,14 +144,27 @@ app
             $num 3
         @query window width <= 1350
             $num 2
+        @query window width <= 750
+            $num 1
         @query window height != 0
             {
-                var introWidth = block.sibling('intro').$().width();
-                var tilesWidth = window.innerWidth - introWidth;
-                block.css({
-                    marginLeft: introWidth + 'px',
-                    width: (tilesWidth) + 'px'
-                });
+                if (window.innerWidth > 1100) {
+                    var introWidth = block.sibling('intro').$().width();
+                    var tilesWidth = window.innerWidth - introWidth;
+                    block.css({
+                        marginTop: '0',
+                        marginLeft: introWidth + 'px',
+                        width: (tilesWidth) + 'px'
+                    });
+                } else {
+                    var introHeight = block.sibling('intro').$().height();
+                    var tilesWidth = window.innerWidth;
+                    block.css({
+                        marginTop: introHeight + 'px',
+                        marginLeft: '0',
+                        width: (tilesWidth) + 'px'
+                    });
+                }
                 var tileWidth = tilesWidth / block.key('num') - 2;
                 block.key('tileWidth', tileWidth);
             }
@@ -417,18 +436,18 @@ app
             title sitar hero
             desc Music/video game using Java and MIDI Sitar. Similar to Guitar Hero, except hitting notes actually plays the melody on the instrument, which is also a sitar rather than a guitar.
             repo sitarhero
-        tile sfgpa
-            title sfgpa
-            desc Mobile-friendly web-based GPA and Final Grade Calculator, based on SFHS grading system.
-            repo sfgpa
-            buttonName Visit
-            buttonLink sfgpa
         tile chessroom
             title chessroom
             desc Online multiplayer realtime chessroom (with spectating capabilities) built with Firebase.
             repo chessroom.ml
             buttonName Play
             buttonLink http://chessroom.ml
+        tile sfgpa
+            title sfgpa
+            desc Mobile-friendly web-based GPA and Final Grade Calculator, based on SFHS grading system.
+            repo sfgpa
+            buttonName Visit
+            buttonLink sfgpa
         tile pi
             title pi
             desc Approximating π with Java.
