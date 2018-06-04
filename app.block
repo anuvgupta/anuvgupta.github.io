@@ -672,7 +672,7 @@ app
         tile p2p
             title peer2peer
             repo https://github.com/p2p-app/p2p-about
-            desc Created RESTful PHP backend for Peer2Peer—iOS app that connects volunteer tutors to students based on subjects and physical proximity. <i>"Uber for tutors."</i> Won 1st place team for CA-18 in 2016 Congressional App Challenge, featured in local news.
+            desc Created RESTful PHP backend for Peer2Peer—iOS app that connects volunteer tutors to students based on subjects and physical proximity. <i>"Uber for tutors."</i> Won 1st place team for CA-18 in 2016 Congressional App Challenge, featured in local news. Built with dolphin (see below).
             buttonName Video
             buttonLink https://www.youtube.com/watch?v=PQ4SMc8Uc-E
         tile lancerhacks
