@@ -717,6 +717,12 @@ app
             repo sfgpa
             buttonName Visit
             buttonLink sfgpa
+        tile dolphin
+            title dolphin
+            desc PHP module for easily managing and manipulating a MySQL database with no (minimal) SQL.
+            repo dolphin
+            buttonName Docs
+            buttonLink dolphin
         tile pi
             title pi
             desc Approximating π with Java.
