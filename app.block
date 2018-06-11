@@ -701,6 +701,12 @@ app
             title murk
             desc Text/console-based fantasy mini-RPG in Java, involving quests and minigames.
             repo murk
+        tile drummer
+            title drummer
+            desc Android app for making basic drumbeats.<br/>Made with Android Studio.
+            repo drummer
+            buttonName Demo
+            buttonLink https://www.youtube.com/watch?v=3RtFNokTpac
         tile sitarhero
             title sitar hero
             desc Music/video game using Java and MIDI Sitar. Similar to Guitar Hero, except hitting notes actually plays the melody on the instrument, which is also a sitar rather than a guitar.
@@ -711,18 +717,18 @@ app
             repo chessroom.ml
             buttonName Play
             buttonLink http://chessroom.ml
-        tile sfgpa
-            title sfgpa
-            desc Mobile-friendly web-based GPA and Final Grade Calculator, based on SFHS grading system.
-            repo sfgpa
-            buttonName Visit
-            buttonLink sfgpa
         tile dolphin
             title dolphin
             desc PHP module for easily managing and manipulating a MySQL database with no (minimal) SQL.
             repo dolphin
             buttonName Docs
             buttonLink dolphin
+        tile sfgpa
+            title sfgpa
+            desc Mobile-friendly web-based GPA and Final Grade Calculator, based on SFHS grading system.
+            repo sfgpa
+            buttonName Visit
+            buttonLink sfgpa
         tile pi
             title pi
             desc Approximating π with Java.
