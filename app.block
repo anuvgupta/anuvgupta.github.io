@@ -716,7 +716,7 @@ app
             desc Online multiplayer realtime chessroom (with spectating capabilities) built with Firebase.
             repo chessroom.ml
             buttonName Play
-            buttonLink http://chessroom.ml
+            buttonLink http://chessroom.tk
         tile dolphin
             title dolphin
             desc PHP module for easily managing and manipulating a MySQL database with no (minimal) SQL.
