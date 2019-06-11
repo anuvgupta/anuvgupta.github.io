@@ -163,7 +163,7 @@ app
                     color #555
                     display block
             text sub
-                val Tech Projects
+                val GitHub Projects
                 css
                     font-size 28px
                     font-weight 300
@@ -323,29 +323,22 @@ app
                                     textDecoration: 'none',
                                     paddingLeft: '25px',
                                     textTransform: 'uppercase',
-                                    letterSpacing: '5px'
+                                    letterSpacing: '5px',
+                                    borderRadius: '3px'
                                 })
                             )
                             .on('mouseover', function (e, b) {
                                 if (window.innerWidth > 1100) {
-                                    block.css('borderLeft', '8px solid #555')
-                                        .child('text').css('color', '#555')
-                                    ;
+                                    block.child('text').css('color', '#555').css('borderLeft', '6px solid #666');
                                 } else {
-                                    block.css('borderLeft', 'none')
-                                        block.child('text').css('color', '#777');
-                                    ;
+                                    block.child('text').css('color', '#777').css('borderLeft', 'none');
                                 }
                             })
                             .on('mouseout', function (e, b) {
                                 if (window.innerWidth > 1100) {
-                                    block.css('borderLeft', '8px solid rgba(0, 0, 0, 0)')
-                                        .child('text').css('color', '#222')
-                                    ;
+                                    block.child('text').css('color', '#222').css('borderLeft', '6px solid rgba(0, 0, 0, 0)');
                                 } else {
-                                    block.css('borderLeft', 'none')
-                                        block.child('text').css('color', '#222');
-                                    ;
+                                    block.child('text').css('color', '#222').css('borderLeft', 'none');
                                 }
                             })
                             .on('mouseout')
@@ -716,7 +709,7 @@ app
             desc Online multiplayer realtime chessroom (with spectating capabilities) built with Firebase.
             repo chessroom.ml
             buttonName Play
-            buttonLink http://chessroom.tk
+            buttonLink http://chessroom.ml
         tile dolphin
             title dolphin
             desc PHP module for easily managing and manipulating a MySQL database with no (minimal) SQL.
