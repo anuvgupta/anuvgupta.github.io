@@ -572,7 +572,8 @@ app
                                     .data('Secondary')
                                     .css({
                                         fontSize: '18px',
-                                        color: '#111'
+                                        color: '#111',
+                                        cursor: 'pointer'
                                     })
                                 )
                                 .on('mouseover', function (e, b) {
@@ -602,7 +603,8 @@ app
                                     .data('Source')
                                     .css({
                                         fontSize: '18px',
-                                        color: '#111'
+                                        color: '#111',
+                                        cursor: 'pointer'
                                     })
                                 )
                                 .on('mouseover', function (e, b) {
