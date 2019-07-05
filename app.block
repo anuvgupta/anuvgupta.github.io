@@ -502,7 +502,8 @@ app
                                 opacity: '1',
                                 transition: 'opacity 0.7s ease',
                                 textAlign: 'center',
-                                // cursor: 'pointer'
+                                // cursor: 'pointer',
+                                backgroundColor: 'rgba(255, 255, 255, 0.4)'
                             })
                             .on('mouseover', function (e, b) {
                                 b.sibling('background').on('hide');
@@ -555,33 +556,41 @@ app
                                     fontSize: '16px',
                                     display: 'block',
                                     padding: '15px 12% 15px 12%',
-                                    // borderBottom: '1px solid #ddd'
+                                    // borderBottom: '1px solid #ddd',
+                                    textAlign: 'justify',
+                                    marginBottom: '6px'
                                 })
                             )
                             .add(Block('div', 'secondButton')
                                 .css({
+                                    width: 'auto',
                                     borderRadius: '4px',
-                                    border: '1px solid #888',
                                     padding: '10px 20px',
                                     display: 'none',
-                                    backgroundColor: 'rgba(10, 10, 10, 0)',
                                     cursor: 'pointer',
-                                    transition: 'background-color 0.3s ease',
-                                    margin: '5px 7px'
+                                    margin: '5px 7px',
+                                    backgroundColor: '#7f7f7f',
+                                    transition: 'background-color 0.25s ease, opacity 0.2s ease',
+                                    border: '1px solid rgba(100, 100, 100, 0)'
                                 })
                                 .add(Block('text', 1)
                                     .data('Secondary')
                                     .css({
                                         fontSize: '18px',
-                                        color: '#111',
+                                        color: 'white',
+                                        fontWeight: '300',
                                         cursor: 'pointer'
                                     })
                                 )
                                 .on('mouseover', function (e, b) {
-                                    b.css('background-color', 'rgba(10, 10, 10, 0.075)');
+                                    b.css('background-color', '#fefefe');
+                                    b.css('border', '1px solid #818181');
+                                    b.child('text').css('color', '#555');
                                 })
                                 .on('mouseout', function (e, b) {
-                                    b.css('background-color', 'rgba(10, 10, 10, 0)');
+                                    b.css('background-color', '#7f7f7f');
+                                    b.css('border', '1px solid rgba(100, 100, 100, 0)');
+                                    b.child('text').css('color', 'white');
                                 })
                                 .on('click', function (e, b) {
                                     if (block.key('secondaryLink'))
@@ -591,28 +600,34 @@ app
                             )
                             .add(Block('div', 'sourceButton')
                                 .css({
+                                    width: 'auto',
                                     borderRadius: '4px',
-                                    border: '1px solid #888',
                                     padding: '10px 20px',
                                     display: 'none',
-                                    backgroundColor: 'rgba(10, 10, 10, 0)',
                                     cursor: 'pointer',
-                                    transition: 'background-color 0.3s ease',
-                                    margin: '5px 7px'
+                                    margin: '5px 7px',
+                                    backgroundColor: '#7f7f7f',
+                                    transition: 'background-color 0.25s ease, opacity 0.2s ease',
+                                    border: '1px solid rgba(100, 100, 100, 0)'
                                 })
                                 .add(Block('text', 1)
                                     .data('Source')
                                     .css({
                                         fontSize: '18px',
-                                        color: '#111',
+                                        color: 'white',
+                                        fontWeight: '300',
                                         cursor: 'pointer'
                                     })
                                 )
                                 .on('mouseover', function (e, b) {
-                                    b.css('background-color', 'rgba(10, 10, 10, 0.075)');
+                                    b.css('background-color', '#fefefe');
+                                    b.css('border', '1px solid #818181');
+                                    b.child('text').css('color', '#555');
                                 })
                                 .on('mouseout', function (e, b) {
-                                    b.css('background-color', 'rgba(10, 10, 10, 0)');
+                                    b.css('background-color', '#7f7f7f');
+                                    b.css('border', '1px solid rgba(100, 100, 100, 0)');
+                                    b.child('text').css('color', 'white');
                                 })
                                 .on('click', function (e, b) {
                                     if (block.key('repo')) {
@@ -654,6 +669,9 @@ app
                     data('buttonLink', function (buttonLink) {
                         block.key('secondaryLink', buttonLink);
                     });
+                    data('textalign', function (textalign) {
+                        block.child('content/desc').css('text-align', textalign);
+                    });
                 }
         tile anuvme
             title anuv.me
@@ -675,18 +693,20 @@ app
             title LancerHacks
             desc Tech Director for 12-hour hackathon organized and hosted by <a href = 'http://sfhacks.club' target = '_blank'>sfhacks</a>. Created home website, live site, CTF system, and RSVP system from scratch with block.js (see previous) & Firebase. First hackathon hosted by SFHS/any Catholic high school in the Bay Area.
             buttonName Home Site
-            buttonLink http://lancerhacks.com
+            buttonLink http://lancerhacks.com/2018
         tile pocketjs
             title pocketjs
             desc Lightweight WebSocket library for implementing realtime applications in PHP & JavaScript. Utilizes an event-driven flow model to promote minimalistic design and simplify operations.
             buttonName Demo
             buttonLink pocketjs
             repo pocketjs
+            textalign center
         tile hackintosh
             title Hackintosh
             desc Custom-built PC from parts, installed dual-boot Windows 10 and OS X Yosemite (using <a target = '_blank' href = 'https://www.tonymacx86.com/threads/unibeast-install-macos-high-sierra-on-any-supported-intel-based-pc.235474/'>tonymacx86</a>'s tools) and a file transfer/storage partition in between.
             buttonName Specs
             buttonLink hackintosh.html
+            textalign center
         tile rubbr
             title rubbr.io
             desc Realtime online multiplayer browser-based car racing themed video game. Inspired by .io game proliferation. Built with pocketjs (see previous).
@@ -697,35 +717,42 @@ app
             title murk
             desc Text/console-based fantasy mini-RPG in Java, involving quests and minigames.
             repo murk
+            textalign center
         tile drummer
             title drummer
             desc Android app for making basic drumbeats.<br/>Made with Android Studio.
             repo drummer
             buttonName Demo
             buttonLink https://www.youtube.com/watch?v=3RtFNokTpac
+            textalign center
         tile sitarhero
             title sitar hero
             desc Music/video game using Java and MIDI Sitar. Similar to Guitar Hero, except hitting notes actually plays the melody on the instrument, which is also a sitar rather than a guitar.
             repo sitarhero
+            textalign center
         tile chessroom
             title chessroom
             desc Online multiplayer realtime chessroom (with spectating capabilities) built with Firebase.
             repo chessroom.ml
             buttonName Play
             buttonLink http://chessroom.ml
+            textalign center
         tile dolphin
             title dolphin
             desc PHP module for easily managing and manipulating a MySQL database with no (minimal) SQL.
             repo dolphin
             buttonName Docs
             buttonLink dolphin
+            textalign center
         tile sfgpa
             title sfgpa
             desc Mobile-friendly web-based GPA and Final Grade Calculator, based on SFHS grading system.
             repo sfgpa
             buttonName Visit
             buttonLink sfgpa
+            textalign center
         tile pi
             title pi
             desc Approximating π with Java.
             repo pi
+            textalign center
