@@ -758,7 +758,7 @@ app
             repo tcp-chat
         tile meanuvme
             title me.anuv.me
-            desc Personal website detailing personal interests and projects. Completely original design and images. Built from scratch with block.js (see next).
+            desc Personal portfolio website detailing interests and projects. Original design and images. Built from scratch with block.js (see next).
             repo me.anuv.me
             buttonName Site
             buttonLink http://me.anuv.me
