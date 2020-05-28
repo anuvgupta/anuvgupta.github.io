@@ -142,15 +142,15 @@ app
             @query window width <= 1100
                 css
                     height 8px
-            @query window width <= 625
+            @query window width <= 700
                 css
                     height 0
         div title
-            @query window width > 625
+            @query window width > 700
                 css
                     padding 20px 0 30px 50px
                     text-align left
-            @query window width <= 625
+            @query window width <= 700
                 css
                     padding 10px 0 30px 0
                     text-align center
@@ -163,17 +163,17 @@ app
                     color #555
                     display block
             text sub
-                val GitHub Projects
+                val Projects
                 css
                     font-size 28px
                     font-weight 300
                     letter-spacing 1px
                     color #444
                     display block
-                @query window width > 625
+                @query window width > 700
                     css
                         margin-top 0
-                @query window width <= 625
+                @query window width <= 700
                     css
                         margin-top -10px
         div spacerMid1
@@ -189,7 +189,7 @@ app
             css
                 padding 5px 49px 0 50px
             text text
-                html I'm a Computer Engineering student at UT Austin passionate about web development and building new things. Check out some of my projects!
+                html I'm a Computer Engineering student at UT Austin interested in web development and building new ideas. Check out some of my projects!
                 css
                     font-size 18px
             @query window width > 1100
@@ -228,7 +228,7 @@ app
                     height 100%
                     width auto
                     margin 0
-            @query window width <= 625
+            @query window width <= 700
                 css
                     position absolute
                     right 0
@@ -260,9 +260,10 @@ app
                                 });
                                 block.child('text').css({
                                     fontSize: '20px',
-                                    paddingLeft: '25px'
+                                    paddingLeft: '25px',
+                                    paddingRight: '50px'
                                 });
-                                block.__child('content').css('text-align', 'left');
+                                block.__child('content').css('text-align', 'right');
                                 block.on('mouseout');
                             })
                             .query('window width <= 1100', function () {
@@ -277,12 +278,13 @@ app
                                 });
                                 block.child('text').css({
                                     fontSize: '23px',
-                                    paddingLeft: '30px'
+                                    paddingLeft: '30px',
+                                    paddingRight: '30px'
                                 });
                                 block.__child('content').css('text-align', 'left');
                                 block.on('mouseout');
                             })
-                            .query('window width <= 770', function () {
+                            .query('window width <= 850', function () {
                                 if (block.key('alt')) {
                                     block.child('text').html(block.key('alt'));
                                 }
@@ -294,12 +296,13 @@ app
                                 });
                                 block.child('text').css({
                                     fontSize: '20px',
-                                    paddingLeft: '20px'
+                                    paddingLeft: '20px',
+                                    paddingRight: '20px'
                                 });
                                 block.__child('content').css('text-align', 'left');
                                 block.on('mouseout');
                             })
-                            .query('window width <= 625', function () {
+                            .query('window width <= 700', function () {
                                 if (block.key('alt')) {
                                     block.child('text').html(block.key('alt'));
                                 }
@@ -311,7 +314,8 @@ app
                                 });
                                 block.child('text').css({
                                     fontSize: '20px',
-                                    paddingLeft: '0'
+                                    paddingLeft: '0',
+                                    paddingRight: '0'
                                 });
                                 block.__child('content').css('text-align', 'center');
                                 block.on('mouseout');
@@ -324,22 +328,22 @@ app
                                     paddingLeft: '25px',
                                     textTransform: 'uppercase',
                                     letterSpacing: '5px',
-                                    borderRadius: '3px',
+                                    borderRadius: '2px',
                                     cursor: 'pointer'
                                 })
                             )
                             .on('mouseover', function (e, b) {
                                 if (window.innerWidth > 1100) {
-                                    block.child('text').css('color', '#555').css('borderLeft', '6px solid #666');
+                                    block.child('text').css('color', '#555').css('borderRight', '6px solid rgba(40, 40, 40, 0.2)');
                                 } else {
-                                    block.child('text').css('color', '#777').css('borderLeft', 'none');
+                                    block.child('text').css('color', '#777').css('borderRight', 'none');
                                 }
                             })
                             .on('mouseout', function (e, b) {
                                 if (window.innerWidth > 1100) {
-                                    block.child('text').css('color', '#222').css('borderLeft', '6px solid rgba(0, 0, 0, 0)');
+                                    block.child('text').css('color', '#222').css('borderRight', '6px solid rgba(0, 0, 0, 0)');
                                 } else {
-                                    block.child('text').css('color', '#222').css('borderLeft', 'none');
+                                    block.child('text').css('color', '#222').css('borderRight', 'none');
                                 }
                             })
                             .on('mouseout')
@@ -365,16 +369,16 @@ app
                         });
                     }
             item github
-                title GitHub Profile
+                title GitHub
                 altTitle GitHub
                 link http://github.com/anuvgupta
             item home
-                title Home Website
-                altTitle Home
+                title Website
+                altTitle Website
                 link http://anuv.me
             item resume
                 title Resume
-                link https://drive.google.com/file/d/1AJCGXVfqq4k5zzNvlEjZMQHkH1dHxvUH/view
+                link https://drive.google.com/file/d/1L9-5yRQmXaf9erfV40H1kyUzf8aDVRc3/view?usp=sharing
         div copyright
             css
                 text-align center
@@ -598,6 +602,43 @@ app
                                     e.stopPropagation();
                                 })
                             )
+                            .add(Block('div', 'thirdButton')
+                                .css({
+                                    width: 'auto',
+                                    borderRadius: '4px',
+                                    padding: '10px 20px',
+                                    display: 'none',
+                                    cursor: 'pointer',
+                                    margin: '5px 7px',
+                                    backgroundColor: '#7f7f7f',
+                                    transition: 'background-color 0.25s ease, opacity 0.2s ease',
+                                    border: '1px solid rgba(100, 100, 100, 0)'
+                                })
+                                .add(Block('text', 1)
+                                    .data('Third')
+                                    .css({
+                                        fontSize: '18px',
+                                        color: 'white',
+                                        fontWeight: '300',
+                                        cursor: 'pointer'
+                                    })
+                                )
+                                .on('mouseover', function (e, b) {
+                                    b.css('background-color', '#fefefe');
+                                    b.css('border', '1px solid #818181');
+                                    b.child('text').css('color', '#555');
+                                })
+                                .on('mouseout', function (e, b) {
+                                    b.css('background-color', '#7f7f7f');
+                                    b.css('border', '1px solid rgba(100, 100, 100, 0)');
+                                    b.child('text').css('color', 'white');
+                                })
+                                .on('click', function (e, b) {
+                                    if (block.key('thirdLink'))
+                                        window.open('' + block.key('thirdLink'), '_blank');
+                                    e.stopPropagation();
+                                })
+                            )
                             .add(Block('div', 'sourceButton')
                                 .css({
                                     width: 'auto',
@@ -669,84 +710,142 @@ app
                     data('buttonLink', function (buttonLink) {
                         block.key('secondaryLink', buttonLink);
                     });
+                    data('button2Name', function (buttonName) {
+                        block.child('content/thirdButton/text').html(buttonName);
+                        block.child('content/thirdButton').css('display', 'inline-block');
+                    });
+                    data('button2Link', function (buttonLink) {
+                        block.key('thirdLink', buttonLink);
+                    });
                     data('textalign', function (textalign) {
                         block.child('content/desc').css('text-align', textalign);
                     });
                 }
-        tile anuvme
-            title anuv.me
-            desc Personal website detailing personal interests and projects. Completely original design and images. Built entirely from scratch with block.js (see next).
-            repo anuv.me
+        //tile nestor
+        //    title nestor
+        //    desc Vizio TV IoT remote control iOS app using an ESP8266 and IR emitter.
+        //    repo nestor
+        //    textalign center
+        tile led-lights
+            title led-lights
+            desc IoT audio-reactive LED lighting controller (using Arduino, ESP8266, MSGEQ7) and iOS/web control panel. Includes custom color, pattern, and audio-reactive settings. Built with block.js (see next).
+            repo led-lights
+            buttonName Visit
+            buttonLink http://leds.anuv.me
+            textalign center
+        tile zineone-connectors
+            title Z1 Connector Gateway
+            desc ZineOne Connector Gateway is a standalone Node.js backend acting as an asynchronous gateway between the ZineOne data collection cloud platform and external customer data channels. Built with chain.js (see next).
+            button2Name ZineOne
+            button2Link https://www.zineone.com/
+            textalign center
+            buttonName Video
+            buttonLink https://www.youtube.com/watch?v=vH1bCCSw-LU&t=1s
+        tile vizio-remote
+            title vizio-remote
+            desc Vizio TV IoT remote control iOS app using an ESP8266 and IR emitter.
+            repo vizio-remote
+            textalign center
+        tile chain.js
+            title chain.js
+            desc JavaScript module for asynchronous callback chaining – a readable & organized alternative to native promises.
+            textalign center
+            repo chain.js
+        tile tcp-chat
+            title tcp-chat
+            desc TCP chat room client and server using Node.js. Accessible via telnet.
+            textalign center
+            repo tcp-chat
+        tile meanuvme
+            title me.anuv.me
+            desc Personal website detailing personal interests and projects. Completely original design and images. Built from scratch with block.js (see next).
+            repo me.anuv.me
             buttonName Site
-            buttonLink http://anuv.me
+            buttonLink http://me.anuv.me
         tile blockjs
             title block.js
-            desc Lightweight JavaScript library for designing responsive web pages. Combines HTML/CSS/JS into a minimalistic hybrid syntax, allows generating customizable element “blocks”, integrates DOM events & responsive sizing.
+            desc Lightweight JavaScript library for designing responsive web pages. Combines HTML/CSS into a minimalistic hybrid syntax for generating customizable element “blocks”.
             repo block.js
+            textalign center
         tile p2p
             title peer2peer
             repo https://github.com/p2p-app/p2p-about
-            desc Created RESTful PHP backend for Peer2Peer—iOS app that connects volunteer tutors to students based on subjects and physical proximity. <i>"Uber for tutors."</i> Won 1st place team for CA-18 in 2016 Congressional App Challenge, featured in local news. Built with dolphin (see below).
+            desc Created RESTful PHP backend for Peer2Peer—iOS app connecting tutors to students based on subjects and proximity. <i>"Uber for tutors."</i> 1st place for CA-18 in 2016 Congressional App Challenge. Built with dolphin (see below).
             buttonName Video
             buttonLink https://www.youtube.com/watch?v=PQ4SMc8Uc-E
         tile lancerhacks
             title LancerHacks
-            desc Tech Director for 12-hour hackathon organized and hosted by <a href = 'http://sfhacks.club' target = '_blank'>sfhacks</a>. Created home website, live site, CTF system, and RSVP system from scratch with block.js (see previous) & Firebase. First hackathon hosted by SFHS/any Catholic high school in the Bay Area.
+            desc Tech Director for first ever 12-hour hackathon organized and hosted by <a href = 'http://sfhacks.club' target = '_blank'>sfhacks</a>. Created home website, live site, CTF system, and RSVP system from scratch with block.js (see previous) & Firebase.
             buttonName Home Site
-            buttonLink http://lancerhacks.com/2018
+            buttonLink https://lancerhacks.com/2019/2018/
         tile pocketjs
             title pocketjs
-            desc Lightweight WebSocket library for implementing realtime applications in PHP & JavaScript. Utilizes an event-driven flow model to promote minimalistic design and simplify operations.
+            desc Lightweight WebSocket library for implementing realtime applications in PHP & JavaScript. Event-driven, minimalistic design.
             buttonName Demo
             buttonLink pocketjs
             repo pocketjs
             textalign center
-        tile hackintosh
-            title Hackintosh
-            desc Custom-built PC from parts, installed dual-boot Windows 10 and OS X Yosemite (using <a target = '_blank' href = 'https://www.tonymacx86.com/threads/unibeast-install-macos-high-sierra-on-any-supported-intel-based-pc.235474/'>tonymacx86</a>'s tools) and a file transfer/storage partition in between.
-            buttonName Specs
-            buttonLink hackintosh.html
-            textalign center
         tile rubbr
-            title rubbr.io
-            desc Realtime online multiplayer browser-based car racing themed video game. Inspired by .io game proliferation. Built with pocketjs (see previous).
+            title rubbr
+            desc Realtime multiplayer car racing video game. Inspired by .io game proliferation. Built with pocketjs (see previous), block.js (see previous), and socket.io.
             buttonName Play
             buttonLink http://rubbr.anuv.me
             repo rubbr
+            textalign center
+        tile hackintosh
+            title hackintosh
+            desc Custom-built PC from parts, installed dual-boot Windows 10 and OS X Yosemite and a file transfer/storage partition in between.
+            buttonName Specs
+            buttonLink hackintosh.html
+            textalign center
+        tile messenger
+            title messenger
+            desc Messenger-style chat room application created with socket.io. Built with block.js (see previous).
+            textalign center
+            buttonName Visit
+            buttonLink http://messenger.anuv.me
+            repo messenger
         tile murk
             title murk
             desc Text/console-based fantasy mini-RPG in Java, involving quests and minigames.
             repo murk
             textalign center
+        tile slop
+            title slop
+            desc Collaborative realtime roommate grocery list app. Built with pocketjs (see previous) & block.js (see previous).
+            repo slop
+            textalign center
+            buttonName Visit
+            buttonLink http://slop.anuv.me
         tile drummer
             title drummer
-            desc Android app for making basic drumbeats.<br/>Made with Android Studio.
+            desc Android app for creating basic drumbeats.<br/>Made with Android Studio.
             repo drummer
             buttonName Demo
             buttonLink https://www.youtube.com/watch?v=3RtFNokTpac
             textalign center
         tile sitarhero
             title sitar hero
-            desc Music/video game using Java and MIDI Sitar. Similar to Guitar Hero, except hitting notes actually plays the melody on the instrument, which is also a sitar rather than a guitar.
+            desc Music video game in Java using MIDI Sitar. Similar to Guitar Hero – hitting notes plays the melody on a virtual sitar.
             repo sitarhero
             textalign center
         tile chessroom
             title chessroom
-            desc Online multiplayer realtime chessroom (with spectating capabilities) built with Firebase.
-            repo chessroom.ml
+            desc Multiplayer realtime chessroom website (with spectators). Built with Firebase & block.js (see previous).
+            repo chessroom
             buttonName Play
-            buttonLink http://chessroom.ml
+            buttonLink http://chessroom.anuv.me
             textalign center
         tile dolphin
             title dolphin
-            desc PHP module for easily managing and manipulating a MySQL database with no (minimal) SQL.
+            desc PHP module for easily managing and manipulating a MySQL database with minimal SQL.
             repo dolphin
             buttonName Docs
             buttonLink dolphin
             textalign center
         tile sfgpa
             title sfgpa
-            desc Mobile-friendly web-based GPA and Final Grade Calculator, based on SFHS grading system.
+            desc Mobile-friendly web-based GPA and Final Grade Calculator. Based on the Saint Francis High School grading system. Built with block.js (see previous).
             repo sfgpa
             buttonName Visit
             buttonLink sfgpa
