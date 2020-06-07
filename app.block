@@ -189,7 +189,7 @@ app
             css
                 padding 5px 49px 0 50px
             text text
-                html I'm a Computer Engineering student at UT Austin interested in web development and building new ideas. Check out some of my projects!
+                html I'm a Computer Engineering student at UT Austin interested in computer science and building new ideas. Check out some of my projects!
                 css
                     font-size 18px
             @query window width > 1100
