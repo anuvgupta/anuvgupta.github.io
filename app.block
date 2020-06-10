@@ -812,7 +812,7 @@ app
             textalign center
         tile slop
             title slop
-            desc Collaborative realtime roommate grocery list app. Built with pocketjs (see previous) & block.js (see previous).
+            desc Collaborative realtime roommate grocery list app. Built with pocketjs (see previous) & block.js (see previous). <i>Password: slop</i>
             repo slop
             textalign center
             buttonName Visit
