@@ -726,9 +726,14 @@ app
         //    desc Vizio TV IoT remote control iOS app using an ESP8266 and IR emitter.
         //    repo nestor
         //    textalign center
+        tile tunneljs
+            title tunnel.js
+            desc Automated seamless switching between multiple SSH tunnels via SOCKS proxy settings. Efficient, cost-effective, secure "poor man's" alternative to a personal VPN. Intended for macOS use.
+            repo tunnel.js
+            textalign center
         tile led-lights
             title led-lights
-            desc IoT audio-reactive LED lighting controller (using Arduino, ESP8266, MSGEQ7) and iOS/web control panel. Includes custom color, pattern, and audio-reactive settings. Built with block.js (see next).
+            desc IoT audio-reactive LED lighting controller (using Arduino, ESP8266, MSGEQ7) and iOS/web control panel. Includes custom color, pattern, and audio-reactive settings. Built with block.js (see next).<br/><i>Password: control</i>
             repo led-lights
             buttonName Visit
             buttonLink http://leds.anuv.me
@@ -739,18 +744,18 @@ app
             button2Name ZineOne
             button2Link https://www.zineone.com/
             textalign center
-            buttonName Video
+            buttonName Demo
             buttonLink https://www.youtube.com/watch?v=vH1bCCSw-LU&t=1s
+        tile chainjs
+            title chain.js
+            desc JavaScript module for asynchronous callback chaining – a readable & organized alternative to native Promises.
+            textalign center
+            repo chain.js
         tile vizio-remote
             title vizio-remote
             desc Vizio TV IoT remote control iOS app using an ESP8266 and IR emitter.
             repo vizio-remote
             textalign center
-        tile chain.js
-            title chain.js
-            desc JavaScript module for asynchronous callback chaining – a readable & organized alternative to native promises.
-            textalign center
-            repo chain.js
         tile tcp-chat
             title tcp-chat
             desc TCP chat room client and server using Node.js. Accessible via telnet.
@@ -762,6 +767,11 @@ app
             repo me.anuv.me
             buttonName Site
             buttonLink http://me.anuv.me
+        tile lancerhacks
+            title LancerHacks
+            desc Tech Director for first ever 12-hour hackathon organized and hosted by <a href = 'http://sfhacks.club' target = '_blank'>sfhacks</a>. Created home website, live site, CTF system, and RSVP system from scratch with block.js (see previous) & Firebase.
+            buttonName Home Site
+            buttonLink https://lancerhacks.com/2019/2018/
         tile blockjs
             title block.js
             desc Lightweight JavaScript library for designing responsive web pages. Combines HTML/CSS into a minimalistic hybrid syntax for generating customizable element “blocks”.
@@ -771,13 +781,8 @@ app
             title peer2peer
             repo https://github.com/p2p-app/p2p-about
             desc Created RESTful PHP backend for Peer2Peer—iOS app connecting tutors to students based on subjects and proximity. <i>"Uber for tutors."</i> 1st place for CA-18 in 2016 Congressional App Challenge. Built with dolphin (see below).
-            buttonName Video
+            buttonName Demo
             buttonLink https://www.youtube.com/watch?v=PQ4SMc8Uc-E
-        tile lancerhacks
-            title LancerHacks
-            desc Tech Director for first ever 12-hour hackathon organized and hosted by <a href = 'http://sfhacks.club' target = '_blank'>sfhacks</a>. Created home website, live site, CTF system, and RSVP system from scratch with block.js (see previous) & Firebase.
-            buttonName Home Site
-            buttonLink https://lancerhacks.com/2019/2018/
         tile pocketjs
             title pocketjs
             desc Lightweight WebSocket library for implementing realtime applications in PHP & JavaScript. Event-driven, minimalistic design.
@@ -812,7 +817,7 @@ app
             textalign center
         tile slop
             title slop
-            desc Collaborative realtime roommate grocery list app. Built with pocketjs (see previous) & block.js (see previous). <i>Password: slop</i>
+            desc Collaborative realtime roommate grocery list app. Built with pocketjs (see previous) & block.js (see previous).<br/><i>Password: slop</i>
             repo slop
             textalign center
             buttonName Visit
