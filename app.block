@@ -189,7 +189,7 @@ app
             css
                 padding 5px 49px 0 50px
             text text
-                html I'm a Computer Engineering student at UT Austin interested in computer science and building new ideas. Check out some of my projects!
+                html I'm a Computer Engineering student at UT Austin interested in computer science and building practical ideas.<br/>I keep some projects here.
                 css
                     font-size 18px
             @query window width > 1100
@@ -537,6 +537,21 @@ app
                                 // }
                                 b.css('opacity', '0');
                             })
+                            .add(Block('div', 'year')
+                                .css({
+                                    position: 'absolute',
+                                    right: '14px',
+                                    top: '12px',
+                                    display: 'none'
+                                })
+                                .add(Block('text', 1)
+                                    .data('Year')
+                                    .css({
+                                        color: '#666',
+                                        fontSize: '15px'
+                                    })
+                                )
+                            )
                             .add(Block('text', 'title')
                                 .data('Project Title')
                                 .css({
@@ -720,143 +735,170 @@ app
                     data('textalign', function (textalign) {
                         block.child('content/desc').css('text-align', textalign);
                     });
+                    data('year', function (year) {
+                        block.child('content/year').css('display', 'block').child('text').html('').data(year);
+                    });
                 }
         //tile nestor
         //    title nestor
         //    desc Vizio TV IoT remote control iOS app using an ESP8266 and IR emitter.
         //    repo nestor
         //    textalign center
+        //    year 2020
         tile tunneljs
             title tunnel.js
-            desc Automated seamless switching between multiple SSH tunnels via SOCKS proxy settings. Efficient, cost-effective, secure "poor man's" alternative to a personal VPN. Intended for macOS use.
+            desc Automated seamless switching between multiple SSH tunnels via SOCKS proxy settings. Efficient, cost-effective, secure "poor man's" alternative to a personal VPN. Intended for macOS use. Built with Node.js & SSH.
             repo tunnel.js
             textalign center
+            year 2020
         tile led-lights
             title led-lights
-            desc IoT audio-reactive LED lighting controller (using Arduino, ESP8266, MSGEQ7) and iOS/web control panel. Includes custom color, pattern, and audio-reactive settings. Built with block.js (see next).<br/><i>Password: control</i>
+            desc IoT audio-reactive LED lighting controller (using Arduino, ESP8266, MSGEQ7) and iOS/web control panel. Includes custom color, pattern, and audio-reactive settings. Built with Arduino, Xcode, block.js (below) and Node.js.<br/><i>Password: control</i>
             repo led-lights
             buttonName Visit
             buttonLink http://leds.anuv.me
             textalign center
+            year 2019
         tile zineone-connectors
             title Z1 Connector Gateway
-            desc ZineOne Connector Gateway is a standalone Node.js backend acting as an asynchronous gateway between the ZineOne data collection cloud platform and external customer data channels. Built with chain.js (see next).
-            button2Name ZineOne
-            button2Link https://www.zineone.com/
+            desc ZineOne Connector Gateway is a standalone backend acting as an asynchronous gateway between the ZineOne data collection cloud platform and external customer data channels. Built with chain.js (next) and Node.js. Created for <a href="https://www.zineone.com/" target="_blank">ZineOne</a> (team of 2).
             textalign center
             buttonName Demo
             buttonLink https://www.youtube.com/watch?v=vH1bCCSw-LU&t=1s
+            year 2019
         tile chainjs
             title chain.js
-            desc JavaScript module for asynchronous callback chaining – a readable & organized alternative to native Promises.
+            desc JavaScript module for asynchronous callback chaining – a readable & organized alternative to native Promises. Created near <a href="https://www.zineone.com/" target="_blank">ZineOne</a>.
             textalign center
             repo chain.js
+            year 2019
         tile vizio-remote
             title vizio-remote
-            desc Vizio TV IoT remote control iOS app using an ESP8266 and IR emitter.
+            desc Vizio TV IoT remote control iOS app using an ESP8266 and IR emitter. Built with Arduino, Xcode, and Node.js.
             repo vizio-remote
             textalign center
+            year 2019
         tile tcp-chat
             title tcp-chat
-            desc TCP chat room client and server using Node.js. Accessible via telnet.
+            desc TCP chat room server with basic client, accessible via telnet. Built with Node.js.
             textalign center
             repo tcp-chat
+            year 2019
+        tile lancerhacks
+            title LancerHacks
+            desc Tech Director for first ever 12-hour hackathon organized by <a href = 'http://sfhacks.club' target = '_blank'>sfhacks</a> and hosted by <a href="https://www.sfhs.com/" target="_blank">SFHS</a>. Hosted 150+ competitors. Created home website, event-day central live website, CTF competition system, and RSVP system from scratch—built with block.js (below) & Firebase.
+            buttonName Home Site
+            buttonLink https://lancerhacks.com/2019/2018/
+            year 2018
+            textalign center
         tile meanuvme
             title me.anuv.me
-            desc Personal portfolio website detailing interests and projects. Original design and images. Built from scratch with block.js (see next).
+            desc Personal portfolio website detailing interests and projects. Original design and images. Built with block.js (below).
             repo me.anuv.me
             buttonName Site
             buttonLink http://me.anuv.me
-        tile lancerhacks
-            title LancerHacks
-            desc Tech Director for first ever 12-hour hackathon organized and hosted by <a href = 'http://sfhacks.club' target = '_blank'>sfhacks</a>. Created home website, live site, CTF system, and RSVP system from scratch with block.js (see previous) & Firebase.
-            buttonName Home Site
-            buttonLink https://lancerhacks.com/2019/2018/
+            year 2017
+            textalign center
+        tile messenger
+            title messenger
+            desc Barebones messenger-style chat room application. Built with block.js (below) and socket.io.
+            textalign center
+            buttonName Visit
+            buttonLink http://messenger.anuv.me
+            repo messenger
+            year 2017
+        tile p2p
+            title peer2peer
+            repo https://github.com/p2p-app/p2p-about
+            desc Created RESTful PHP backend for Peer2Peer—an iOS app connecting tutors to students based on subjects and proximity. <i>"Uber for tutors."</i> Won 1st place for district <a href="https://eshoo.house.gov/constituent-services/house-student-app-challenge" target="_blank">CA-18</a> in 2016 <a href="https://www.congressionalappchallenge.us/" target="_blank">Congressional App Challenge</a>. Built with dolphin (next). Created at <a href="https://sfhacks.club/" target="_blank">sfhacks</a> (team of 3).
+            buttonName Demo
+            buttonLink https://www.youtube.com/watch?v=PQ4SMc8Uc-E
+            year 2016
+            textalign center
+        tile dolphin
+            title dolphin
+            desc PHP module for easily managing and manipulating a MySQL database with minimal SQL. Built for peer2peer (previous).
+            repo dolphin
+            buttonName Docs
+            buttonLink dolphin
+            textalign center
+            year 2016
+        tile slop
+            title slop
+            desc Collaborative realtime roommate grocery list app. Built with pocketjs (below) & block.js (next).<br/><i>Password: slop</i>
+            repo slop
+            textalign center
+            buttonName Visit
+            buttonLink http://slop.anuv.me
+            year 2016
         tile blockjs
             title block.js
             desc Lightweight JavaScript library for designing responsive web pages. Combines HTML/CSS into a minimalistic hybrid syntax for generating customizable element “blocks”.
             repo block.js
             textalign center
-        tile p2p
-            title peer2peer
-            repo https://github.com/p2p-app/p2p-about
-            desc Created RESTful PHP backend for Peer2Peer—iOS app connecting tutors to students based on subjects and proximity. <i>"Uber for tutors."</i> 1st place for CA-18 in 2016 Congressional App Challenge. Built with dolphin (see below).
-            buttonName Demo
-            buttonLink https://www.youtube.com/watch?v=PQ4SMc8Uc-E
-        tile pocketjs
-            title pocketjs
-            desc Lightweight WebSocket library for implementing realtime applications in PHP & JavaScript. Event-driven, minimalistic design.
-            buttonName Demo
-            buttonLink pocketjs
-            repo pocketjs
-            textalign center
+            year 2016
         tile rubbr
             title rubbr
-            desc Realtime multiplayer car racing video game. Inspired by .io game proliferation. Built with pocketjs (see previous), block.js (see previous), and socket.io.
+            desc Realtime multiplayer car racing video game. Inspired by .io game proliferation. Built with pocketjs (next), block.js (previous), & rebuilt with socket.io.
             buttonName Play
             buttonLink http://rubbr.anuv.me
             repo rubbr
             textalign center
-        tile hackintosh
-            title hackintosh
-            desc Custom-built PC from parts, installed dual-boot Windows 10 and OS X Yosemite and a file transfer/storage partition in between.
-            buttonName Specs
-            buttonLink hackintosh.html
-            textalign center
-        tile messenger
-            title messenger
-            desc Messenger-style chat room application created with socket.io. Built with block.js (see previous).
-            textalign center
-            buttonName Visit
-            buttonLink http://messenger.anuv.me
-            repo messenger
-        tile murk
-            title murk
-            desc Text/console-based fantasy mini-RPG in Java, involving quests and minigames.
-            repo murk
-            textalign center
-        tile slop
-            title slop
-            desc Collaborative realtime roommate grocery list app. Built with pocketjs (see previous) & block.js (see previous).<br/><i>Password: slop</i>
-            repo slop
-            textalign center
-            buttonName Visit
-            buttonLink http://slop.anuv.me
-        tile drummer
-            title drummer
-            desc Android app for creating basic drumbeats.<br/>Made with Android Studio.
-            repo drummer
+            year 2016
+        tile pocketjs
+            title pocketjs
+            desc Lightweight WebSocket library for implementing realtime applications in PHP & JavaScript. Event-driven, minimalistic design. Created for rubbr (previous).
             buttonName Demo
-            buttonLink https://www.youtube.com/watch?v=3RtFNokTpac
+            buttonLink pocketjs
+            repo pocketjs
             textalign center
-        tile sitarhero
-            title sitar hero
-            desc Music video game in Java using MIDI Sitar. Similar to Guitar Hero – hitting notes plays the melody on a virtual sitar.
-            repo sitarhero
-            textalign center
+            year 2016
         tile chessroom
             title chessroom
-            desc Multiplayer realtime chessroom website (with spectators). Built with Firebase & block.js (see previous).
+            desc Multiplayer realtime chessroom web game. Features spectator mode. Built with Firebase & rebuilt with block.js (above). Created at <a href="https://www.linkedin.com/company/hulaloop-inc-" target="_blank">HulaLoop</a>/<a href="https://pythonroom.firebaseapp.com/" target="_blank">Pythonroom</a>.
             repo chessroom
             buttonName Play
             buttonLink http://chessroom.anuv.me
             textalign center
-        tile dolphin
-            title dolphin
-            desc PHP module for easily managing and manipulating a MySQL database with minimal SQL.
-            repo dolphin
-            buttonName Docs
-            buttonLink dolphin
+            year 2016
+        tile sitarhero
+            title sitar hero
+            desc Music video game in Java using MIDI Sitar. Similar to Guitar Hero; hitting notes plays the melody on a virtual sitar. Created for <a href="https://www.sfhs.com/" target="_blank">SFHS</a> computer science.
+            repo sitarhero
             textalign center
-        tile sfgpa
-            title sfgpa
-            desc Mobile-friendly web-based GPA and Final Grade Calculator. Based on the Saint Francis High School grading system. Built with block.js (see previous).
-            repo sfgpa
-            buttonName Visit
-            buttonLink sfgpa
+            year 2015
+        tile murk
+            title murk
+            desc Text/console-based fantasy mini-RPG in Java, involving quests and minigames. Created for <a href="https://www.sfhs.com/" target="_blank">SFHS</a> computer science.
+            repo murk
             textalign center
+            year 2015
         tile pi
             title pi
             desc Approximating π with Java.
             repo pi
             textalign center
+            year 2015
+        tile sfgpa
+            title sfgpa
+            desc Mobile-friendly GPA and Final Grade Calculator website. Based on <a href="https://www.sfhs.com/" target="_blank">SFHS</a> grading system. Rebuilt with block.js (above).
+            repo sfgpa
+            buttonName Visit
+            buttonLink sfgpa
+            textalign center
+            year 2015
+        tile drummer
+            title drummer
+            desc Android app for creating basic drumbeats & patterns. Made for Android KitKat with Android Studio on OS X. Created at <a href="https://www.idtech.com/locations/california-summer-camps/held-at-stanford" target="_blank">ID Tech @ Stanford</a>.
+            repo drummer
+            buttonName Demo
+            buttonLink https://www.youtube.com/watch?v=3RtFNokTpac
+            textalign center
+            year 2014
+        tile hackintosh
+            title hackintosh
+            desc Custom-built PC, installed dual-boot Windows 10 and OS X Yosemite, with an exFAT file storage & transfer partition in between.
+            buttonName Specs
+            buttonLink hackintosh.html
+            textalign center
+            year 2014
