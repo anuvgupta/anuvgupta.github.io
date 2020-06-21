@@ -747,7 +747,7 @@ app
         //    year 2020
         tile tunneljs
             title tunnel.js
-            desc Automated seamless switching between multiple SSH tunnels via SOCKS proxy settings. Efficient, cost-effective, secure "poor man's" alternative to a personal VPN. Intended for macOS use. Built with Node.js & SSH.
+            desc Seamless automation of multiple SSH tunnels via SOCKS proxy settings. Efficient, cost-effective, secure "poor man's" alternative to a personal VPN. Intended for macOS use. Built with Node.js & SSH.
             repo tunnel.js
             textalign center
             year 2020
@@ -768,13 +768,13 @@ app
             year 2019
         tile chainjs
             title chain.js
-            desc JavaScript module for asynchronous callback chaining – a readable & organized alternative to native Promises. Created near <a href="https://www.zineone.com/" target="_blank">ZineOne</a>.
+            desc Asynchronous callback chaining as a readable & organized JavaScript module alternative to native Promise chains. Created near <a href="https://www.zineone.com/" target="_blank">ZineOne</a>.
             textalign center
             repo chain.js
             year 2019
         tile vizio-remote
             title vizio-remote
-            desc Vizio TV IoT remote control iOS app using an ESP8266 and IR emitter. Built with Arduino, Xcode, and Node.js.
+            desc Vizio TV IoT remote control iOS app using NodeMCU and IR emitter. Built with Arduino, Xcode, and Node.js.
             repo vizio-remote
             textalign center
             year 2019
@@ -801,7 +801,7 @@ app
             textalign center
         tile messenger
             title messenger
-            desc Barebones messenger-style chat room application. Built with block.js (below) and socket.io.
+            desc Basic messenger-style chat room application. Built with block.js (below) and socket.io.
             textalign center
             buttonName Visit
             buttonLink http://messenger.anuv.me
@@ -817,7 +817,7 @@ app
             textalign center
         tile dolphin
             title dolphin
-            desc PHP module for easily managing and manipulating a MySQL database with minimal SQL. Built for peer2peer (previous).
+            desc PHP module for managing a MySQL database with minimal SQL. Built for peer2peer (previous).
             repo dolphin
             buttonName Docs
             buttonLink dolphin
@@ -825,7 +825,7 @@ app
             year 2016
         tile slop
             title slop
-            desc Collaborative realtime roommate grocery list app. Built with pocketjs (below) & block.js (next).<br/><i>Password: slop</i>
+            desc Collaborative realtime synchronized grocery lists. Built with pocketjs (below) & block.js (next).<br/><i>Password: slop</i>
             repo slop
             textalign center
             buttonName Visit
@@ -833,13 +833,13 @@ app
             year 2016
         tile blockjs
             title block.js
-            desc Lightweight JavaScript library for designing responsive web pages. Combines HTML/CSS into a minimalistic hybrid syntax for generating customizable element “blocks”.
+            desc Lightweight JavaScript web design library – write event-driven hybrid tag-less HTML templates to generate reusable element "blocks".
             repo block.js
             textalign center
             year 2016
         tile rubbr
             title rubbr
-            desc Realtime multiplayer car racing video game. Inspired by .io game proliferation. Built with pocketjs (next), block.js (previous), & rebuilt with socket.io.
+            desc Realtime multiplayer car racing web game. Inspired by .io game proliferation. Built with pocketjs (next), block.js (previous), & rebuilt with socket.io.
             buttonName Play
             buttonLink http://rubbr.anuv.me
             repo rubbr
@@ -847,7 +847,7 @@ app
             year 2016
         tile pocketjs
             title pocketjs
-            desc Lightweight WebSocket library for implementing realtime applications in PHP & JavaScript. Event-driven, minimalistic design. Created for rubbr (previous).
+            desc Barebones WebSocket library for implementing realtime applications in PHP & JavaScript. Event-driven, minimalistic design. Created for rubbr (previous).
             buttonName Demo
             buttonLink pocketjs
             repo pocketjs
@@ -875,13 +875,13 @@ app
             year 2015
         tile pi
             title pi
-            desc Approximating π with Java.
+            desc Approximating π with Java. Created for <a href="https://www.sfhs.com/" target="_blank">SFHS</a> computer science.
             repo pi
             textalign center
             year 2015
         tile sfgpa
             title sfgpa
-            desc Mobile-friendly GPA and Final Grade Calculator website. Based on <a href="https://www.sfhs.com/" target="_blank">SFHS</a> grading system. Rebuilt with block.js (above).
+            desc GPA and final grade calculator website. Based on <a href="https://www.sfhs.com/" target="_blank">SFHS</a> grading system. Rebuilt with block.js (above).
             repo sfgpa
             buttonName Visit
             buttonLink sfgpa
