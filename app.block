@@ -753,7 +753,7 @@ app
             year 2020
         tile led-lights
             title led-lights
-            desc IoT audio-reactive LED lighting controller (using Arduino, NodeMCU, MSGEQ7) and iOS/web control panel. Includes custom color, pattern, and audio-reactive settings. Built with Arduino, Xcode, block.js (below) and Node.js.<br/><i>Password: control</i>
+            desc IoT audio-reactive LED lighting controller driven by Arduino/NodeMCU & MSGEQ7 beat detection, with custom hardware and web & iOS control panels. Includes custom color, pattern, and audio-reactive settings. Built with Arduino, Xcode, Node.js, and block.js (below).<br/><i>Password: control</i>
             repo led-lights
             buttonName Visit
             buttonLink http://leds.anuv.me
@@ -786,7 +786,7 @@ app
             year 2019
         tile lancerhacks
             title LancerHacks
-            desc Tech Director for first ever 12-hour hackathon organized by <a href = 'http://sfhacks.club' target = '_blank'>sfhacks</a> and hosted by <a href="https://www.sfhs.com/" target="_blank">SFHS</a>. Hosted 150+ competitors. Created home website, event-day central live website, CTF competition system, and RSVP system from scratch—built with block.js (below) & Firebase.
+            desc Tech Director for first ever 12-hour hackathon organized by <a href = 'http://sfhacks.club' target = '_blank'>sfhacks</a> and hosted by <a href="https://www.sfhs.com/" target="_blank">SFHS</a>. Hosted 150+ competitors. Created home website, event-day central live website, CTF competition system, and RSVP system from scratch—built with Firebase & block.js (below).
             buttonName Home Site
             buttonLink https://lancerhacks.com/2019/2018/
             year 2018
@@ -801,7 +801,7 @@ app
             textalign center
         tile messenger
             title messenger
-            desc Basic messenger-style chat room application. Built with block.js (below) and socket.io.
+            desc Basic messenger-style chat room application. Built with and socket.io & block.js (below).
             textalign center
             buttonName Visit
             buttonLink http://messenger.anuv.me
