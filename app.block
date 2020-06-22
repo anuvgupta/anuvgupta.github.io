@@ -741,7 +741,7 @@ app
                 }
         //tile nestor
         //    title nestor
-        //    desc Vizio TV IoT remote control iOS app using an ESP8266 and IR emitter.
+        //    desc Vizio TV IoT remote control iOS app using an NodeMCU and IR emitter.
         //    repo nestor
         //    textalign center
         //    year 2020
@@ -753,7 +753,7 @@ app
             year 2020
         tile led-lights
             title led-lights
-            desc IoT audio-reactive LED lighting controller (using Arduino, ESP8266, MSGEQ7) and iOS/web control panel. Includes custom color, pattern, and audio-reactive settings. Built with Arduino, Xcode, block.js (below) and Node.js.<br/><i>Password: control</i>
+            desc IoT audio-reactive LED lighting controller (using Arduino, NodeMCU, MSGEQ7) and iOS/web control panel. Includes custom color, pattern, and audio-reactive settings. Built with Arduino, Xcode, block.js (below) and Node.js.<br/><i>Password: control</i>
             repo led-lights
             buttonName Visit
             buttonLink http://leds.anuv.me
