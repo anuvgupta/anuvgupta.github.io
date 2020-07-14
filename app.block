@@ -126,7 +126,7 @@ app
             background-color white
             border-right 1px solid #eee
             z-index 50
-            box-shadow rgba(204, 204, 204, 0.5) 0px 3px 4px
+            box-shadow 0.5px 0px 7px rgba(104, 104, 104, 0.2)
         @query window width > 1100
             css
                 width 375px
@@ -160,7 +160,7 @@ app
                     font-size 70px
                     font-weight 400
                     letter-spacing 6px
-                    color #555
+                    color #4a4a4a
                     display block
             text sub
                 val Projects
@@ -263,7 +263,7 @@ app
                                     paddingLeft: '25px',
                                     paddingRight: '50px'
                                 });
-                                block.__child('content').css('text-align', 'right');
+                                block.__child('content').css('text-align', 'left');
                                 block.on('mouseout');
                             })
                             .query('window width <= 1100', function () {
@@ -328,22 +328,22 @@ app
                                     paddingLeft: '25px',
                                     textTransform: 'uppercase',
                                     letterSpacing: '5px',
-                                    borderRadius: '2px',
+                                    //borderRadius: '2px',
                                     cursor: 'pointer'
                                 })
                             )
                             .on('mouseover', function (e, b) {
                                 if (window.innerWidth > 1100) {
-                                    block.child('text').css('color', '#555').css('borderRight', '6px solid rgba(40, 40, 40, 0.2)');
+                                    block.child('text').css('color', '#555').css('borderLeft', '3px solid rgba(40, 40, 40, 0.1');
                                 } else {
-                                    block.child('text').css('color', '#777').css('borderRight', 'none');
+                                    block.child('text').css('color', '#777').css('borderLeft', 'none');
                                 }
                             })
                             .on('mouseout', function (e, b) {
                                 if (window.innerWidth > 1100) {
-                                    block.child('text').css('color', '#222').css('borderRight', '6px solid rgba(0, 0, 0, 0)');
+                                    block.child('text').css('color', '#222').css('borderLeft', '3px solid rgba(0, 0, 0, 0)');
                                 } else {
-                                    block.child('text').css('color', '#222').css('borderRight', 'none');
+                                    block.child('text').css('color', '#222').css('borderLeft', 'none');
                                 }
                             })
                             .on('mouseout')
@@ -400,11 +400,150 @@ app
                 {
                     block.html('Copyright &copy; ' + (new Date().getFullYear()) + ' Anuv Gupta');
                 }
+    div menubar
+        css
+            top 0
+            width 100%
+            height 50px
+            position fixed
+            background-color white
+            border-bottom 1px solid #efefef
+            box-sizing border-box
+            z-index 45
+            box-shadow 0px 0.5px 10px rgba(104, 104, 104, 0.2)
+        @query window height != 0
+            {
+                if (window.innerWidth > 1100) {
+                    var introWidth = block.sibling('intro').$().width();
+                    var tilesWidth = window.innerWidth - introWidth;
+                    block.css({
+                        marginTop: '0',
+                        left: introWidth + 'px',
+                        width: (tilesWidth) + 'px'
+                    });
+                } else {
+                    var introHeight = block.sibling('intro').$().height();
+                    var tilesWidth = window.innerWidth;
+                    block.css({
+                        marginTop: introHeight + 'px',
+                        left: '0',
+                        width: (tilesWidth) + 'px'
+                    });
+                }
+            }
+        !bar-item
+            init
+                {
+                    var block = Block('div');
+                    return block
+                        .css({
+                            "margin-left": "10px",
+                            "width": "auto",
+                            "height": "100%",
+                            "display": "inline-block"
+                        })
+                        .on('activate', _ => {
+                            block.key('activated', 'true');
+                            block.child('block/button').css({
+                                backgroundColor: '#0253b5',
+                                color: 'white'
+                            });
+                        })
+                        .on('deactivate', _ => {
+                            block.key('activated', 'false');
+                            block.child('block/button').css({
+                                backgroundColor: '#fff',
+                                color: '#0253b5'
+                            });
+                        })
+                        .add(Block('block', 1)
+                            .css({ width: "auto" })
+                            .add(Block('block', 'button')
+                                .css({
+                                    'width': 'auto',
+                                    'height': '32px',
+                                    'border-radius': '4px',
+                                    'padding': '0 15px',
+                                    'cursor': 'pointer',
+                                    'background-color': '#fff',
+                                    'transition': 'background-color 0.2s ease',
+                                    'color': '#0253b5'
+                                })
+                                .add(Block('text', 1)
+                                    .data('Filter')
+                                    .css({
+                                        'font-size': '15px',
+                                        'cursor': 'pointer',
+                                        'color': 'inherit'
+                                    })
+                                )
+                                .on('mouseover', (e, b) => {
+                                    if (block.key('activated') != 'true')
+                                        b.css('background-color', '#f4f4f4');
+                                })
+                                .on('mouseout', (e, b) => {
+                                    if (block.key('activated') != 'true')
+                                        b.css('background-color', '#fff');
+                                })
+                                .on('click', _ => {
+                                    app.limit_projects(block.key('val'));
+                                    var sibs = block.siblings();
+                                    for (var s in sibs) {
+                                        sibs[s].on('deactivate');
+                                    }
+                                    block.on('activate');
+                                    setTimeout(_ => {
+                                        block.sibling('counter').on('update');
+                                    }, 25);
+                                })
+                            )
+                        )
+                    ;
+                }
+            load
+                {
+                    data('val', val => {
+                        block.key('val', val);
+                        block.child('block/button/text').html('').data(val.charAt(0).toUpperCase() + val.slice(1));
+                    });
+                    data('text', text => {
+                        block.child('block/button/text').html('').data(text.charAt(0).toUpperCase() + text.slice(1));
+                    });
+                }
+        bar-item all
+            val all
+            css
+                margin-left 20px
+        bar-item featured
+            val featured
+            css
+                //margin-right 20px
+        block counter
+            :update
+                {
+                    var tiles = app.block.child('tiles').children();
+                    var c = 0;
+                    for (var t in tiles) {
+                        if (tiles[t].css('display') != "none")
+                            c++;
+                    }
+                    block.child('text').html('').data(`${c} Projects`);
+                    event.stopPropagation();
+                }
+            css
+                position absolute
+                right 30px
+                top 0
+                width auto
+            text text
+                val 0 Projects
     div tiles
         css
             height auto
             font-size 0
             margin 0
+            padding-top 50px
+            width 100%
         $num 3
         $tileWidth 100
         @query window width > 1350
@@ -432,7 +571,7 @@ app
                         width: (tilesWidth) + 'px'
                     });
                 }
-                var tileWidth = tilesWidth / block.key('num') - 2;
+                var tileWidth = tilesWidth / block.key('num') ;// - 2;
                 block.key('tileWidth', tileWidth);
             }
         !tile
@@ -445,11 +584,12 @@ app
                         .css({
                             position: 'relative',
                             margin: '0',
-                            borderRight: '1.5px solid #eee',
-                            borderBottom: '1.5px solid #eee',
+                            borderRight: '1.5px solid #eaeaea',
+                            borderBottom: '1.5px solid #eaeaea',
                             float: 'left',
                             padding: '0',
-                            outline: '0'
+                            outline: '0',
+                            boxSizing: 'border-box'
                         })
                         .query('window height != 0', function () {
                             var size = block.parent().key('tileWidth');
@@ -565,7 +705,7 @@ app
                             .add(Block('hr', 1)
                                 .css({
                                     width: '100px',
-                                    opacity: '0.4'
+                                    opacity: '0.3'
                                 })
                             )
                             .add(Block('text', 'desc')
@@ -588,7 +728,7 @@ app
                                     display: 'none',
                                     cursor: 'pointer',
                                     margin: '5px 7px',
-                                    backgroundColor: '#7f7f7f',
+                                    backgroundColor: `${app.button_color}`,
                                     transition: 'background-color 0.25s ease, opacity 0.2s ease',
                                     border: '1px solid rgba(100, 100, 100, 0)'
                                 })
@@ -607,7 +747,7 @@ app
                                     b.child('text').css('color', '#555');
                                 })
                                 .on('mouseout', function (e, b) {
-                                    b.css('background-color', '#7f7f7f');
+                                    b.css('background-color', `${app.button_color}`);
                                     b.css('border', '1px solid rgba(100, 100, 100, 0)');
                                     b.child('text').css('color', 'white');
                                 })
@@ -625,7 +765,7 @@ app
                                     display: 'none',
                                     cursor: 'pointer',
                                     margin: '5px 7px',
-                                    backgroundColor: '#7f7f7f',
+                                    backgroundColor: `${app.button_color}`,
                                     transition: 'background-color 0.25s ease, opacity 0.2s ease',
                                     border: '1px solid rgba(100, 100, 100, 0)'
                                 })
@@ -644,7 +784,7 @@ app
                                     b.child('text').css('color', '#555');
                                 })
                                 .on('mouseout', function (e, b) {
-                                    b.css('background-color', '#7f7f7f');
+                                    b.css('background-color', `${app.button_color}`);
                                     b.css('border', '1px solid rgba(100, 100, 100, 0)');
                                     b.child('text').css('color', 'white');
                                 })
@@ -662,7 +802,7 @@ app
                                     display: 'none',
                                     cursor: 'pointer',
                                     margin: '5px 7px',
-                                    backgroundColor: '#7f7f7f',
+                                    backgroundColor: `${app.button_color}`,
                                     transition: 'background-color 0.25s ease, opacity 0.2s ease',
                                     border: '1px solid rgba(100, 100, 100, 0)'
                                 })
@@ -681,7 +821,7 @@ app
                                     b.child('text').css('color', '#555');
                                 })
                                 .on('mouseout', function (e, b) {
-                                    b.css('background-color', '#7f7f7f');
+                                    b.css('background-color', `${app.button_color}`);
                                     b.css('border', '1px solid rgba(100, 100, 100, 0)');
                                     b.child('text').css('color', 'white');
                                 })
@@ -739,15 +879,17 @@ app
                         block.child('content/year').css('display', 'block').child('text').html('').data(year);
                     });
                 }
-        //tile nestor
-        //    title nestor
-        //    desc Vizio TV IoT remote control iOS app using an NodeMCU and IR emitter.
-        //    repo nestor
-        //    textalign center
-        //    year 2020
+        tile nestor
+            title nestor
+            desc Home automation ecosystem with cloud control hub & custom Arduino-hardware IoT modules for voice control, audio-reactive LED lights, etc. Built with Node.js, Arduino, and block.js (below).<br/><i>Under construction.</i>
+            repo nestor
+            textalign center
+            buttonName Visit
+            buttonLink http://nestor.anuv.me
+            year 2020
         tile tunneljs
             title tunnel.js
-            desc Seamless automation of multiple SSH tunnels via SOCKS proxy settings. Efficient, cost-effective, secure "poor man's" alternative to a personal VPN. Intended for macOS use. Built with Node.js & SSH.
+            desc Seamless automation of multiple SSH tunnels via SOCKS proxy settings. Efficient, cost-effective, secure "poor man's" alternative to a personal VPN. Built with Node.js & SSH for macOS & Linux.
             repo tunnel.js
             textalign center
             year 2020
@@ -760,8 +902,9 @@ app
             textalign center
             year 2019
         tile zineone-connectors
-            title Z1 Connector Gateway
-            desc ZineOne Connector Gateway is a standalone backend acting as an asynchronous gateway between the ZineOne data collection cloud platform and external customer data channels. Built with chain.js (next) and Node.js. Created for <a href="https://www.zineone.com/" target="_blank">ZineOne</a> (team of 2).
+            title Z1 Data Gateway
+            //desc ZineOne Connector Gateway is a standalone backend acting as an asynchronous gateway between the ZineOne data collection cloud platform and external customer data channels. Built with chain.js (next) and Node.js. Created for <a href="https://www.zineone.com/" target="_blank">ZineOne</a> (team of 3).
+            desc Expanded the ZineOne AI-driven customer engagement platform to public cloud data stores with an asynchronous data gateway: built a backend connector service to efficiently stream customer data from clients' public cloud resources. Integrated the service into the platform as an experimental data channel requested by multiple client companies. Built with chain.js (next) and Node.js. Created for <a href="https://www.zineone.com/" target="_blank">ZineOne</a> (team of 2).
             textalign center
             buttonName Demo
             buttonLink https://www.youtube.com/watch?v=vH1bCCSw-LU&t=1s
@@ -787,7 +930,7 @@ app
         tile lancerhacks
             title LancerHacks
             desc Tech Director for first ever 12-hour hackathon organized by <a href = 'http://sfhacks.club' target = '_blank'>sfhacks</a> and hosted by <a href="https://www.sfhs.com/" target="_blank">SFHS</a>. Hosted 150+ competitors. Created home website, event-day central live website, CTF competition system, and RSVP system from scratch—built with Firebase & block.js (below).
-            buttonName Home Site
+            buttonName Visit
             buttonLink https://lancerhacks.com/2019/2018/
             year 2018
             textalign center
@@ -795,7 +938,7 @@ app
             title me.anuv.me
             desc Personal portfolio website detailing interests and projects. Original design and images. Built with block.js (below).
             repo me.anuv.me
-            buttonName Site
+            buttonName Visit
             buttonLink http://me.anuv.me
             year 2017
             textalign center
@@ -851,6 +994,14 @@ app
             buttonName Demo
             buttonLink pocketjs
             repo pocketjs
+            textalign center
+            year 2016
+        tile lightsail
+            title lightsail
+            desc AWS Lightsail VPS instance configuration  & bring-up guide for my project development server, where I host most of the projects mentioned on this page.
+            buttonName Visit
+            buttonLink http://54.186.188.200
+            repo lightsail
             textalign center
             year 2016
         tile chessroom

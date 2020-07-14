@@ -126,52 +126,121 @@
                         });
                     tempDiv.children('img').attr('src', src);
                 },
+                // button_color: '#7f7f7f',
+                // button_color: '#435470',
+                button_color: '#6e6e6e',
+                auth_token: '5aa9cdfa38f0585ccde10ffcae5161e0c37f16d7',
+                graphQL_q1: `{\n user(login: "anuvgupta") {\n pinnedItems(first: 9, types: [REPOSITORY, GIST]) {\n totalCount edges {\n node {\n ... on Repository {\n name }\n }\n }\n }\n }\n }`,
+                graphQL_q2: `{\n repositoryOwner(login: "anuvgupta") {\n ... on ProfileOwner {\n pinnedItemsRemaining itemShowcase {\n items(first: 9) {\n totalCount edges {\n node {\n ... on Repository {\n name }\n }\n }\n }\n hasPinnedItems }\n }\n }\n }`,
+                pinned_repos: [],
+                pinned_projects: ['zineone-connectors', 'p2p', 'lancerhacks'],
+                limit_projects: (limit = null) => {
+                    var tiles = app.block.child('tiles').children();
+                    if (limit == 'featured') {
+                        for (var t in tiles) {
+                            if (
+                                app.pinned_repos.includes(
+                                    tiles[t].key('repo')
+                                ) ||
+                                app.pinned_projects.includes(t)
+                            ) {
+                                tiles[t].css('display', 'block');
+                            } else tiles[t].css('display', 'none');
+                        }
+                    } else {
+                        for (var t in tiles) {
+                            tiles[t].css('display', 'block');
+                        }
+                    }
+                },
             };
             window.addEventListener('load', function () {
-                setTimeout(function () {
-                    app.block.load(
-                        function () {
-                            app.block.fill(document.body);
-                            setTimeout(function () {
-                                app.block.on('open');
-                            }, 20);
-                            Block.queries();
-                            setTimeout(function () {
-                                Block.queries();
-                            }, 500);
-                            if (app.mobile() || app.mobileAndTablet()) {
-                                Block.queries('off');
-                                $(window).on('orientationchange', function () {
-                                    setTimeout(function () {
-                                        Block.queries();
-                                    }, 250);
-                                    setTimeout(function () {
-                                        Block.queries();
-                                    }, 500);
-                                    Block.queries();
-                                });
+                $.ajax({
+                    url: 'https://api.github.com/graphql',
+                    method: 'post',
+                    headers: {
+                        Authorization: `Bearer ${app.auth_token}`,
+                    },
+                    data: JSON.stringify({
+                        query: app.graphQL_q1,
+                    }),
+                    dataType: 'json',
+                    success: function (data, status, xhr) {
+                        if (xhr.status == 200) {
+                            var edges = data.data.user.pinnedItems.edges;
+                            for (var n in edges) {
+                                app.pinned_repos.push(edges[n].node.name);
                             }
-                            var previousScrollTop = app.cookie('scrolltop');
-                            if (previousScrollTop != null) {
-                                $('html, body')
-                                    .stop()
-                                    .animate(
-                                        {
-                                            scrollTop:
-                                                (parseFloat(previousScrollTop) /
-                                                    100) *
-                                                app.block.$().height(),
-                                        },
-                                        0,
-                                        'swing'
-                                    );
-                            }
-                            $(window).scroll(app.logScroll);
-                        },
-                        'app',
-                        'jQuery'
-                    );
-                }, 200);
+                            setTimeout(function () {
+                                app.block.load(
+                                    function () {
+                                        app.block.fill(document.body);
+                                        setTimeout((_) => {
+                                            app.block
+                                                .child(
+                                                    'menubar/featured/block/button'
+                                                )
+                                                .$()
+                                                .click();
+                                        }, 5);
+                                        setTimeout(function () {
+                                            app.block.on('open');
+                                        }, 10);
+                                        Block.queries();
+                                        setTimeout(function () {
+                                            Block.queries();
+                                        }, 500);
+                                        if (
+                                            app.mobile() ||
+                                            app.mobileAndTablet()
+                                        ) {
+                                            Block.queries('off');
+                                            $(window).on(
+                                                'orientationchange',
+                                                function () {
+                                                    setTimeout(function () {
+                                                        Block.queries();
+                                                    }, 250);
+                                                    setTimeout(function () {
+                                                        Block.queries();
+                                                    }, 500);
+                                                    Block.queries();
+                                                }
+                                            );
+                                        }
+                                        var previousScrollTop = app.cookie(
+                                            'scrolltop'
+                                        );
+                                        if (previousScrollTop != null) {
+                                            $('html, body')
+                                                .stop()
+                                                .animate(
+                                                    {
+                                                        scrollTop:
+                                                            (parseFloat(
+                                                                previousScrollTop
+                                                            ) /
+                                                                100) *
+                                                            app.block
+                                                                .$()
+                                                                .height(),
+                                                    },
+                                                    0,
+                                                    'swing'
+                                                );
+                                        }
+                                        $(window).scroll(app.logScroll);
+                                    },
+                                    'app',
+                                    'jQuery'
+                                );
+                            }, 10);
+                        } else console.log(status, data, xhr);
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(status, error, xhr);
+                    },
+                });
             });
         </script>
     </head>
