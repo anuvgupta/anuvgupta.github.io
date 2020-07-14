@@ -129,7 +129,7 @@
                 // button_color: '#7f7f7f',
                 // button_color: '#435470',
                 button_color: '#6e6e6e',
-                auth_token: '5aa9cdfa38f0585ccde10ffcae5161e0c37f16d7',
+                auth_token: '4cd058dd109cdba6443314ae61896db2ea8174c3',
                 graphQL_q1: `{\n user(login: "anuvgupta") {\n pinnedItems(first: 9, types: [REPOSITORY, GIST]) {\n totalCount edges {\n node {\n ... on Repository {\n name }\n }\n }\n }\n }\n }`,
                 graphQL_q2: `{\n repositoryOwner(login: "anuvgupta") {\n ... on ProfileOwner {\n pinnedItemsRemaining itemShowcase {\n items(first: 9) {\n totalCount edges {\n node {\n ... on Repository {\n name }\n }\n }\n }\n hasPinnedItems }\n }\n }\n }`,
                 pinned_repos: [],
