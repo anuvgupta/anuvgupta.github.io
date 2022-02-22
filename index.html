@@ -139,7 +139,14 @@
                 graphQL_q1: `{\n user(login: "anuvgupta") {\n pinnedItems(first: 9, types: [REPOSITORY, GIST]) {\n totalCount edges {\n node {\n ... on Repository {\n name }\n }\n }\n }\n }\n }`,
                 graphQL_q2: `{\n repositoryOwner(login: "anuvgupta") {\n ... on ProfileOwner {\n pinnedItemsRemaining itemShowcase {\n items(first: 9) {\n totalCount edges {\n node {\n ... on Repository {\n name }\n }\n }\n }\n hasPinnedItems }\n }\n }\n }`,
                 pinned_repos: [],
-                pinned_projects: ['nestor', 'zineone-connectors', 'p2p'],
+                pinned_projects: [
+                    'led-lights',
+                    'rubbr',
+                    'blockjs',
+                    'lancerhacks',
+                    'p2p',
+                    'pocketjs',
+                ],
                 limit_projects: (limit = null) => {
                     var tiles = app.block.child('tiles').children();
                     if (limit == 'featured') {
