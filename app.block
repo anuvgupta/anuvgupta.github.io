@@ -544,6 +544,7 @@ app
             margin 0
             padding-top 50px
             width 100%
+            cursor crosshair
         $num 3
         $tileWidth 100
         @query window width > 1350
@@ -589,7 +590,8 @@ app
                             float: 'left',
                             padding: '0',
                             outline: '0',
-                            boxSizing: 'border-box'
+                            boxSizing: 'border-box',
+                            cursor: 'inherit'
                         })
                         .query('window height != 0', function () {
                             var size = block.parent().key('tileWidth');
@@ -647,7 +649,8 @@ app
                                 transition: 'opacity 0.7s ease',
                                 textAlign: 'center',
                                 // cursor: 'pointer',
-                                backgroundColor: 'rgba(255, 255, 255, 0.4)'
+                                backgroundColor: 'rgba(255, 255, 255, 0.4)',
+                                cursor: 'inherit'
                             })
                             .on('mouseover', function (e, b) {
                                 b.sibling('background').on('hide');
@@ -682,13 +685,15 @@ app
                                     position: 'absolute',
                                     right: '14px',
                                     top: '12px',
-                                    display: 'none'
+                                    display: 'none',
+                                    cursor: 'inherit'
                                 })
                                 .add(Block('text', 1)
                                     .data('Year')
                                     .css({
                                         color: '#666',
-                                        fontSize: '15px'
+                                        fontSize: '15px',
+                                        cursor: 'inherit'
                                     })
                                 )
                             )
@@ -699,13 +704,15 @@ app
                                     fontSize: '40px',
                                     display: 'inline-block',
                                     padding: '25px 2px 10px 2px',
-                                    // borderBottom: '1px solid #ddd'
+                                    // borderBottom: '1px solid #ddd',
+                                    cursor: 'inherit'
                                 })
                             )
                             .add(Block('hr', 1)
                                 .css({
                                     width: '100px',
-                                    opacity: '0.3'
+                                    opacity: '0.3',
+                                    cursor: 'inherit'
                                 })
                             )
                             .add(Block('text', 'desc')
@@ -717,7 +724,8 @@ app
                                     padding: '15px 12% 15px 12%',
                                     // borderBottom: '1px solid #ddd',
                                     textAlign: 'justify',
-                                    marginBottom: '6px'
+                                    marginBottom: '6px',
+                                    cursor: 'inherit'
                                 })
                             )
                             .add(Block('div', 'secondButton')
@@ -730,7 +738,7 @@ app
                                     margin: '5px 7px',
                                     backgroundColor: `${app.button_color}`,
                                     transition: 'background-color 0.25s ease, opacity 0.2s ease',
-                                    border: '1px solid rgba(100, 100, 100, 0)'
+                                    border: '1px solid rgba(100, 100, 100, 0)',
                                 })
                                 .add(Block('text', 1)
                                     .data('Secondary')
@@ -738,7 +746,7 @@ app
                                         fontSize: '18px',
                                         color: 'white',
                                         fontWeight: '300',
-                                        cursor: 'pointer'
+                                        cursor: 'pointer',
                                     })
                                 )
                                 .on('mouseover', function (e, b) {
@@ -835,7 +843,10 @@ app
                                 })
                             )
                             .add(Block('div', 'spacerEnd')
-                                .css('height', '20px')
+                                .css({
+                                    height: '20px',
+                                    cursor: 'inherit'
+                                })
                             )
                             .on('hide')
                         )
