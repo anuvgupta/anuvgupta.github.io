@@ -585,8 +585,8 @@ app
                         .css({
                             position: 'relative',
                             margin: '0',
-                            borderRight: '1.5px solid #eaeaea',
-                            borderBottom: '1.5px solid #eaeaea',
+                            //borderRight: '1.5px solid #eaeaea',
+                            //borderBottom: '1.5px solid #eaeaea',
                             float: 'left',
                             padding: '0',
                             outline: '0',
