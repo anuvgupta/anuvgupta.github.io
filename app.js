@@ -102,7 +102,7 @@ var app = {
             title: "Anuv",
             subtitle: "Projects",
             description: {
-                text: "Hi! I like to build stuff. I keep some projects here. Transcending into an AI...   🌱"
+                text: "Hi! I like to build stuff. I keep some projects here. Transcending into an AI...   🌱",
                 html: "Hi! I like to build stuff. I keep some projects here.<br/><br/><i>Transcending into an AI...</i>&nbsp;&nbsp;&nbsp;🌱",
             },
             menu: [
