@@ -5,7 +5,7 @@ var app = {
         var percentage = 100 * (scrolltop / app.block.$().height());
         app.cookie("scrolltop", percentage);
     },
-    mobile: _ => {
+    mobile: (_) => {
         var check = false;
         ((a) => {
             if (
@@ -20,7 +20,7 @@ var app = {
         })(navigator.userAgent || navigator.vendor || window.opera);
         return check;
     }, // https://stackoverflow.com/questions/11381673/detecting-a-mobile-browser
-    mobileAndTablet: _ => {
+    mobileAndTablet: (_) => {
         var check = false;
         ((a) => {
             if (
@@ -59,7 +59,7 @@ var app = {
                 callback();
                 tempDiv.remove();
             })
-            .fail(_ => {
+            .fail((_) => {
                 console.log('image "' + src + '" failed to load');
                 tempDiv.remove();
             });
@@ -97,52 +97,62 @@ var app = {
             }
         }
     },
+    content: {
+    },
+    content_load: (next) => {
+        if (next) next();
+    },
 };
 window.addEventListener("load", () => {
-    var _continue = _ => {
+    var _continue = (_) => {
         app.block.load(
-            _ => {
+            (_) => {
                 app.block.fill(document.body);
-                setTimeout(_ => {
-                    app.block
-                        .child("menubar/featured/block/button")
-                        .$()
-                        .click();
-                }, 5);
-                setTimeout(_ => {
-                    app.block.on("open");
-                }, 10);
-                Block.queries();
-                setTimeout(_ => {
-                    Block.queries();
-                }, 500);
-                if (app.mobile() || app.mobileAndTablet()) {
-                    Block.queries("off");
-                    $(window).on("orientationchange", _ => {
-                        setTimeout(_ => {
-                            Block.queries();
-                        }, 250);
-                        setTimeout(_ => {
+                setTimeout((_) => {
+                    app.content_load((_) => {
+                        setTimeout((_) => {
+                            app.block
+                                .child("menubar/featured/block/button")
+                                .$()
+                                .click();
+                        }, 5);
+                        setTimeout((_) => {
+                            app.block.on("open");
+                        }, 10);
+                        Block.queries();
+                        setTimeout((_) => {
                             Block.queries();
                         }, 500);
-                        Block.queries();
+                        if (app.mobile() || app.mobileAndTablet()) {
+                            Block.queries("off");
+                            $(window).on("orientationchange", (_) => {
+                                setTimeout((_) => {
+                                    Block.queries();
+                                }, 250);
+                                setTimeout((_) => {
+                                    Block.queries();
+                                }, 500);
+                                Block.queries();
+                            });
+                        }
+                        var previousScrollTop = app.cookie("scrolltop");
+                        if (previousScrollTop != null) {
+                            $("html, body")
+                                .stop()
+                                .animate(
+                                    {
+                                        scrollTop:
+                                            (parseFloat(previousScrollTop) /
+                                                100) *
+                                            app.block.$().height(),
+                                    },
+                                    0,
+                                    "swing"
+                                );
+                        }
+                        $(window).scroll(app.logScroll);
                     });
-                }
-                var previousScrollTop = app.cookie("scrolltop");
-                if (previousScrollTop != null) {
-                    $("html, body")
-                        .stop()
-                        .animate(
-                            {
-                                scrollTop:
-                                    (parseFloat(previousScrollTop) / 100) *
-                                    app.block.$().height(),
-                            },
-                            0,
-                            "swing"
-                        );
-                }
-                $(window).scroll(app.logScroll);
+                }, 10);
             },
             "app",
             "jQuery"
