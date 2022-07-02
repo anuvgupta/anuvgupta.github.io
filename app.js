@@ -68,18 +68,7 @@ var app = {
     // button_color: '#7f7f7f',
     // button_color: '#435470',
     button_color: "#6e6e6e",
-    auth_token: "4cd058dd109cdba6443314ae61896db2ea8174c3",
-    graphQL_q1: `{\n user(login: "anuvgupta") {\n pinnedItems(first: 9, types: [REPOSITORY, GIST]) {\n totalCount edges {\n node {\n ... on Repository {\n name }\n }\n }\n }\n }\n }`,
-    graphQL_q2: `{\n repositoryOwner(login: "anuvgupta") {\n ... on ProfileOwner {\n pinnedItemsRemaining itemShowcase {\n items(first: 9) {\n totalCount edges {\n node {\n ... on Repository {\n name }\n }\n }\n }\n hasPinnedItems }\n }\n }\n }`,
-    pinned_repos: [],
-    pinned_projects: [
-        "led-lights",
-        "rubbr",
-        "blockjs",
-        "lancerhacks",
-        "p2p",
-        "pocketjs",
-    ],
+    pinned_projects: [],
     limit_projects: (limit = null) => {
         var tiles = app.block.child("tiles").children();
         if (limit == "featured") {
@@ -159,96 +148,49 @@ var app = {
     },
 };
 window.addEventListener("load", () => {
-    var _continue = (_) => {
-        app.block.load(
-            (_) => {
-                app.block.fill(document.body);
-                setTimeout((_) => {
-                    app.content_load((_) => {
-                        setTimeout((_) => {
-                            app.block.on("open");
-                        }, 10);
+    app.block.load(
+        (_) => {
+            app.block.fill(document.body);
+            setTimeout((_) => {
+                app.content_load((_) => {
+                    setTimeout((_) => {
+                        app.block.on("open");
+                    }, 10);
+                    Block.queries();
+                    setTimeout((_) => {
                         Block.queries();
-                        setTimeout((_) => {
-                            Block.queries();
-                        }, 500);
-                        if (app.mobile() || app.mobileAndTablet()) {
-                            Block.queries("off");
-                            $(window).on("orientationchange", (_) => {
-                                setTimeout((_) => {
-                                    Block.queries();
-                                }, 250);
-                                setTimeout((_) => {
-                                    Block.queries();
-                                }, 500);
+                    }, 500);
+                    if (app.mobile() || app.mobileAndTablet()) {
+                        Block.queries("off");
+                        $(window).on("orientationchange", (_) => {
+                            setTimeout((_) => {
                                 Block.queries();
-                            });
-                        }
-                        var previousScrollTop = app.cookie("scrolltop");
-                        if (previousScrollTop != null) {
-                            $("html, body")
-                                .stop()
-                                .animate(
-                                    {
-                                        scrollTop:
-                                            (parseFloat(previousScrollTop) /
-                                                100) *
-                                            app.block.$().height(),
-                                    },
-                                    0,
-                                    "swing"
-                                );
-                        }
-                        $(window).scroll(app.logScroll);
-                    });
-                }, 10);
-            },
-            "app",
-            "jQuery"
-        );
-    };
-    $.ajax({
-        url: "https://tokens.anuv.me/anuvgupta.github.io",
-        method: "get",
-        dataType: "json",
-        success: (data, status, xhr) => {
-            if (xhr.status == 200) {
-                app.auth_token = data.token;
-                $.ajax({
-                    url: "https://api.github.com/graphql",
-                    method: "post",
-                    headers: {
-                        Authorization: `Bearer ${app.auth_token}`,
-                    },
-                    data: JSON.stringify({
-                        query: app.graphQL_q1,
-                    }),
-                    dataType: "json",
-                    success: (data, status, xhr) => {
-                        if (xhr.status == 200) {
-                            var edges = data.data.user.pinnedItems.edges;
-                            for (var n in edges) {
-                                app.pinned_repos.push(edges[n].node.name);
-                            }
-                            setTimeout(_continue, 10);
-                        } else {
-                            console.log(status, data, xhr);
-                            _continue();
-                        }
-                    },
-                    error: (xhr, status, error) => {
-                        console.log(status, error, xhr);
-                        _continue();
-                    },
+                            }, 250);
+                            setTimeout((_) => {
+                                Block.queries();
+                            }, 500);
+                            Block.queries();
+                        });
+                    }
+                    var previousScrollTop = app.cookie("scrolltop");
+                    if (previousScrollTop != null) {
+                        $("html, body")
+                            .stop()
+                            .animate(
+                                {
+                                    scrollTop:
+                                        (parseFloat(previousScrollTop) / 100) *
+                                        app.block.$().height(),
+                                },
+                                0,
+                                "swing"
+                            );
+                    }
+                    $(window).scroll(app.logScroll);
                 });
-            } else {
-                console.log(status, data, xhr);
-                _continue();
-            }
+            }, 10);
         },
-        error: (xhr, status, error) => {
-            console.log(status, error, xhr);
-            _continue();
-        },
-    });
+        "app",
+        "jQuery"
+    );
 });
