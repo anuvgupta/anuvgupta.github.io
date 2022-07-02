@@ -125,6 +125,10 @@ var app = {
                 },
             ],
         },
+        menubar: {
+            default: "featured",
+            items: ["all", "featured"],
+        },
     },
     content_load: (next) => {
         var c = app.content;
@@ -138,6 +142,18 @@ var app = {
                 .child("intro/menu")
                 .add(Block("menu-item", item.id).data(item));
         }
+        for (var m in c.menubar.items) {
+            var item = c.menubar.items[m];
+            app.block
+                .child("menubar")
+                .add(Block("menubar-item", item).data(item));
+        }
+        setTimeout((_) => {
+            app.block
+                .child(`menubar/${c.menubar.default}/block/button`)
+                .$()
+                .click();
+        }, 5);
         if (next) next();
     },
 };
@@ -148,12 +164,6 @@ window.addEventListener("load", () => {
                 app.block.fill(document.body);
                 setTimeout((_) => {
                     app.content_load((_) => {
-                        setTimeout((_) => {
-                            app.block
-                                .child("menubar/featured/block/button")
-                                .$()
-                                .click();
-                        }, 5);
                         setTimeout((_) => {
                             app.block.on("open");
                         }, 10);

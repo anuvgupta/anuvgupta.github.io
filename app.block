@@ -232,7 +232,87 @@
                 block.key('link', link);
             });
         }
-            
+!menubar-item
+    init
+        {
+            var block = Block('div');
+            return block
+                .css({
+                    "margin-left": "10px",
+                    "width": "auto",
+                    "height": "100%",
+                    "display": "inline-block"
+                })
+                .on('activate', _ => {
+                    block.key('activated', 'true');
+                    block.child('block/button').css({
+                        backgroundColor: '#0253b5',
+                        color: 'white'
+                    });
+                })
+                .on('deactivate', _ => {
+                    block.key('activated', 'false');
+                    block.child('block/button').css({
+                        backgroundColor: '#fff',
+                        color: '#0253b5'
+                    });
+                })
+                .add(Block('block', 1)
+                    .css({ width: "auto" })
+                    .add(Block('block', 'button')
+                        .css({
+                            'width': 'auto',
+                            'height': '32px',
+                            'border-radius': '4px',
+                            'padding': '0 15px',
+                            'cursor': 'pointer',
+                            'background-color': '#fff',
+                            'transition': 'background-color 0.2s ease',
+                            'color': '#0253b5'
+                        })
+                        .add(Block('text', 1)
+                            .data('Filter')
+                            .css({
+                                'font-size': '15px',
+                                'cursor': 'pointer',
+                                'color': 'inherit'
+                            })
+                        )
+                        .on('mouseover', (e, b) => {
+                            if (block.key('activated') != 'true')
+                                b.css('background-color', '#f4f4f4');
+                        })
+                        .on('mouseout', (e, b) => {
+                            if (block.key('activated') != 'true')
+                                b.css('background-color', '#fff');
+                        })
+                        .on('click', _ => {
+                            app.limit_projects(block.key('val'));
+                            var sibs = block.siblings();
+                            for (var s in sibs) {
+                                sibs[s].on('deactivate');
+                            }
+                            block.on('activate');
+                            setTimeout(_ => {
+                                block.sibling('counter').on('update');
+                            }, 25);
+                        })
+                    )
+                )
+            ;
+        }
+    load
+        {
+            data('val', val => {
+                block.key('val', val);
+                block.child('block/button/text').html('').data(val.charAt(0).toUpperCase() + val.slice(1));
+            });
+            data('text', text => {
+                block.child('block/button/text').html('').data(text.charAt(0).toUpperCase() + text.slice(1));
+            });
+        }
+        
+
 // app content layer
 app
     :open
@@ -401,6 +481,7 @@ app
             box-sizing border-box
             z-index 45
             box-shadow 0px 0.5px 10px rgba(104, 104, 104, 0.2)
+            padding-left 20px
         @query window height != 0
             {
                 if (window.innerWidth > 1100) {
@@ -421,93 +502,6 @@ app
                     });
                 }
             }
-        !bar-item
-            init
-                {
-                    var block = Block('div');
-                    return block
-                        .css({
-                            "margin-left": "10px",
-                            "width": "auto",
-                            "height": "100%",
-                            "display": "inline-block"
-                        })
-                        .on('activate', _ => {
-                            block.key('activated', 'true');
-                            block.child('block/button').css({
-                                backgroundColor: '#0253b5',
-                                color: 'white'
-                            });
-                        })
-                        .on('deactivate', _ => {
-                            block.key('activated', 'false');
-                            block.child('block/button').css({
-                                backgroundColor: '#fff',
-                                color: '#0253b5'
-                            });
-                        })
-                        .add(Block('block', 1)
-                            .css({ width: "auto" })
-                            .add(Block('block', 'button')
-                                .css({
-                                    'width': 'auto',
-                                    'height': '32px',
-                                    'border-radius': '4px',
-                                    'padding': '0 15px',
-                                    'cursor': 'pointer',
-                                    'background-color': '#fff',
-                                    'transition': 'background-color 0.2s ease',
-                                    'color': '#0253b5'
-                                })
-                                .add(Block('text', 1)
-                                    .data('Filter')
-                                    .css({
-                                        'font-size': '15px',
-                                        'cursor': 'pointer',
-                                        'color': 'inherit'
-                                    })
-                                )
-                                .on('mouseover', (e, b) => {
-                                    if (block.key('activated') != 'true')
-                                        b.css('background-color', '#f4f4f4');
-                                })
-                                .on('mouseout', (e, b) => {
-                                    if (block.key('activated') != 'true')
-                                        b.css('background-color', '#fff');
-                                })
-                                .on('click', _ => {
-                                    app.limit_projects(block.key('val'));
-                                    var sibs = block.siblings();
-                                    for (var s in sibs) {
-                                        sibs[s].on('deactivate');
-                                    }
-                                    block.on('activate');
-                                    setTimeout(_ => {
-                                        block.sibling('counter').on('update');
-                                    }, 25);
-                                })
-                            )
-                        )
-                    ;
-                }
-            load
-                {
-                    data('val', val => {
-                        block.key('val', val);
-                        block.child('block/button/text').html('').data(val.charAt(0).toUpperCase() + val.slice(1));
-                    });
-                    data('text', text => {
-                        block.child('block/button/text').html('').data(text.charAt(0).toUpperCase() + text.slice(1));
-                    });
-                }
-        bar-item all
-            val all
-            css
-                margin-left 20px
-        bar-item featured
-            val featured
-            css
-                //margin-right 20px
         block counter
             :update
                 {
