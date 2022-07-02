@@ -311,7 +311,321 @@
                 block.child('block/button/text').html('').data(text.charAt(0).toUpperCase() + text.slice(1));
             });
         }
-        
+!project-tile
+    init
+        {
+            var block = Block('div');
+            return block
+                .key('repo', false)
+                .key('secondaryLink', false)
+                .css({
+                    position: 'relative',
+                    margin: '0',
+                    //borderRight: '1.5px solid #eaeaea',
+                    //borderBottom: '1.5px solid #eaeaea',
+                    float: 'left',
+                    padding: '0',
+                    outline: '0',
+                    boxSizing: 'border-box',
+                    cursor: 'inherit'
+                })
+                .query('window height != 0', function () {
+                    var size = block.parent().key('tileWidth');
+                    block.css({
+                        height: size + 'px',
+                        width: size + 'px'
+                    });
+                    if (size > 350) {
+                        block.child('content/title').css('font-size', '40px');
+                        block.child('content/desc').css('font-size', '16px').css('padding-bottom', '15px');
+                        block.child('content/secondButton/text').css('font-size', '18px')
+                        block.child('content/sourceButton/text').css('font-size', '18px');
+                        block.child('content/hr').css('width', '100px');
+                    } else {
+                        block.child('content/title').css('font-size', '35px');
+                        block.child('content/desc').css('font-size', '14px').css('padding-bottom', '5px');
+                        block.child('content/secondButton/text').css('font-size', '16px');
+                        block.child('content/sourceButton/text').css('font-size', '16px');
+                        block.child('content/hr').css('width', '75px');
+                    }
+                })
+                .add(Block('div', 'background')
+                    .css({
+                        background: 'url("img/projects/default.png") no-repeat center center scroll',
+                        backgroundSize: 'cover',
+                        height: '100%',
+                        width: '100%',
+                        position: 'absolute',
+                        top: '0',
+                        left: '0',
+                        zIndex: '3',
+                        opacity: '1',
+                        transition: 'opacity 0.4s ease'
+                    })
+                    .on('show', function (e, b) {
+                        b.css('opacity', '0.99');
+                    })
+                    .on('hide', function (e, b) {
+                        b.css('opacity', '0.05');
+                    })
+                    // .on('medium', function (e, b) {
+                    //     b.css('opacity', '0.85');
+                    // })
+                )
+                .add(Block('block', 'content')
+                    .key('active', true)
+                    .css({
+                        position: 'absolute',
+                        height: '100%',
+                        width: '100%',
+                        top: '0',
+                        left: '0',
+                        zIndex: '4',
+                        opacity: '1',
+                        transition: 'opacity 0.7s ease',
+                        textAlign: 'center',
+                        // cursor: 'pointer',
+                        backgroundColor: 'rgba(255, 255, 255, 0.4)',
+                        cursor: 'inherit'
+                    })
+                    .on('mouseover', function (e, b) {
+                        b.sibling('background').on('hide');
+                        b.on('show');
+                    })
+                    .on('mouseout', function (e, b) {
+                        b.sibling('background').on('show');
+                        b.on('hide');
+                    })
+                    .on('show', function (e, b) {
+                        // if (!b.key('active')) {
+                        //     b.css('display', 'table');
+                        //     setTimeout(function () {
+                        //         b.css('opacity', '1');
+                        //     }, 50);
+                        //     b.key('active', true);
+                        // }
+                        b.css('opacity', '1');
+                    })
+                    .on('hide', function (e, b) {
+                        // if (b.key('active')) {
+                        //     b.css('opacity', '0');
+                        //     setTimeout(function () {
+                        //         b.css('display', 'none');
+                        //     }, 400);
+                        //     b.key('active', false);
+                        // }
+                        b.css('opacity', '0');
+                    })
+                    .add(Block('div', 'year')
+                        .css({
+                            position: 'absolute',
+                            right: '14px',
+                            top: '12px',
+                            display: 'none',
+                            cursor: 'inherit'
+                        })
+                        .add(Block('text', 1)
+                            .data('Year')
+                            .css({
+                                color: '#666',
+                                fontSize: '15px',
+                                cursor: 'inherit'
+                            })
+                        )
+                    )
+                    .add(Block('text', 'title')
+                        .data('Project Title')
+                        .css({
+                            color: 'black',
+                            fontSize: '40px',
+                            display: 'inline-block',
+                            padding: '25px 2px 10px 2px',
+                            // borderBottom: '1px solid #ddd',
+                            cursor: 'inherit'
+                        })
+                    )
+                    .add(Block('hr', 1)
+                        .css({
+                            width: '100px',
+                            opacity: '0.3',
+                            cursor: 'inherit'
+                        })
+                    )
+                    .add(Block('text', 'desc')
+                        .data('This is the project description. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.')
+                        .css({
+                            color: 'black',
+                            fontSize: '16px',
+                            display: 'block',
+                            padding: '15px 12% 15px 12%',
+                            // borderBottom: '1px solid #ddd',
+                            textAlign: 'justify',
+                            marginBottom: '6px',
+                            cursor: 'inherit'
+                        })
+                    )
+                    .add(Block('div', 'secondButton')
+                        .css({
+                            width: 'auto',
+                            borderRadius: '4px',
+                            padding: '10px 20px',
+                            display: 'none',
+                            cursor: 'pointer',
+                            margin: '5px 7px',
+                            backgroundColor: `${app.button_color}`,
+                            transition: 'background-color 0.25s ease, opacity 0.2s ease',
+                            border: '1px solid rgba(100, 100, 100, 0)',
+                        })
+                        .add(Block('text', 1)
+                            .data('Secondary')
+                            .css({
+                                fontSize: '18px',
+                                color: 'white',
+                                fontWeight: '300',
+                                cursor: 'pointer',
+                            })
+                        )
+                        .on('mouseover', function (e, b) {
+                            b.css('background-color', '#fefefe');
+                            b.css('border', '1px solid #818181');
+                            b.child('text').css('color', '#555');
+                        })
+                        .on('mouseout', function (e, b) {
+                            b.css('background-color', `${app.button_color}`);
+                            b.css('border', '1px solid rgba(100, 100, 100, 0)');
+                            b.child('text').css('color', 'white');
+                        })
+                        .on('click', function (e, b) {
+                            if (block.key('secondaryLink'))
+                                window.open('' + block.key('secondaryLink'), '_blank');
+                            e.stopPropagation();
+                        })
+                    )
+                    .add(Block('div', 'thirdButton')
+                        .css({
+                            width: 'auto',
+                            borderRadius: '4px',
+                            padding: '10px 20px',
+                            display: 'none',
+                            cursor: 'pointer',
+                            margin: '5px 7px',
+                            backgroundColor: `${app.button_color}`,
+                            transition: 'background-color 0.25s ease, opacity 0.2s ease',
+                            border: '1px solid rgba(100, 100, 100, 0)'
+                        })
+                        .add(Block('text', 1)
+                            .data('Third')
+                            .css({
+                                fontSize: '18px',
+                                color: 'white',
+                                fontWeight: '300',
+                                cursor: 'pointer'
+                            })
+                        )
+                        .on('mouseover', function (e, b) {
+                            b.css('background-color', '#fefefe');
+                            b.css('border', '1px solid #818181');
+                            b.child('text').css('color', '#555');
+                        })
+                        .on('mouseout', function (e, b) {
+                            b.css('background-color', `${app.button_color}`);
+                            b.css('border', '1px solid rgba(100, 100, 100, 0)');
+                            b.child('text').css('color', 'white');
+                        })
+                        .on('click', function (e, b) {
+                            if (block.key('thirdLink'))
+                                window.open('' + block.key('thirdLink'), '_blank');
+                            e.stopPropagation();
+                        })
+                    )
+                    .add(Block('div', 'sourceButton')
+                        .css({
+                            width: 'auto',
+                            borderRadius: '4px',
+                            padding: '10px 20px',
+                            display: 'none',
+                            cursor: 'pointer',
+                            margin: '5px 7px',
+                            backgroundColor: `${app.button_color}`,
+                            transition: 'background-color 0.25s ease, opacity 0.2s ease',
+                            border: '1px solid rgba(100, 100, 100, 0)'
+                        })
+                        .add(Block('text', 1)
+                            .data('Source')
+                            .css({
+                                fontSize: '18px',
+                                color: 'white',
+                                fontWeight: '300',
+                                cursor: 'pointer'
+                            })
+                        )
+                        .on('mouseover', function (e, b) {
+                            b.css('background-color', '#fefefe');
+                            b.css('border', '1px solid #818181');
+                            b.child('text').css('color', '#555');
+                        })
+                        .on('mouseout', function (e, b) {
+                            b.css('background-color', `${app.button_color}`);
+                            b.css('border', '1px solid rgba(100, 100, 100, 0)');
+                            b.child('text').css('color', 'white');
+                        })
+                        .on('click', function (e, b) {
+                            if (block.key('repo')) {
+                                if (block.key('repo').substring(0, 4) == 'http')
+                                    window.open(block.key('repo'), '_blank');
+                                else window.open('https://github.com/anuvgupta/' + block.key('repo'), '_blank');
+                            }
+                            e.stopPropagation();
+                        })
+                    )
+                    .add(Block('div', 'spacerEnd')
+                        .css({
+                            height: '20px',
+                            cursor: 'inherit'
+                        })
+                    )
+                    .on('hide')
+                )
+            ;
+        }
+    load
+        {
+            var b = block;
+            var img = b.mark();
+            app.loadImage('img/projects/' + img + '.png', function () {
+                b.child('background').css('background-image', 'url("img/projects/' + img + '.png")').on('show');
+            });
+            data('title', function (title) {
+                block.child('content/title').html(title);
+            });
+            data('desc', function (desc) {
+                block.child('content/desc').html(desc);
+            });
+            data('repo', function (repo) {
+                block.child('content/sourceButton').css('display', 'inline-block');
+                block.key('repo', repo);
+            });
+            data('buttonName', function (buttonName) {
+                block.child('content/secondButton/text').html(buttonName);
+                block.child('content/secondButton').css('display', 'inline-block');
+            });
+            data('buttonLink', function (buttonLink) {
+                block.key('secondaryLink', buttonLink);
+            });
+            data('button2Name', function (buttonName) {
+                block.child('content/thirdButton/text').html(buttonName);
+                block.child('content/thirdButton').css('display', 'inline-block');
+            });
+            data('button2Link', function (buttonLink) {
+                block.key('thirdLink', buttonLink);
+            });
+            data('textalign', function (textalign) {
+                block.child('content/desc').css('text-align', textalign);
+            });
+            data('year', function (year) {
+                block.child('content/year').css('display', 'block').child('text').html('').data(year);
+            });
+        }
 
 // app content layer
 app
@@ -559,492 +873,3 @@ app
                 var tileWidth = tilesWidth / block.key('num') ;// - 2;
                 block.key('tileWidth', tileWidth);
             }
-        !tile
-            init
-                {
-                    var block = Block('div');
-                    return block
-                        .key('repo', false)
-                        .key('secondaryLink', false)
-                        .css({
-                            position: 'relative',
-                            margin: '0',
-                            //borderRight: '1.5px solid #eaeaea',
-                            //borderBottom: '1.5px solid #eaeaea',
-                            float: 'left',
-                            padding: '0',
-                            outline: '0',
-                            boxSizing: 'border-box',
-                            cursor: 'inherit'
-                        })
-                        .query('window height != 0', function () {
-                            var size = block.parent().key('tileWidth');
-                            block.css({
-                                height: size + 'px',
-                                width: size + 'px'
-                            });
-                            if (size > 350) {
-                                block.child('content/title').css('font-size', '40px');
-                                block.child('content/desc').css('font-size', '16px').css('padding-bottom', '15px');
-                                block.child('content/secondButton/text').css('font-size', '18px')
-                                block.child('content/sourceButton/text').css('font-size', '18px');
-                                block.child('content/hr').css('width', '100px');
-                            } else {
-                                block.child('content/title').css('font-size', '35px');
-                                block.child('content/desc').css('font-size', '14px').css('padding-bottom', '5px');
-                                block.child('content/secondButton/text').css('font-size', '16px');
-                                block.child('content/sourceButton/text').css('font-size', '16px');
-                                block.child('content/hr').css('width', '75px');
-                            }
-                        })
-                        .add(Block('div', 'background')
-                            .css({
-                                background: 'url("img/projects/default.png") no-repeat center center scroll',
-                                backgroundSize: 'cover',
-                                height: '100%',
-                                width: '100%',
-                                position: 'absolute',
-                                top: '0',
-                                left: '0',
-                                zIndex: '3',
-                                opacity: '1',
-                                transition: 'opacity 0.4s ease'
-                            })
-                            .on('show', function (e, b) {
-                                b.css('opacity', '0.99');
-                            })
-                            .on('hide', function (e, b) {
-                                b.css('opacity', '0.05');
-                            })
-                            // .on('medium', function (e, b) {
-                            //     b.css('opacity', '0.85');
-                            // })
-                        )
-                        .add(Block('block', 'content')
-                            .key('active', true)
-                            .css({
-                                position: 'absolute',
-                                height: '100%',
-                                width: '100%',
-                                top: '0',
-                                left: '0',
-                                zIndex: '4',
-                                opacity: '1',
-                                transition: 'opacity 0.7s ease',
-                                textAlign: 'center',
-                                // cursor: 'pointer',
-                                backgroundColor: 'rgba(255, 255, 255, 0.4)',
-                                cursor: 'inherit'
-                            })
-                            .on('mouseover', function (e, b) {
-                                b.sibling('background').on('hide');
-                                b.on('show');
-                            })
-                            .on('mouseout', function (e, b) {
-                                b.sibling('background').on('show');
-                                b.on('hide');
-                            })
-                            .on('show', function (e, b) {
-                                // if (!b.key('active')) {
-                                //     b.css('display', 'table');
-                                //     setTimeout(function () {
-                                //         b.css('opacity', '1');
-                                //     }, 50);
-                                //     b.key('active', true);
-                                // }
-                                b.css('opacity', '1');
-                            })
-                            .on('hide', function (e, b) {
-                                // if (b.key('active')) {
-                                //     b.css('opacity', '0');
-                                //     setTimeout(function () {
-                                //         b.css('display', 'none');
-                                //     }, 400);
-                                //     b.key('active', false);
-                                // }
-                                b.css('opacity', '0');
-                            })
-                            .add(Block('div', 'year')
-                                .css({
-                                    position: 'absolute',
-                                    right: '14px',
-                                    top: '12px',
-                                    display: 'none',
-                                    cursor: 'inherit'
-                                })
-                                .add(Block('text', 1)
-                                    .data('Year')
-                                    .css({
-                                        color: '#666',
-                                        fontSize: '15px',
-                                        cursor: 'inherit'
-                                    })
-                                )
-                            )
-                            .add(Block('text', 'title')
-                                .data('Project Title')
-                                .css({
-                                    color: 'black',
-                                    fontSize: '40px',
-                                    display: 'inline-block',
-                                    padding: '25px 2px 10px 2px',
-                                    // borderBottom: '1px solid #ddd',
-                                    cursor: 'inherit'
-                                })
-                            )
-                            .add(Block('hr', 1)
-                                .css({
-                                    width: '100px',
-                                    opacity: '0.3',
-                                    cursor: 'inherit'
-                                })
-                            )
-                            .add(Block('text', 'desc')
-                                .data('This is the project description. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.')
-                                .css({
-                                    color: 'black',
-                                    fontSize: '16px',
-                                    display: 'block',
-                                    padding: '15px 12% 15px 12%',
-                                    // borderBottom: '1px solid #ddd',
-                                    textAlign: 'justify',
-                                    marginBottom: '6px',
-                                    cursor: 'inherit'
-                                })
-                            )
-                            .add(Block('div', 'secondButton')
-                                .css({
-                                    width: 'auto',
-                                    borderRadius: '4px',
-                                    padding: '10px 20px',
-                                    display: 'none',
-                                    cursor: 'pointer',
-                                    margin: '5px 7px',
-                                    backgroundColor: `${app.button_color}`,
-                                    transition: 'background-color 0.25s ease, opacity 0.2s ease',
-                                    border: '1px solid rgba(100, 100, 100, 0)',
-                                })
-                                .add(Block('text', 1)
-                                    .data('Secondary')
-                                    .css({
-                                        fontSize: '18px',
-                                        color: 'white',
-                                        fontWeight: '300',
-                                        cursor: 'pointer',
-                                    })
-                                )
-                                .on('mouseover', function (e, b) {
-                                    b.css('background-color', '#fefefe');
-                                    b.css('border', '1px solid #818181');
-                                    b.child('text').css('color', '#555');
-                                })
-                                .on('mouseout', function (e, b) {
-                                    b.css('background-color', `${app.button_color}`);
-                                    b.css('border', '1px solid rgba(100, 100, 100, 0)');
-                                    b.child('text').css('color', 'white');
-                                })
-                                .on('click', function (e, b) {
-                                    if (block.key('secondaryLink'))
-                                        window.open('' + block.key('secondaryLink'), '_blank');
-                                    e.stopPropagation();
-                                })
-                            )
-                            .add(Block('div', 'thirdButton')
-                                .css({
-                                    width: 'auto',
-                                    borderRadius: '4px',
-                                    padding: '10px 20px',
-                                    display: 'none',
-                                    cursor: 'pointer',
-                                    margin: '5px 7px',
-                                    backgroundColor: `${app.button_color}`,
-                                    transition: 'background-color 0.25s ease, opacity 0.2s ease',
-                                    border: '1px solid rgba(100, 100, 100, 0)'
-                                })
-                                .add(Block('text', 1)
-                                    .data('Third')
-                                    .css({
-                                        fontSize: '18px',
-                                        color: 'white',
-                                        fontWeight: '300',
-                                        cursor: 'pointer'
-                                    })
-                                )
-                                .on('mouseover', function (e, b) {
-                                    b.css('background-color', '#fefefe');
-                                    b.css('border', '1px solid #818181');
-                                    b.child('text').css('color', '#555');
-                                })
-                                .on('mouseout', function (e, b) {
-                                    b.css('background-color', `${app.button_color}`);
-                                    b.css('border', '1px solid rgba(100, 100, 100, 0)');
-                                    b.child('text').css('color', 'white');
-                                })
-                                .on('click', function (e, b) {
-                                    if (block.key('thirdLink'))
-                                        window.open('' + block.key('thirdLink'), '_blank');
-                                    e.stopPropagation();
-                                })
-                            )
-                            .add(Block('div', 'sourceButton')
-                                .css({
-                                    width: 'auto',
-                                    borderRadius: '4px',
-                                    padding: '10px 20px',
-                                    display: 'none',
-                                    cursor: 'pointer',
-                                    margin: '5px 7px',
-                                    backgroundColor: `${app.button_color}`,
-                                    transition: 'background-color 0.25s ease, opacity 0.2s ease',
-                                    border: '1px solid rgba(100, 100, 100, 0)'
-                                })
-                                .add(Block('text', 1)
-                                    .data('Source')
-                                    .css({
-                                        fontSize: '18px',
-                                        color: 'white',
-                                        fontWeight: '300',
-                                        cursor: 'pointer'
-                                    })
-                                )
-                                .on('mouseover', function (e, b) {
-                                    b.css('background-color', '#fefefe');
-                                    b.css('border', '1px solid #818181');
-                                    b.child('text').css('color', '#555');
-                                })
-                                .on('mouseout', function (e, b) {
-                                    b.css('background-color', `${app.button_color}`);
-                                    b.css('border', '1px solid rgba(100, 100, 100, 0)');
-                                    b.child('text').css('color', 'white');
-                                })
-                                .on('click', function (e, b) {
-                                    if (block.key('repo')) {
-                                        if (block.key('repo').substring(0, 4) == 'http')
-                                            window.open(block.key('repo'), '_blank');
-                                        else window.open('https://github.com/anuvgupta/' + block.key('repo'), '_blank');
-                                    }
-                                    e.stopPropagation();
-                                })
-                            )
-                            .add(Block('div', 'spacerEnd')
-                                .css({
-                                    height: '20px',
-                                    cursor: 'inherit'
-                                })
-                            )
-                            .on('hide')
-                        )
-                    ;
-                }
-            load
-                {
-                    var b = block;
-                    var img = b.mark();
-                    app.loadImage('img/projects/' + img + '.png', function () {
-                        b.child('background').css('background-image', 'url("img/projects/' + img + '.png")').on('show');
-                    });
-                    data('title', function (title) {
-                        block.child('content/title').html(title);
-                    });
-                    data('desc', function (desc) {
-                        block.child('content/desc').html(desc);
-                    });
-                    data('repo', function (repo) {
-                        block.child('content/sourceButton').css('display', 'inline-block');
-                        block.key('repo', repo);
-                    });
-                    data('buttonName', function (buttonName) {
-                        block.child('content/secondButton/text').html(buttonName);
-                        block.child('content/secondButton').css('display', 'inline-block');
-                    });
-                    data('buttonLink', function (buttonLink) {
-                        block.key('secondaryLink', buttonLink);
-                    });
-                    data('button2Name', function (buttonName) {
-                        block.child('content/thirdButton/text').html(buttonName);
-                        block.child('content/thirdButton').css('display', 'inline-block');
-                    });
-                    data('button2Link', function (buttonLink) {
-                        block.key('thirdLink', buttonLink);
-                    });
-                    data('textalign', function (textalign) {
-                        block.child('content/desc').css('text-align', textalign);
-                    });
-                    data('year', function (year) {
-                        block.child('content/year').css('display', 'block').child('text').html('').data(year);
-                    });
-                }
-        tile nestor
-            title nestor
-            desc Home automation ecosystem with cloud control hub & custom Arduino-hardware IoT modules for voice control, audio-reactive LED lights, etc. Built with Node.js, Arduino, and block.js (below).<br/><i>Under construction.</i>
-            repo nestor
-            textalign center
-            buttonName Visit
-            buttonLink http://nestor.anuv.me
-            year 2020
-        tile tunneljs
-            title tunnel.js
-            desc Seamless automation of multiple SSH tunnels via SOCKS proxy settings. Efficient, cost-effective, secure "poor man's" alternative to a personal VPN. Built with Node.js & SSH for macOS & Linux.
-            repo tunnel.js
-            textalign center
-            year 2020
-        tile led-lights
-            title led-lights
-            desc IoT audio-reactive LED lighting controller driven by Arduino/NodeMCU & MSGEQ7 beat detection, with custom hardware and web & iOS control panels. Includes custom color, pattern, and audio-reactive settings. Built with Arduino, Xcode, Node.js, and block.js (below).<br/><i>Password: control</i>
-            repo led-lights
-            buttonName Visit
-            buttonLink http://leds.anuv.me
-            textalign center
-            year 2019
-        tile zineone-connectors
-            title Z1 Data Gateway
-            //desc ZineOne Connector Gateway is a standalone backend acting as an asynchronous gateway between the ZineOne data collection cloud platform and external customer data channels. Built with chain.js (next) and Node.js. Created for <a href="https://www.zineone.com/" target="_blank">ZineOne</a> (team of 3).
-            desc Expanded the ZineOne AI-driven customer engagement platform to public cloud data stores with an asynchronous data gateway: built a backend connector service to efficiently stream customer data from clients' public cloud resources. Integrated the service into the platform as an experimental data channel requested by multiple client companies. Built with chain.js (next) and Node.js. Created for <a href="https://www.zineone.com/" target="_blank">ZineOne</a> (team of 2).
-            textalign center
-            buttonName Demo
-            buttonLink https://www.youtube.com/watch?v=vH1bCCSw-LU&t=1s
-            year 2019
-        tile chainjs
-            title chain.js
-            desc Asynchronous callback chaining as a readable & organized JavaScript module alternative to native Promise chains. Created near <a href="https://www.zineone.com/" target="_blank">ZineOne</a>.
-            textalign center
-            repo chain.js
-            year 2019
-        tile vizio-remote
-            title vizio-remote
-            desc Vizio TV IoT remote control iOS app using NodeMCU and IR emitter. Built with Arduino, Xcode, and Node.js.
-            repo vizio-remote
-            textalign center
-            year 2019
-        tile tcp-chat
-            title tcp-chat
-            desc TCP chat room server with basic client, accessible via telnet. Built with Node.js.
-            textalign center
-            repo tcp-chat
-            year 2019
-        tile lancerhacks
-            title LancerHacks
-            desc Tech Director for first ever 12-hour hackathon organized by <a href = 'http://sfhacks.club' target = '_blank'>sfhacks</a> and hosted by <a href="https://www.sfhs.com/" target="_blank">SFHS</a>. Hosted 150+ competitors. Created home website, event-day central live website, CTF competition system, and RSVP system from scratch—built with Firebase & block.js (below).
-            buttonName Visit
-            buttonLink https://lancerhacks.com/2019/2018/
-            year 2018
-            textalign center
-        tile meanuvme
-            title me.anuv.me
-            desc Personal portfolio website detailing interests and projects. Original design and images. Built with block.js (below).
-            repo me.anuv.me
-            buttonName Visit
-            buttonLink http://me.anuv.me
-            year 2017
-            textalign center
-        tile messenger
-            title messenger
-            desc Basic messenger-style chat room application. Built with and socket.io & block.js (below).
-            textalign center
-            buttonName Visit
-            buttonLink http://messenger.anuv.me
-            repo messenger
-            year 2017
-        tile p2p
-            title peer2peer
-            repo https://github.com/p2p-app/p2p-about
-            desc Created RESTful PHP backend for Peer2Peer—an iOS app connecting tutors to students based on subjects and proximity. <i>"Uber for tutors."</i> Won 1st place for district <a href="https://eshoo.house.gov/constituent-services/house-student-app-challenge" target="_blank">CA-18</a> in 2016 <a href="https://www.congressionalappchallenge.us/" target="_blank">Congressional App Challenge</a>. Built with dolphin (next). Created at <a href="https://sfhacks.club/" target="_blank">sfhacks</a> (team of 3).
-            buttonName Demo
-            buttonLink https://www.youtube.com/watch?v=PQ4SMc8Uc-E
-            year 2016
-            textalign center
-        tile dolphin
-            title dolphin
-            desc PHP module for managing a MySQL database with minimal SQL. Built for peer2peer (previous).
-            repo dolphin
-            buttonName Docs
-            buttonLink dolphin
-            textalign center
-            year 2016
-        tile slop
-            title slop
-            desc Collaborative realtime synchronized grocery lists. Built with pocketjs (below) & block.js (next).<br/><i>Password: slop</i>
-            repo slop
-            textalign center
-            buttonName Visit
-            buttonLink http://slop.anuv.me
-            year 2016
-        tile blockjs
-            title block.js
-            desc Lightweight JavaScript web design library – write event-driven hybrid tag-less HTML templates to generate reusable element "blocks".
-            repo block.js
-            textalign center
-            year 2016
-        tile rubbr
-            title rubbr
-            desc Realtime multiplayer car racing web game. Inspired by .io game proliferation. Built with pocketjs (next), block.js (previous), & rebuilt with socket.io.
-            buttonName Play
-            buttonLink http://rubbr.anuv.me
-            repo rubbr
-            textalign center
-            year 2016
-        tile pocketjs
-            title pocketjs
-            desc Barebones WebSocket library for implementing realtime applications in PHP & JavaScript. Event-driven, minimalistic design. Created for rubbr (previous).
-            buttonName Demo
-            buttonLink pocketjs
-            repo pocketjs
-            textalign center
-            year 2016
-        tile lightsail
-            title lightsail
-            desc AWS Lightsail VPS instance configuration  & bring-up guide for my project development server, where I host most of the projects mentioned on this page.
-            buttonName Visit
-            buttonLink http://54.186.188.200
-            repo lightsail
-            textalign center
-            year 2016
-        tile chessroom
-            title chessroom
-            desc Multiplayer realtime chessroom web game. Features spectator mode. Built with Firebase & rebuilt with block.js (above). Created at <a href="https://www.linkedin.com/company/hulaloop-inc-" target="_blank">HulaLoop</a>/<a href="https://pythonroom.firebaseapp.com/" target="_blank">Pythonroom</a>.
-            repo chessroom
-            buttonName Play
-            buttonLink http://chessroom.anuv.me
-            textalign center
-            year 2016
-        tile sitarhero
-            title sitar hero
-            desc Music video game in Java using MIDI Sitar. Similar to Guitar Hero; hitting notes plays the melody on a virtual sitar. Created for <a href="https://www.sfhs.com/" target="_blank">SFHS</a> computer science.
-            repo sitarhero
-            textalign center
-            year 2015
-        tile murk
-            title murk
-            desc Text/console-based fantasy mini-RPG in Java, involving quests and minigames. Created for <a href="https://www.sfhs.com/" target="_blank">SFHS</a> computer science.
-            repo murk
-            textalign center
-            year 2015
-        tile pi
-            title pi
-            desc Approximating π with Java. Created for <a href="https://www.sfhs.com/" target="_blank">SFHS</a> computer science.
-            repo pi
-            textalign center
-            year 2015
-        tile sfgpa
-            title sfgpa
-            desc GPA and final grade calculator website. Based on <a href="https://www.sfhs.com/" target="_blank">SFHS</a> grading system. Rebuilt with block.js (above).
-            repo sfgpa
-            buttonName Visit
-            buttonLink sfgpa
-            textalign center
-            year 2015
-        tile drummer
-            title drummer
-            desc Android app for creating basic drumbeats & patterns. Made for Android KitKat with Android Studio on OS X. Created at <a href="https://www.idtech.com/locations/california-summer-camps/held-at-stanford" target="_blank">ID Tech @ Stanford</a>.
-            repo drummer
-            buttonName Demo
-            buttonLink https://www.youtube.com/watch?v=3RtFNokTpac
-            textalign center
-            year 2014
-        tile hackintosh
-            title hackintosh
-            desc Custom-built PC, installed dual-boot Windows 10 and OS X Yosemite, with an exFAT file storage & transfer partition in between.
-            buttonName Specs
-            buttonLink hackintosh.html
-            textalign center
-            year 2014
