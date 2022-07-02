@@ -286,7 +286,7 @@ app
                     padding 10px 0 30px 0
                     text-align center
             text main
-                val Anuv
+                val _
                 css
                     font-size 70px
                     font-weight 400
@@ -294,7 +294,7 @@ app
                     color #4a4a4a
                     display block
             text sub
-                val Projects
+                val _
                 css
                     font-size 28px
                     font-weight 300
@@ -320,7 +320,7 @@ app
             css
                 padding 5px 49px 0 50px
             text text
-                html I'm a Computer Engineering student at UT Austin interested in computer science and building practical ideas.<br/>I keep some projects here.
+                html _
                 css
                     font-size 18px
             @query window width > 1100
@@ -369,17 +369,6 @@ app
                     height 20px
                     width 90%
                     margin 0 5%
-            menu-item github
-                title GitHub
-                altTitle GitHub
-                link http://github.com/anuvgupta
-            menu-item home
-                title Website
-                altTitle Website
-                link http://anuv.me
-            menu-item resume
-                title Resume
-                link https://drive.google.com/file/d/1wbzIdibrkTb-Ce0jtqNpWZAbTbPiRYwe/view?usp=sharing
         div copyright
             css
                 text-align center

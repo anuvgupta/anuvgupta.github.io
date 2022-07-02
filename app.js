@@ -98,8 +98,46 @@ var app = {
         }
     },
     content: {
+        intro: {
+            title: "Anuv",
+            subtitle: "Projects",
+            description: {
+                text: "Hi! I like to build stuff. I keep some projects here. Transcending into an AI...   🌱"
+                html: "Hi! I like to build stuff. I keep some projects here.<br/><br/><i>Transcending into an AI...</i>&nbsp;&nbsp;&nbsp;🌱",
+            },
+            menu: [
+                {
+                    id: "github",
+                    title: "GitHub",
+                    link: "https://github.com/anuvgupta",
+                    altTitle: "GitHub",
+                },
+                {
+                    id: "home",
+                    title: "Website",
+                    link: "http://anuv.me",
+                    altTitle: "Website",
+                },
+                {
+                    id: "resume",
+                    title: "Resume",
+                    link: "https://drive.google.com/file/d/1wbzIdibrkTb-Ce0jtqNpWZAbTbPiRYwe/view?usp=sharing",
+                },
+            ],
+        },
     },
     content_load: (next) => {
+        var c = app.content;
+        app.block.child("intro/title/main").html("").data(c.intro.title);
+        app.block.child("intro/title/sub").html("").data(c.intro.subtitle);
+        app.block.child("intro/desc/text").html(c.intro.description);
+        app.block.child("intro/menu").html("");
+        for (var m in c.intro.menu) {
+            var item = c.intro.menu[m];
+            app.block
+                .child("intro/menu")
+                .add(Block("menu-item", item.id).data(item));
+        }
         if (next) next();
     },
 };
