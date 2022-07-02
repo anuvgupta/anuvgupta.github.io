@@ -332,14 +332,14 @@ app
                                     cursor: 'pointer'
                                 })
                             )
-                            .on('mouseover', function (e, b) {
+                            .on('mouseover', (e, b) => {
                                 if (window.innerWidth > 1100) {
                                     block.child('text').css('color', '#555').css('borderLeft', '3px solid rgba(40, 40, 40, 0.1');
                                 } else {
                                     block.child('text').css('color', '#777').css('borderLeft', 'none');
                                 }
                             })
-                            .on('mouseout', function (e, b) {
+                            .on('mouseout', (e, b) => {
                                 if (window.innerWidth > 1100) {
                                     block.child('text').css('color', '#222').css('borderLeft', '3px solid rgba(0, 0, 0, 0)');
                                 } else {
@@ -347,7 +347,7 @@ app
                                 }
                             })
                             .on('mouseout')
-                            .on('click', function (e, b) {
+                            .on('click', (e, b) => {
                                 var link = block.key('link');
                                 if (block.key('link')) {
                                     window.open(link, '_blank');
