@@ -322,7 +322,7 @@ app
             text text
                 html _
                 css
-                    font-size 18px
+                    font-size 19px
             @query window width > 1100
                 css
                     display block
