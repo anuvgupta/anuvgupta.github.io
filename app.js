@@ -130,7 +130,7 @@ var app = {
         var c = app.content;
         app.block.child("intro/title/main").html("").data(c.intro.title);
         app.block.child("intro/title/sub").html("").data(c.intro.subtitle);
-        app.block.child("intro/desc/text").html(c.intro.description);
+        app.block.child("intro/desc/text").html(c.intro.description.html);
         app.block.child("intro/menu").html("");
         for (var m in c.intro.menu) {
             var item = c.intro.menu[m];
