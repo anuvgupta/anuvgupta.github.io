@@ -98,6 +98,7 @@ var app = {
         }
     },
     content: {
+        author: "Anuv Gupta",
         intro: {
             title: "Anuv",
             subtitle: "Projects",

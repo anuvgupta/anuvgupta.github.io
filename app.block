@@ -468,7 +468,7 @@ app
                     font-size 17px
                     letter-spacing 2px
                 {
-                    block.html('Copyright &copy; ' + (new Date().getFullYear()) + ' Anuv Gupta');
+                    block.html('Copyright &copy; ' + (new Date().getFullYear()) + ` ${app.content.author}`);
                 }
     div menubar
         css
