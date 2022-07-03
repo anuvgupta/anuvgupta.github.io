@@ -873,3 +873,12 @@ app
                 var tileWidth = tilesWidth / block.key('num') ;// - 2;
                 block.key('tileWidth', tileWidth);
             }
+        block updating
+            css
+                height 80px
+            text text
+                val updating...
+                css
+                    color #464646
+                    font-size 16px
+                    font-style italic
