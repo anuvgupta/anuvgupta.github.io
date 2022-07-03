@@ -592,7 +592,7 @@
         {
             var b = block;
             var img = b.mark();
-            app.loadImage('img/projects/' + img + '.png', function () {
+            util.loadImage('img/projects/' + img + '.png', function () {
                 b.child('background').css('background-image', 'url("img/projects/' + img + '.png")').on('show');
             });
             data('title', function (title) {
@@ -822,7 +822,7 @@ app
                     var tiles = app.block.child('tiles').children();
                     var c = 0;
                     for (var t in tiles) {
-                        if (tiles[t].css('display') != "none")
+                        if (tiles[t].type() == "project-tile" && tiles[t].css('display') != "none")
                             c++;
                     }
                     block.child('text').html('').data(`${c} Projects`);
@@ -874,11 +874,27 @@ app
                 block.key('tileWidth', tileWidth);
             }
         block updating
-            css
-                height 80px
+            @query window height != 0
+                {
+                    //block.css('height', '80px');
+                    var menubar_height = 50;
+                    //menubar_height = block.parent().sibling('menubar').$().height();
+                    block.css('height', (window.innerHeight - menubar_height - 10) + 'px');
+                }
             text text
                 val updating...
                 css
                     color #464646
                     font-size 16px
                     font-style italic
+                    opacity 0
+                    transition opacity 0.3s ease
+                    display none
+            img loading_image
+                src img/loading.svg
+                id loadingimg
+                css
+                    width 45%
+                    max-width 35px
+                    opacity 0.1
+                    transition opacity 0.5s ease
