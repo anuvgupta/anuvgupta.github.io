@@ -318,6 +318,9 @@
             return block
                 .key('repo', false)
                 .key('secondaryLink', false)
+                .key('description', '')
+                .key('tagline', '')
+                .class('project-tile')
                 .css({
                     position: 'relative',
                     margin: '0',
@@ -463,6 +466,20 @@
                             marginBottom: '6px',
                             cursor: 'inherit'
                         })
+                        .on('update', (e, b, d) => {
+                            var final_text = "";
+                            var description = block.key('description').trim();
+                            var tagline = block.key('tagline').trim();
+                            if (description.length > 0 && tagline.length > 0) {
+                                final_text = `<b>${tagline}</b> – ${description}`;
+                            } else if (description.length == 0) {
+                                final_text = `<b>${tagline}</b>`;
+                            } else if (tagline.length == 0) {
+                                final_text = `${description}`;
+                            } else final_text = "...";
+                            b.html(final_text);
+                            e.stopPropagation();
+                        })
                     )
                     .add(Block('div', 'secondButton')
                         .css({
@@ -591,38 +608,52 @@
     load
         {
             var b = block;
-            var img = b.mark();
-            util.loadImage('img/projects/' + img + '.png', function () {
-                b.child('background').css('background-image', 'url("img/projects/' + img + '.png")').on('show');
+            //var img = b.mark();
+            //util.loadImage('img/projects/' + img + '.png', () => {
+            //    b.child('background').css('background-image', 'url("img/projects/' + img + '.png")').on('show');
+            //});
+            data('img', img => {
+                block.key('img', img);
+                util.loadImage(`${app.api.url}${img}`, () => {
+                    b.child('background').css('background-image', `url("${app.api.url}${img}")`).on('show');
+                });
             });
-            data('title', function (title) {
-                block.child('content/title').html(title);
+            data('name', (name) => {
+                block.key('name', name);
+                block.child('content/title').html(name);
             });
-            data('desc', function (desc) {
-                block.child('content/desc').html(desc);
+            data('tagline', (tagline) => {
+                block.key('tagline', tagline);
+                block.child('content/desc').on('update');
             });
-            data('repo', function (repo) {
-                block.child('content/sourceButton').css('display', 'inline-block');
+            data('description', (description) => {
+                block.key('description', description);
+                block.child('content/desc').on('update');
+            });
+            data('repo', (repo) => {
                 block.key('repo', repo);
+                block.child('content/sourceButton').css('display', 'inline-block');
             });
-            data('buttonName', function (buttonName) {
+            data('buttonName', (buttonName) => {
                 block.child('content/secondButton/text').html(buttonName);
                 block.child('content/secondButton').css('display', 'inline-block');
             });
-            data('buttonLink', function (buttonLink) {
+            data('buttonLink', (buttonLink) => {
                 block.key('secondaryLink', buttonLink);
             });
-            data('button2Name', function (buttonName) {
+            data('button2Name', (buttonName) => {
                 block.child('content/thirdButton/text').html(buttonName);
                 block.child('content/thirdButton').css('display', 'inline-block');
             });
-            data('button2Link', function (buttonLink) {
+            data('button2Link', (buttonLink) => {
                 block.key('thirdLink', buttonLink);
             });
-            data('textalign', function (textalign) {
+            data('textalign', (textalign) => {
                 block.child('content/desc').css('text-align', textalign);
             });
-            data('year', function (year) {
+            data('ts_created', (ts_created) => {
+                block.css('ts_created', ts_created);
+                var year = `${(new Date(ts_created)).getFullYear()}`;
                 block.child('content/year').css('display', 'block').child('text').html('').data(year);
             });
         }

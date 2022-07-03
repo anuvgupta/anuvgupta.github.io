@@ -4,10 +4,11 @@ var app = {
     // button_color: '#7f7f7f',
     // button_color: '#435470',
     button_color: "#6e6e6e",
+    tile_sort_newest_first: true,
 
     // dash api
     api: {
-        url: `${window.location.protocol}//${"dash.anuv.me"}/api`,
+        url: `${window.location.protocol}//${"dash.anuv.me"}`,
         timeout: 3000,
         get_projects: (next) => {
             // $.ajax();
@@ -93,7 +94,7 @@ var app = {
                 .child("menubar")
                 .add(Block("menubar-item", item).data(item));
         }
-        app.tile_load((_) => {
+        app.tile_load((success) => {
             setTimeout((_) => {
                 var tile_children = app.block.child("tiles").children();
                 var tile_count = 0;
@@ -101,7 +102,7 @@ var app = {
                     if (tile_children[t_c].type() == "project-tile")
                         tile_count++;
                 }
-                if (tile_count <= 0) {
+                if (!success || tile_count <= 0) {
                     app.block
                         .child("tiles/updating")
                         .css("height", "80px")
@@ -129,10 +130,45 @@ var app = {
         });
     },
     tile_load: (next) => {
-        var t = app.content.tiles;
-        // app.block.child("tiles").html("");
-
-        if (next) next();
+        var generate_blocks = (_) => {
+            var projects = app.content.tiles.projects;
+            if (projects.length > 0) {
+                app.block.child("tiles").html("");
+                for (var p in projects) {
+                    app.block
+                        .child("tiles")
+                        .add(
+                            Block("project-tile", `${projects[p].slug}`).data(
+                                projects[p]
+                            )
+                        );
+                }
+            }
+            if (next) next(true);
+        };
+        $.ajax({
+            url: `${app.api.url}/api/projects`,
+            method: "get",
+            // data: { },
+            success: (result, status, xhr) => {
+                var newest_first = app.tile_sort_newest_first;
+                result.projects.sort(util.ts_sort(newest_first));
+                app.content.tiles.projects = result.projects;
+                app.content.tiles.applications = result.applications;
+                generate_blocks();
+            },
+            error: (xhr, status, error) => {
+                if (
+                    xhr.responseJSON &&
+                    xhr.responseJSON.message &&
+                    `${xhr.responseJSON.message}`.trim().length > 0
+                ) {
+                    console.error(`${xhr.responseJSON.message}`.trim());
+                }
+                console.log(error);
+                if (next) next(false);
+            },
+        });
     },
 
     // initialization

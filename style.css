@@ -3,7 +3,7 @@
 
 * {
     font-family: "Source Sans Pro", Arial, sans-serif;
-    font-weight: 200;
+    /* font-weight: 200; */
 }
 
 html,
@@ -12,6 +12,7 @@ body {
     height: 100%;
     width: 100%;
     background-color: #fafafa;
+    font-weight: 200;
 }
 
 ::-webkit-scrollbar {
@@ -29,4 +30,8 @@ a:visited {
 
 span {
     cursor: default;
+}
+
+div.project-tile b {
+    font-weight: 400;
 }
