@@ -444,14 +444,18 @@
                             display: 'inline-block',
                             padding: '25px 2px 10px 2px',
                             // borderBottom: '1px solid #ddd',
-                            cursor: 'inherit'
+                            cursor: 'inherit',
+                            width: '100%',
+                            textAlign: 'left',
+                            padding: '5px 12%'
                         })
                     )
                     .add(Block('hr', 1)
                         .css({
                             width: '100px',
                             opacity: '0.3',
-                            cursor: 'inherit'
+                            cursor: 'inherit',
+                            display: 'none'
                         })
                     )
                     .add(Block('text', 'desc')
@@ -460,9 +464,10 @@
                             color: 'black',
                             fontSize: '16px',
                             display: 'block',
-                            padding: '15px 12% 15px 12%',
+                            padding: '2px 12% 15px 12%',
                             // borderBottom: '1px solid #ddd',
                             textAlign: 'justify',
+                            //textAlign: 'left',
                             marginBottom: '6px',
                             cursor: 'inherit'
                         })
@@ -471,7 +476,7 @@
                             var description = block.key('description').trim();
                             var tagline = block.key('tagline').trim();
                             if (description.length > 0 && tagline.length > 0) {
-                                final_text = `<b>${tagline}</b> – ${description}`;
+                                final_text = `<b>${tagline}</b><br/>${description}`;
                             } else if (description.length == 0) {
                                 final_text = `<b>${tagline}</b>`;
                             } else if (tagline.length == 0) {
