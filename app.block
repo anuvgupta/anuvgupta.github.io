@@ -486,6 +486,105 @@
                             e.stopPropagation();
                         })
                     )
+                    .add(Block('div', 'demo')
+                        .css({
+                            display: 'none',
+                            textAlign: 'left',
+                            padding: '0px 12%',
+                            position: 'relative'
+                        })
+                        .add(Block('image', 1)
+                            .data({
+                                height: '20px',
+                                width: '20px',
+                                src: 'img/public_b.png',
+                                css: {
+                                    display: 'inline-block',
+                                    position: 'relative',
+                                    verticalAlign: 'middle',
+                                    marginRight: '8px',
+                                    opacity: '0.9'
+                                }
+                            })
+                        )
+                        .add(Block('a', 'link')
+                            .css({
+                                fontSize: '17px',
+                                position: 'relative',
+                                verticalAlign: 'middle',
+                                top: '-1px'
+                            })
+                            .attribute('target', '_blank')
+                            .attribute('href', '#')
+                            .html('_')
+                        )
+                    )
+                    .add(Block('div', 'docs')
+                        .css({
+                            display: 'none',
+                            textAlign: 'left',
+                            padding: '0px 12%',
+                            position: 'relative'
+                        })
+                        .add(Block('image', 1)
+                            .data({
+                                height: '20px',
+                                width: '20px',
+                                src: 'img/_.png',
+                                css: {
+                                    display: 'inline-block',
+                                    position: 'relative',
+                                    verticalAlign: 'middle',
+                                    marginRight: '8px',
+                                    opacity: '0.9'
+                                }
+                            })
+                        )
+                        .add(Block('a', 'link')
+                            .css({
+                                fontSize: '17px',
+                                position: 'relative',
+                                verticalAlign: 'middle',
+                                top: '-1px'
+                            })
+                            .attribute('target', '_blank')
+                            .attribute('href', '#')
+                            .html('_')
+                        )
+                    )
+                    .add(Block('div', 'repo')
+                        .css({
+                            display: 'none',
+                            textAlign: 'left',
+                            padding: '0px 12%',
+                            position: 'relative'
+                        })
+                        .add(Block('image', 1)
+                            .data({
+                                height: '20px',
+                                width: '20px',
+                                src: 'img/code_b.png',
+                                css: {
+                                    display: 'inline-block',
+                                    position: 'relative',
+                                    verticalAlign: 'middle',
+                                    marginRight: '8px',
+                                    opacity: '0.9'
+                                }
+                            })
+                        )
+                        .add(Block('a', 'link')
+                            .css({
+                                fontSize: '17px',
+                                position: 'relative',
+                                verticalAlign: 'middle',
+                                top: '-1px'
+                            })
+                            .attribute('target', '_blank')
+                            .attribute('href', '#')
+                            .html('_')
+                        )
+                    )
                     .add(Block('div', 'secondButton')
                         .css({
                             width: 'auto',
@@ -613,40 +712,65 @@
     load
         {
             var b = block;
-            //var img = b.mark();
-            //util.loadImage('img/projects/' + img + '.png', () => {
-            //    b.child('background').css('background-image', 'url("img/projects/' + img + '.png")').on('show');
-            //});
+
             data('img', img => {
                 block.key('img', img);
                 util.loadImage(`${app.api.url}${img}`, () => {
                     b.child('background').css('background-image', `url("${app.api.url}${img}")`).on('show');
                 });
             });
+
             data('name', (name) => {
                 block.key('name', name);
                 block.child('content/title').html(name);
             });
+
             data('tagline', (tagline) => {
                 block.key('tagline', tagline);
                 block.child('content/desc').on('update');
             });
+
             data('description', (description) => {
                 block.key('description', description);
                 block.child('content/desc').on('update');
             });
+
             data('repo', (repo) => {
                 block.key('repo', repo);
-                block.child('content/sourceButton').css('display', 'inline-block');
+                //block.child('content/sourceButton').css('display', 'inline-block');
             });
+
             data('buttonName', (buttonName) => {
+                block.key('buttonName', buttonName);
                 block.child('content/secondButton/text').html(buttonName);
                 block.child('content/secondButton').css('display', 'inline-block');
             });
+
+            data('link', link => {
+                block.key('link', link);
+                if (link && link.trim().length > 0 && link.trim() != '#') {
+                    var link_desc = link.split('http://').join('').split('https://').join('').split('/')[0];
+                    block.child('content/demo/link').html(link_desc).attribute('href', link);
+                    block.child('content/demo').css('display', 'block');
+                }
+            });
+
+            data('ts_created', (ts_created) => {
+                block.key('ts_created', ts_created);
+                var year = `${(new Date(ts_created)).getFullYear()}`;
+                block.child('content/year').css('display', 'block').child('text').html('').data(year);
+            });
+
+            // old stuff
+            //var img = b.mark();
+            //util.loadImage('img/projects/' + img + '.png', () => {
+            //    b.child('background').css('background-image', 'url("img/projects/' + img + '.png")').on('show');
+            //});
             data('buttonLink', (buttonLink) => {
                 block.key('secondaryLink', buttonLink);
             });
             data('button2Name', (buttonName) => {
+                block.key('button2Name', buttonName);
                 block.child('content/thirdButton/text').html(buttonName);
                 block.child('content/thirdButton').css('display', 'inline-block');
             });
@@ -654,12 +778,8 @@
                 block.key('thirdLink', buttonLink);
             });
             data('textalign', (textalign) => {
+                block.key('textalign', textalign);
                 block.child('content/desc').css('text-align', textalign);
-            });
-            data('ts_created', (ts_created) => {
-                block.css('ts_created', ts_created);
-                var year = `${(new Date(ts_created)).getFullYear()}`;
-                block.child('content/year').css('display', 'block').child('text').html('').data(year);
             });
         }
 
