@@ -20,17 +20,16 @@ var app = {
     limit_projects: (limit = null) => {
         var tiles = app.block.child("tiles").children();
         if (limit == "featured") {
-            // for (var t in tiles) {
-            //     if (
-            //         app.pinned_repos.includes(tiles[t].key("repo")) ||
-            //         app.pinned_projects.includes(t)
-            //     ) {
-            //         tiles[t].css("display", "block");
-            //     } else tiles[t].css("display", "none");
-            // }
+            for (var t in tiles) {
+                if (tiles[t].type() == "project-tile") {
+                    if (tiles[t].key("featured") === true) {
+                        tiles[t].css("display", "block");
+                    } else tiles[t].css("display", "none");
+                }
+            }
         } else {
             for (var t in tiles) {
-                if (tiles[t].type == "project-tile") {
+                if (tiles[t].type() == "project-tile") {
                     tiles[t].css("display", "block");
                 }
             }

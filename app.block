@@ -784,6 +784,10 @@
                 block.child('content/year').css('display', 'block').child('text').html('').data(year);
             });
 
+            data('featured', (featured) => {
+                block.key('featured', featured);
+            });
+
             // old stuff
             //var img = b.mark();
             //util.loadImage('img/projects/' + img + '.png', () => {
