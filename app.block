@@ -524,13 +524,14 @@
                             display: 'none',
                             textAlign: 'left',
                             padding: '0px 12%',
-                            position: 'relative'
+                            position: 'relative',
+                            marginTop: '5px'
                         })
                         .add(Block('image', 1)
                             .data({
                                 height: '20px',
                                 width: '20px',
-                                src: 'img/_.png',
+                                src: 'img/snippet_b.png',
                                 css: {
                                     display: 'inline-block',
                                     position: 'relative',
@@ -557,7 +558,8 @@
                             display: 'none',
                             textAlign: 'left',
                             padding: '0px 12%',
-                            position: 'relative'
+                            position: 'relative',
+                            marginTop: '5px'
                         })
                         .add(Block('image', 1)
                             .data({
@@ -749,9 +751,30 @@
             data('link', link => {
                 block.key('link', link);
                 if (link && link.trim().length > 0 && link.trim() != '#') {
-                    var link_desc = link.split('http://').join('').split('https://').join('').split('/')[0];
+                    var link_desc = link.split('http://').join('').split('https://').join('') //.split('/')[0];
+                    if (link_desc[link_desc.length - 1] == '/') link_desc = link_desc.substring(0, link_desc.length - 1);
                     block.child('content/demo/link').html(link_desc).attribute('href', link);
                     block.child('content/demo').css('display', 'block');
+                }
+            });
+
+            data('docs', docs => {
+                block.key('docs', docs);
+                if (docs && docs.trim().length > 0 && docs.trim() != '#') {
+                    var docs_desc = docs.split('http://').join('').split('https://').join('') //.split('/')[0];
+                    if (docs_desc[docs_desc.length - 1] == '/') docs_desc = docs_desc.substring(0, docs_desc.length - 1);
+                    block.child('content/docs/link').html(docs_desc).attribute('href', docs);
+                    block.child('content/docs').css('display', 'block');
+                }
+            });
+
+            data('repo', repo => {
+                block.key('repo', repo);
+                if (repo && repo.trim().length > 0 && repo.trim() != '#') {
+                    var repo_desc = repo.split('http://').join('').split('https://').join('') //.split('/')[0];
+                    if (repo_desc[repo_desc.length - 1] == '/') repo_desc = repo_desc.substring(0, repo_desc.length - 1);
+                    block.child('content/repo/link').html(repo_desc).attribute('href', repo);
+                    block.child('content/repo').css('display', 'block');
                 }
             });
 
