@@ -896,7 +896,7 @@
                     )
                     .add(Block('div', 'spacerB')
                         .css({
-                            height: '5%',
+                            height: '8%',
                         })
                     )
                     .add(Block('div', 'secondButton')
