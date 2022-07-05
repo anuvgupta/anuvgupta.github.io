@@ -667,9 +667,10 @@
                     .add(Block('div', 'tech')
                         .css({
                             textAlign: 'left',
-                            padding: '0px 12%',
+                            padding: '0px 12% 0px calc(12% + 28px)',
                             position: 'relative',
-                            marginTop: '5px'
+                            marginTop: '5px',
+                            textIndent: '-28px'
                         })
                         .add(Block('image', 1)
                             .data({
@@ -692,7 +693,7 @@
                                 verticalAlign: 'middle',
                                 top: '0px',
                                 cursor: 'pointer',
-                                letterSpacing: '-0.3px'
+                                letterSpacing: '-0.2px'
                             })
                             .data('_')
                             .on('mouseover', (e, b, d) => {
@@ -723,7 +724,7 @@
                                 position: 'relative',
                                 verticalAlign: 'middle',
                                 top: '1px',
-                                letterSpacing: '-0.4px',
+                                letterSpacing: '-0.2px',
                                 display: 'none'
                             })
                             .data('_')
