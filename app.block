@@ -422,15 +422,15 @@
                     .add(Block('div', 'year')
                         .css({
                             position: 'absolute',
-                            right: '14px',
-                            top: '12px',
+                            left: '12%',
+                            bottom: '20px',
                             display: 'none',
                             cursor: 'inherit'
                         })
                         .add(Block('text', 1)
                             .data('Year')
                             .css({
-                                color: '#666',
+                                color: '#555',
                                 fontSize: '15px',
                                 cursor: 'inherit'
                             })
@@ -565,7 +565,7 @@
                             .data({
                                 height: '20px',
                                 width: '20px',
-                                src: 'img/braces_b.png',
+                                src: 'img/github_s_b.png',
                                 css: {
                                     display: 'inline-block',
                                     position: 'relative',
@@ -639,6 +639,104 @@
                                 b.child('text').html('').data(meta_text);
                             } else b.css('display', 'none');
                         })
+                    )
+                    .add(Block('div', 'tech')
+                        .css({
+                            textAlign: 'left',
+                            padding: '0px 12%',
+                            position: 'relative',
+                            marginTop: '5px'
+                        })
+                        .add(Block('image', 1)
+                            .data({
+                                height: '20px',
+                                width: '20px',
+                                src: 'img/gear_b.png',
+                                css: {
+                                    display: 'inline-block',
+                                    position: 'relative',
+                                    verticalAlign: 'middle',
+                                    marginRight: '8px',
+                                    opacity: '0.9'
+                                }
+                            })
+                        )
+                        .add(Block('text', 1)
+                            .css({
+                                fontSize: '14px',
+                                position: 'relative',
+                                verticalAlign: 'middle',
+                                top: '0px',
+                                cursor: 'pointer',
+                                letterSpacing: '-0.3px'
+                            })
+                            .data('_')
+                            .on('mouseover', (e, b, d) => {
+                                if (block.key('tech') && block.key('tech').secondary.length > 0) {
+                                    b.sibling('sub').css('display', 'inline');
+                                    b.sibling('ellipsis').html(',&nbsp;');
+                                }
+                            })
+                            .on('mouseout', (e, b, d) => {
+                                b.sibling('sub').css('display', 'none');
+                                b.sibling('ellipsis').html('&nbsp;...&nbsp;');
+                            })
+                        )
+                        .add(Block('text', 'ellipsis')
+                            .css({
+                                fontSize: '14px',
+                                cursor: 'pointer',
+                                position: 'relative',
+                                verticalAlign: 'middle',
+                                letterSpacing: '-0.3px'
+                            })
+                            .html('&nbsp;...&nbsp;')
+                        )
+                        .add(Block('text', 'sub')
+                            .css({
+                                fontSize: '10px',
+                                cursor: 'pointer',
+                                position: 'relative',
+                                verticalAlign: 'middle',
+                                top: '1px',
+                                letterSpacing: '-0.4px',
+                                display: 'none'
+                            })
+                            .data('_')
+                        )
+                    )
+                    .add(Block('div', 'lang')
+                        .css({
+                            textAlign: 'left',
+                            padding: '0px 12%',
+                            position: 'relative',
+                            marginTop: '5px'
+                        })
+                        .add(Block('image', 1)
+                            .data({
+                                height: '20px',
+                                width: '20px',
+                                src: 'img/braces_b.png',
+                                css: {
+                                    display: 'inline-block',
+                                    position: 'relative',
+                                    verticalAlign: 'middle',
+                                    marginRight: '8px',
+                                    opacity: '0.9'
+                                }
+                            })
+                        )
+                        .add(Block('text', 1)
+                            .css({
+                                fontSize: '15px',
+                                position: 'relative',
+                                verticalAlign: 'middle',
+                                top: '0px',
+                                cursor: 'pointer',
+                                letterSpacing: '-0.2px'
+                            })
+                            .data('_')
+                        )
                     )
                     .add(Block('div', 'secondButton')
                         .css({
@@ -831,10 +929,19 @@
                 }
             });
 
+            data('tech', tech => {
+                block.key('tech', tech);
+                block.child('content/tech/text').html('').data(tech.primary.join(', '));
+                if (tech.secondary.length > 0) {
+                    block.child('content/tech/sub').html('').data(tech.secondary.join(', '));
+                }
+                block.child('content/lang/text').html('').data(tech.languages.join(', '));
+            });
+
             data('ts_created', (ts_created) => {
                 block.key('ts_created', ts_created);
                 var year = `${(new Date(ts_created)).getFullYear()}`;
-                block.child('content/year').css('display', 'block').child('text').html('').data(year);
+                //block.child('content/year').css('display', 'block').child('text').html('').data(year);
             });
 
             data('featured', (featured) => {
