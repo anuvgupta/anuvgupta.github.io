@@ -764,7 +764,7 @@
                         )
                     )
                     .add(Block('div', 'spacer')
-                        .css('height', '20px')
+                        .css('height', '12px')
                     )
                     .add(Block('div', 'secondButton')
                         .css({
