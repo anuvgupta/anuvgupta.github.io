@@ -1105,7 +1105,7 @@
             data('demo_pass', demo_pass => {
                 block.key('demo_pass', demo_pass);
                 if (demo_pass && demo_pass.length > 0) {
-                    block.child('content/demo/demo_pass').html(`password&nbsp;=&nbsp;<strong>${demo_pass}</strong>`).css('display', 'inline');
+                    block.child('content/demo/demo_pass').html(`key:&nbsp;<strong>${demo_pass}</strong>`).css('display', 'inline');
                 }
             });
 
