@@ -801,17 +801,20 @@
                     .add(Block('div', 'year')
                         .css({
                             position: 'absolute',
-                            right: '11%',
+                            right: '12%',
                             bottom: '6%',
                             display: 'none',
-                            cursor: 'inherit'
+                            cursor: 'inherit',
+                            verticalAlign: 'middle'
                         })
                         .add(Block('text', 1)
                             .data('Year')
                             .css({
-                                color: '#555',
+                                color: '#393939',
                                 fontSize: '15px',
-                                cursor: 'inherit'
+                                cursor: 'inherit',
+                                fontWeight: '400',
+                                verticalAlign: 'middle'
                             })
                         )
                     )
