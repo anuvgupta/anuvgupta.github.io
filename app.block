@@ -509,7 +509,7 @@
                         )
                         .add(Block('a', 'link')
                             .css({
-                                fontSize: '17px',
+                                fontSize: '16px',
                                 position: 'relative',
                                 verticalAlign: 'middle',
                                 top: '-1px'
@@ -543,7 +543,7 @@
                         )
                         .add(Block('a', 'link')
                             .css({
-                                fontSize: '17px',
+                                fontSize: '16px',
                                 position: 'relative',
                                 verticalAlign: 'middle',
                                 top: '-1px'
@@ -565,7 +565,7 @@
                             .data({
                                 height: '20px',
                                 width: '20px',
-                                src: 'img/code_b.png',
+                                src: 'img/braces_b.png',
                                 css: {
                                     display: 'inline-block',
                                     position: 'relative',
@@ -577,7 +577,7 @@
                         )
                         .add(Block('a', 'link')
                             .css({
-                                fontSize: '17px',
+                                fontSize: '16px',
                                 position: 'relative',
                                 verticalAlign: 'middle',
                                 top: '-1px'
@@ -586,6 +586,59 @@
                             .attribute('href', '#')
                             .html('_')
                         )
+                    )
+                    .add(Block('div', 'meta')
+                        .css({
+                            textAlign: 'left',
+                            padding: '0px 12%',
+                            position: 'relative',
+                            marginTop: '5px'
+                        })
+                        .add(Block('image', 1)
+                            .data({
+                                height: '20px',
+                                width: '20px',
+                                src: 'img/info_b.png',
+                                css: {
+                                    display: 'inline-block',
+                                    position: 'relative',
+                                    verticalAlign: 'middle',
+                                    marginRight: '8px',
+                                    opacity: '0.9'
+                                }
+                            })
+                        )
+                        .add(Block('text', 1)
+                            .css({
+                                fontSize: '16px',
+                                position: 'relative',
+                                verticalAlign: 'middle',
+                                top: '-1px'
+                            })
+                            .data('_')
+                        )
+                        .on('update', (e, b, d) => {
+                            var meta_text = "";
+                            var platform = block.key('platform') === 'None' ? null : block.key('platform');
+                            var type = block.key('type') === 'None' ? null : block.key('type');
+                            var purpose = block.key('purpose') === 'None' ? null : block.key('purpose');
+                            if (platform && type && purpose) {
+                                meta_text = `${platform} ${type} — ${purpose}`;
+                            } else if (platform && type) {
+                                meta_text = `${platform} ${type}`;
+                            } else if (platform && purpose) {
+                                meta_text = `${platform} — ${purpose}`;
+                            } else if (type && purpose) {
+                                meta_text = `${type} — ${purpose}`;
+                            } else if (platform) meta_text = `${platform}`;
+                            else if (type) meta_text = `${type}`;
+                            else if (purpose) meta_text = `${purpose}`;
+                            else meta_text = '';
+                            if (meta_text != '') {
+                                b.css('display', 'block');
+                                b.child('text').html('').data(meta_text);
+                            } else b.css('display', 'none');
+                        })
                     )
                     .add(Block('div', 'secondButton')
                         .css({
@@ -786,6 +839,19 @@
 
             data('featured', (featured) => {
                 block.key('featured', featured);
+                //block.child('content/meta').on('update');
+            });
+            data('platform', (platform) => {
+                block.key('platform', platform);
+                block.child('content/meta').on('update');
+            });
+            data('type', (type) => {
+                block.key('type', type);
+                block.child('content/meta').on('update');
+            });
+            data('purpose', (purpose) => {
+                block.key('purpose', purpose);
+                block.child('content/meta').on('update');
             });
 
             // old stuff
