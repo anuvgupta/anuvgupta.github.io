@@ -825,12 +825,48 @@
                             bottom: '6%',
                             cursor: 'inherit'
                         })
+                        // completeness
+                        .add(Block('image', 1)
+                            .data({
+                                height: '20px',
+                                width: '20px',
+                                src: 'img/pending_b.png',
+                                css: {
+                                    display: 'inline-block',
+                                    position: 'relative',
+                                    verticalAlign: 'middle',
+                                    marginRight: '8px',
+                                    opacity: '0.8',
+                                    cursor: 'inherit'
+                                }
+                            })
+                            .on('mouseover', (e, b, d) => {
+                                var fullWidth = block.key('complete') == 'true' ? '67px': '73px';
+                                b.sibling('text').css('width', fullWidth);
+                            })
+                            .on('mouseout', (e, b, d) => {
+                                b.sibling('text').css('width', '0px');
+                            })
+                        )
+                        .add(Block('text', 1)
+                            .data('Building')
+                            .css({
+                                position: 'relative',
+                                verticalAlign: 'middle',
+                                fontSize: '15px',
+                                width: '0px',
+                                transition: 'width 0.3s ease',
+                                overflow: 'hidden',
+                                display: 'inline-block',
+                                cursor: 'inherit'
+                            })
+                        )
                         // majority/priority
                         .add(Block('image', 'image-maj')
                             .data({
                                 height: '20px',
                                 width: '20px',
-                                src: 'img/verified_b.png',
+                                src: 'img/bookmark_b.png',
                                 css: {
                                     display: 'inline-block',
                                     position: 'relative',
@@ -849,42 +885,6 @@
                         )
                         .add(Block('text', 'text-maj')
                             .data('Flagship')
-                            .css({
-                                position: 'relative',
-                                verticalAlign: 'middle',
-                                fontSize: '15px',
-                                width: '0px',
-                                transition: 'width 0.3s ease',
-                                overflow: 'hidden',
-                                display: 'inline-block',
-                                cursor: 'inherit'
-                            })
-                        )
-                        // completeness
-                        .add(Block('image', 1)
-                            .data({
-                                height: '20px',
-                                width: '20px',
-                                src: 'img/pending_b.png',
-                                css: {
-                                    display: 'inline-block',
-                                    position: 'relative',
-                                    verticalAlign: 'middle',
-                                    marginRight: '8px',
-                                    opacity: '0.8',
-                                    cursor: 'inherit'
-                                }
-                            })
-                            .on('mouseover', (e, b, d) => {
-                                var fullWidth = block.key('complete') == 'true' ? '67px': '59px';
-                                b.sibling('text').css('width', fullWidth);
-                            })
-                            .on('mouseout', (e, b, d) => {
-                                b.sibling('text').css('width', '0px');
-                            })
-                        )
-                        .add(Block('text', 1)
-                            .data('Building')
                             .css({
                                 position: 'relative',
                                 verticalAlign: 'middle',
@@ -1121,9 +1121,9 @@
             data('complete', complete => {
                 block.key('complete', `${complete ? 'true' : 'false'}`);
                 var image_src = complete ? 'img/check_b.png' : 'img/pending_b.png';
-                var text_desc = complete ? 'Complete' : 'Building';
+                var text_desc = complete ? 'Complete' : 'In&nbsp;Progress';
                 block.child('content/status/image').data({ src: image_src });
-                block.child('content/status/text').html('').data(text_desc);
+                block.child('content/status/text').html('').html(text_desc);
             });
 
             data('major', major => {
