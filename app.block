@@ -529,6 +529,19 @@
                             .attribute('href', '#')
                             .html('_')
                         )
+                        .add(Block('text', 'demo_pass')
+                            .html('password&nbsp;=&nbsp;')
+                            .css({
+                                paddingLeft: '10px',
+                                fontStyle: 'italic',
+                                fontSize: '9px',
+                                letterSpacing: '-0.3px',
+                                verticalAlign: 'middle',
+                                display: 'none',
+                                position: 'relative',
+                                top: '-1px'
+                            })
+                        )
                     )
                     .add(Block('div', 'docs')
                         .css({
@@ -949,6 +962,13 @@
                     if (repo_desc[repo_desc.length - 1] == '/') repo_desc = repo_desc.substring(0, repo_desc.length - 1);
                     block.child('content/repo/link').html(repo_desc).attribute('href', repo);
                     block.child('content/repo').css('display', 'block');
+                }
+            });
+
+            data('demo_pass', demo_pass => {
+                block.key('demo_pass', demo_pass);
+                if (demo_pass && demo_pass.length > 0) {
+                    block.child('content/demo/demo_pass').html(`password&nbsp;=&nbsp;<strong>${demo_pass}</strong>`).css('display', 'inline');
                 }
             });
 
