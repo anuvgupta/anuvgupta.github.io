@@ -47,9 +47,7 @@
                 ;
             }
             if (height !== null) block.css('height', height);
-            else block.css('height', 'auto');
             if (width !== null) block.css('width', width);
-            else block.css('width', 'auto');
             if (alt !== null) block.attribute('title', alt);
         }
 !social-icon
@@ -376,6 +374,7 @@
                     // })
                 )
                 .add(Block('block', 'content')
+                    .__child('content').css('text-align', 'left').__parent()
                     .key('active', true)
                     .css({
                         position: 'absolute',
@@ -422,8 +421,8 @@
                     .add(Block('div', 'year')
                         .css({
                             position: 'absolute',
-                            left: '12%',
-                            bottom: '20px',
+                            right: '8%',
+                            bottom: '6%',
                             display: 'none',
                             cursor: 'inherit'
                         })
@@ -442,12 +441,24 @@
                             color: 'black',
                             fontSize: '40px',
                             display: 'inline-block',
-                            padding: '25px 2px 10px 2px',
+                            //padding: '25px 2px 10px 2px',
                             // borderBottom: '1px solid #ddd',
                             cursor: 'inherit',
-                            width: '100%',
+                            width: 'auto',
                             textAlign: 'left',
-                            padding: '5px 12%'
+                            padding: '5px 16px 5px 12%',
+                            verticalAlign: 'middle'
+                        })
+                    )
+                    .add(Block('image', 'icon')
+                        .css({
+                            display: 'none',
+                            verticalAlign: 'middle',
+                            opacity: '0.95',
+                        })
+                        .data({
+                            height: '33px',
+                            width: '33px'
                         })
                     )
                     .add(Block('hr', 1)
@@ -738,6 +749,9 @@
                             .data('_')
                         )
                     )
+                    .add(Block('div', 'spacer')
+                        .css('height', '20px')
+                    )
                     .add(Block('div', 'secondButton')
                         .css({
                             width: 'auto',
@@ -873,6 +887,15 @@
                 });
             });
 
+            data('icon', icon => {
+                block.key('icon', icon);
+                util.loadImage(`${app.api.url}${icon}`, () => {
+                    b.child('content/icon').data({
+                        src: `${app.api.url}${icon}`
+                    }).css('display', 'inline-block');
+                });
+            });
+
             data('name', (name) => {
                 block.key('name', name);
                 block.child('content/title').html(name);
@@ -941,7 +964,7 @@
             data('ts_created', (ts_created) => {
                 block.key('ts_created', ts_created);
                 var year = `${(new Date(ts_created)).getFullYear()}`;
-                //block.child('content/year').css('display', 'block').child('text').html('').data(year);
+                block.child('content/year').css('display', 'block').child('text').html('').data(year);
             });
 
             data('featured', (featured) => {
