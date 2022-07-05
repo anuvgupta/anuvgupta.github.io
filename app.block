@@ -435,6 +435,48 @@
                             })
                         )
                     )
+                    .add(Block('div', 'status')
+                        .css({
+                            position: 'absolute',
+                            left: '12%',
+                            bottom: '6%',
+                            cursor: 'inherit'
+                        })
+                        .add(Block('image', 1)
+                            .data({
+                                height: '20px',
+                                width: '20px',
+                                src: 'img/pending_b.png',
+                                css: {
+                                    display: 'inline-block',
+                                    position: 'relative',
+                                    verticalAlign: 'middle',
+                                    marginRight: '8px',
+                                    opacity: '0.9',
+                                    cursor: 'pointer'
+                                }
+                            })
+                            .on('mouseover', (e, b, d) => {
+                                var fullWidth = block.key('complete') == 'true' ? '60px': '52px';
+                                b.sibling('text').css('width', fullWidth);
+                            })
+                            .on('mouseout', (e, b, d) => {
+                                b.sibling('text').css('width', '0px');
+                            })
+                        )
+                        .add(Block('text', 1)
+                            .data('Building')
+                            .css({
+                                position: 'relative',
+                                verticalAlign: 'middle',
+                                fontSize: '15px',
+                                width: '0px',
+                                transition: 'width 0.3s ease',
+                                overflow: 'hidden',
+                                display: 'inline-block'
+                            })
+                        )
+                    )
                     .add(Block('text', 'title')
                         .data('Project Title')
                         .css({
@@ -764,7 +806,7 @@
                         )
                     )
                     .add(Block('div', 'spacer')
-                        .css('height', '12px')
+                        .css('height', '30px')
                     )
                     .add(Block('div', 'secondButton')
                         .css({
@@ -980,6 +1022,14 @@
                     block.child('content/tech/sub').html('').data(tech.secondary.join(', '));
                 }
                 block.child('content/lang/text').html('').data(tech.languages.join(', '));
+            });
+
+            data('complete', complete => {
+                block.key('complete', `${complete ? 'true' : 'false'}`);
+                var image_src = complete ? 'img/task_b.png' : 'img/pending_b.png';
+                var text_desc = complete ? 'Complete' : 'Building';
+                block.child('content/status/image').data({ src: image_src });
+                block.child('content/status/text').html('').data(text_desc);
             });
 
             data('ts_created', (ts_created) => {
