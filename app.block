@@ -442,6 +442,7 @@
                             bottom: '6%',
                             cursor: 'inherit'
                         })
+                        // majority/priority
                         .add(Block('image', 'image-maj')
                             .data({
                                 height: '20px',
@@ -475,6 +476,7 @@
                                 display: 'inline-block'
                             })
                         )
+                        // completeness
                         .add(Block('image', 1)
                             .data({
                                 height: '20px',
@@ -1089,7 +1091,7 @@
 
             data('complete', complete => {
                 block.key('complete', `${complete ? 'true' : 'false'}`);
-                var image_src = complete ? 'img/task_b.png' : 'img/pending_b.png';
+                var image_src = complete ? 'img/check_b.png' : 'img/pending_b.png';
                 var text_desc = complete ? 'Complete' : 'Building';
                 block.child('content/status/image').data({ src: image_src });
                 block.child('content/status/text').html('').data(text_desc);
