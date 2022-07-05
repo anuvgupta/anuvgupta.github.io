@@ -6,39 +6,31 @@ tile nestor
     buttonName Visit
     buttonLink http://nestor.anuv.me
     year 2020
+    tile led-lights
+        title led-lights
+        desc IoT audio-reactive LED lighting controller driven by Arduino/NodeMCU & MSGEQ7 beat detection, with custom hardware and web & iOS control panels. Includes custom color, pattern, and audio-reactive settings. Built with Arduino, Xcode, Node.js, and block.js (below).<br/><i>Password: control</i>
+        repo led-lights
+        buttonName Visit
+        buttonLink http://leds.anuv.me
+        textalign center
+        year 2019
+    tile vizio-remote
+        title vizio-remote
+        desc Vizio TV IoT remote control iOS app using NodeMCU and IR emitter. Built with Arduino, Xcode, and Node.js.
+        repo vizio-remote
+        textalign center
+        year 2019
 tile tunneljs
     title tunnel.js
     desc Seamless automation of multiple SSH tunnels via SOCKS proxy settings. Efficient, cost-effective, secure "poor man's" alternative to a personal VPN. Built with Node.js & SSH for macOS & Linux.
     repo tunnel.js
     textalign center
     year 2020
-tile led-lights
-    title led-lights
-    desc IoT audio-reactive LED lighting controller driven by Arduino/NodeMCU & MSGEQ7 beat detection, with custom hardware and web & iOS control panels. Includes custom color, pattern, and audio-reactive settings. Built with Arduino, Xcode, Node.js, and block.js (below).<br/><i>Password: control</i>
-    repo led-lights
-    buttonName Visit
-    buttonLink http://leds.anuv.me
-    textalign center
-    year 2019
-tile zineone-connectors
-    title Z1 Data Gateway
-    //desc ZineOne Connector Gateway is a standalone backend acting as an asynchronous gateway between the ZineOne data collection cloud platform and external customer data channels. Built with chain.js (next) and Node.js. Created for <a href="https://www.zineone.com/" target="_blank">ZineOne</a> (team of 3).
-    desc Expanded the ZineOne AI-driven customer engagement platform to public cloud data stores with an asynchronous data gateway: built a backend connector service to efficiently stream customer data from clients' public cloud resources. Integrated the service into the platform as an experimental data channel requested by multiple client companies. Built with chain.js (next) and Node.js. Created for <a href="https://www.zineone.com/" target="_blank">ZineOne</a> (team of 2).
-    textalign center
-    buttonName Demo
-    buttonLink https://www.youtube.com/watch?v=vH1bCCSw-LU&t=1s
-    year 2019
 tile chainjs
     title chain.js
     desc Asynchronous callback chaining as a readable & organized JavaScript module alternative to native Promise chains. Created near <a href="https://www.zineone.com/" target="_blank">ZineOne</a>.
     textalign center
     repo chain.js
-    year 2019
-tile vizio-remote
-    title vizio-remote
-    desc Vizio TV IoT remote control iOS app using NodeMCU and IR emitter. Built with Arduino, Xcode, and Node.js.
-    repo vizio-remote
-    textalign center
     year 2019
 tile tcp-chat
     title tcp-chat
@@ -69,6 +61,7 @@ tile messenger
     buttonLink http://messenger.anuv.me
     repo messenger
     year 2017
+
 tile p2p
     title peer2peer
     repo https://github.com/p2p-app/p2p-about
@@ -77,6 +70,7 @@ tile p2p
     buttonLink https://www.youtube.com/watch?v=PQ4SMc8Uc-E
     year 2016
     textalign center
+
 tile dolphin
     title dolphin
     desc PHP module for managing a MySQL database with minimal SQL. Built for peer2peer (previous).
@@ -113,14 +107,6 @@ tile pocketjs
     buttonName Demo
     buttonLink pocketjs
     repo pocketjs
-    textalign center
-    year 2016
-tile lightsail
-    title lightsail
-    desc AWS Lightsail VPS instance configuration  & bring-up guide for my project development server, where I host most of the projects mentioned on this page.
-    buttonName Visit
-    buttonLink http://54.186.188.200
-    repo lightsail
     textalign center
     year 2016
 tile chessroom
@@ -172,3 +158,23 @@ tile hackintosh
     buttonLink hackintosh.html
     textalign center
     year 2014
+
+
+
+tile zineone-connectors
+    title Z1 Data Gateway
+    //desc ZineOne Connector Gateway is a standalone backend acting as an asynchronous gateway between the ZineOne data collection cloud platform and external customer data channels. Built with chain.js (next) and Node.js. Created for <a href="https://www.zineone.com/" target="_blank">ZineOne</a> (team of 3).
+    desc Expanded the ZineOne AI-driven customer engagement platform to public cloud data stores with an asynchronous data gateway: built a backend connector service to efficiently stream customer data from clients' public cloud resources. Integrated the service into the platform as an experimental data channel requested by multiple client companies. Built with chain.js (next) and Node.js. Created for <a href="https://www.zineone.com/" target="_blank">ZineOne</a> (team of 2).
+    textalign center
+    buttonName Demo
+    buttonLink https://www.youtube.com/watch?v=vH1bCCSw-LU&t=1s
+    year 2019
+
+tile lightsail
+    title lightsail
+    desc AWS Lightsail VPS instance configuration  & bring-up guide for my project development server, where I host most of the projects mentioned on this page.
+    buttonName Visit
+    buttonLink http://54.186.188.200
+    repo lightsail
+    textalign center
+    year 2016
