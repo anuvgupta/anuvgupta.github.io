@@ -337,13 +337,13 @@
                         width: size + 'px'
                     });
                     if (size > 350) {
-                        block.child('content/title').css('font-size', '40px');
+                        block.child('content/title-wrap/title/text').css('font-size', '40px');
                         block.child('content/desc').css('font-size', '16px').css('padding-bottom', '15px');
                         block.child('content/secondButton/text').css('font-size', '18px')
                         block.child('content/sourceButton/text').css('font-size', '18px');
                         block.child('content/hr').css('width', '100px');
                     } else {
-                        block.child('content/title').css('font-size', '35px');
+                        block.child('content/title-wrap/title/text').css('font-size', '35px');
                         block.child('content/desc').css('font-size', '14px').css('padding-bottom', '5px');
                         block.child('content/secondButton/text').css('font-size', '16px');
                         block.child('content/sourceButton/text').css('font-size', '16px');
@@ -421,7 +421,7 @@
                     .add(Block('div', 'year')
                         .css({
                             position: 'absolute',
-                            right: '8%',
+                            right: '11%',
                             bottom: '6%',
                             display: 'none',
                             cursor: 'inherit'
@@ -442,6 +442,39 @@
                             bottom: '6%',
                             cursor: 'inherit'
                         })
+                        .add(Block('image', 'image-maj')
+                            .data({
+                                height: '20px',
+                                width: '20px',
+                                src: 'img/verified_b.png',
+                                css: {
+                                    display: 'inline-block',
+                                    position: 'relative',
+                                    verticalAlign: 'middle',
+                                    marginRight: '8px',
+                                    opacity: '0.8',
+                                    cursor: 'pointer'
+                                }
+                            })
+                            .on('mouseover', (e, b, d) => {
+                                b.sibling('text-maj').css('width', '58px');
+                            })
+                            .on('mouseout', (e, b, d) => {
+                                b.sibling('text-maj').css('width', '0px');
+                            })
+                        )
+                        .add(Block('text', 'text-maj')
+                            .data('Flagship')
+                            .css({
+                                position: 'relative',
+                                verticalAlign: 'middle',
+                                fontSize: '15px',
+                                width: '0px',
+                                transition: 'width 0.3s ease',
+                                overflow: 'hidden',
+                                display: 'inline-block'
+                            })
+                        )
                         .add(Block('image', 1)
                             .data({
                                 height: '20px',
@@ -452,12 +485,12 @@
                                     position: 'relative',
                                     verticalAlign: 'middle',
                                     marginRight: '8px',
-                                    opacity: '0.9',
+                                    opacity: '0.8',
                                     cursor: 'pointer'
                                 }
                             })
                             .on('mouseover', (e, b, d) => {
-                                var fullWidth = block.key('complete') == 'true' ? '60px': '52px';
+                                var fullWidth = block.key('complete') == 'true' ? '67px': '59px';
                                 b.sibling('text').css('width', fullWidth);
                             })
                             .on('mouseout', (e, b, d) => {
@@ -473,35 +506,58 @@
                                 width: '0px',
                                 transition: 'width 0.3s ease',
                                 overflow: 'hidden',
-                                display: 'inline-block'
+                                display: 'inline-block',
                             })
                         )
                     )
-                    .add(Block('text', 'title')
-                        .data('Project Title')
+                    .add(Block('div', 'title-wrap')
                         .css({
-                            color: 'black',
-                            fontSize: '40px',
-                            display: 'inline-block',
-                            //padding: '25px 2px 10px 2px',
-                            // borderBottom: '1px solid #ddd',
-                            cursor: 'inherit',
-                            width: 'auto',
+                            width: '100%',
                             textAlign: 'left',
-                            padding: '5px 16px 5px 12%',
-                            verticalAlign: 'middle'
+                            padding: '0px 12%',
+                            position: 'relative',
+                            boxSizing: 'border-box',
+                            marginBottom: '2px'
                         })
-                    )
-                    .add(Block('image', 'icon')
-                        .css({
-                            display: 'none',
-                            verticalAlign: 'middle',
-                            opacity: '0.95',
-                        })
-                        .data({
-                            height: '33px',
-                            width: '33px'
-                        })
+                        .add(Block('div', 'title')
+                            .css({
+                                width: 'calc(100% - 36px)',
+                                display: 'inline-block',
+                            })
+                            .add(Block('text', 1)
+                                .data('Project Title')
+                                .css({
+                                    color: 'black',
+                                    fontSize: '40px',
+                                    display: 'inline-block',
+                                    //padding: '25px 2px 10px 2px',
+                                    // borderBottom: '1px solid #ddd',
+                                    cursor: 'inherit',
+                                    width: 'auto',
+                                    textAlign: 'left',
+                                    padding: '5px 0 5px 0',
+                                    verticalAlign: 'middle'
+                                })
+                            )
+                        )
+                        .add(Block('block', 'icon')
+                            .css({
+                                height: '36px',
+                                width: '36px',
+                                display: 'inline-table',
+                                verticalAlign: 'middle',
+                            })
+                            .add(Block('image', 1)
+                                .css({
+                                    display: 'none',
+                                    opacity: '0.95',
+                                })
+                                .data({
+                                    height: '36px',
+                                    width: '36px'
+                                })
+                            )
+                        )
                     )
                     .add(Block('hr', 1)
                         .css({
@@ -509,6 +565,11 @@
                             opacity: '0.3',
                             cursor: 'inherit',
                             display: 'none'
+                        })
+                    )
+                    .add(Block('div', 'spacerA')
+                        .css({
+                            height: '3%',
                         })
                     )
                     .add(Block('text', 'desc')
@@ -521,8 +582,8 @@
                             // borderBottom: '1px solid #ddd',
                             textAlign: 'justify',
                             //textAlign: 'left',
-                            marginBottom: '6px',
-                            cursor: 'inherit'
+                            cursor: 'inherit',
+                            marginBottom: '2px',
                         })
                         .on('update', (e, b, d) => {
                             var final_text = "";
@@ -556,7 +617,7 @@
                                     position: 'relative',
                                     verticalAlign: 'middle',
                                     marginRight: '8px',
-                                    opacity: '0.9'
+                                    opacity: '0.8'
                                 }
                             })
                         )
@@ -603,7 +664,7 @@
                                     position: 'relative',
                                     verticalAlign: 'middle',
                                     marginRight: '8px',
-                                    opacity: '0.9'
+                                    opacity: '0.8'
                                 }
                             })
                         )
@@ -670,7 +731,7 @@
                                     position: 'relative',
                                     verticalAlign: 'middle',
                                     marginRight: '8px',
-                                    opacity: '0.9'
+                                    opacity: '0.8'
                                 }
                             })
                         )
@@ -724,7 +785,7 @@
                                     position: 'relative',
                                     verticalAlign: 'middle',
                                     marginRight: '8px',
-                                    opacity: '0.9'
+                                    opacity: '0.8'
                                 }
                             })
                         )
@@ -805,8 +866,10 @@
                             .data('_')
                         )
                     )
-                    .add(Block('div', 'spacer')
-                        .css('height', '30px')
+                    .add(Block('div', 'spacerB')
+                        .css({
+                            height: '5%',
+                        })
                     )
                     .add(Block('div', 'secondButton')
                         .css({
@@ -946,7 +1009,7 @@
             data('icon', icon => {
                 block.key('icon', icon);
                 util.loadImage(`${app.api.url}${icon}`, () => {
-                    b.child('content/icon').data({
+                    b.child('content/title-wrap/icon/image').data({
                         src: `${app.api.url}${icon}`
                     }).css('display', 'inline-block');
                 });
@@ -954,7 +1017,7 @@
 
             data('name', (name) => {
                 block.key('name', name);
-                block.child('content/title').html(name);
+                block.child('content/title-wrap/title/text').html(name);
             });
 
             data('tagline', (tagline) => {
@@ -1030,6 +1093,12 @@
                 var text_desc = complete ? 'Complete' : 'Building';
                 block.child('content/status/image').data({ src: image_src });
                 block.child('content/status/text').html('').data(text_desc);
+            });
+
+            data('major', major => {
+                block.key('major', `${major ? 'true' : 'false'}`);
+                block.child('content/status/image-maj').css('display', major ? 'inline-block' : 'none')
+                    .sibling('text-maj').css('display', major ? 'inline-block' : 'none');
             });
 
             data('ts_created', (ts_created) => {
