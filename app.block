@@ -454,7 +454,7 @@
                                     verticalAlign: 'middle',
                                     marginRight: '8px',
                                     opacity: '0.8',
-                                    cursor: 'pointer'
+                                    cursor: 'inherit'
                                 }
                             })
                             .on('mouseover', (e, b, d) => {
@@ -473,7 +473,8 @@
                                 width: '0px',
                                 transition: 'width 0.3s ease',
                                 overflow: 'hidden',
-                                display: 'inline-block'
+                                display: 'inline-block',
+                                cursor: 'inherit'
                             })
                         )
                         // completeness
@@ -488,7 +489,7 @@
                                     verticalAlign: 'middle',
                                     marginRight: '8px',
                                     opacity: '0.8',
-                                    cursor: 'pointer'
+                                    cursor: 'inherit'
                                 }
                             })
                             .on('mouseover', (e, b, d) => {
@@ -509,6 +510,7 @@
                                 transition: 'width 0.3s ease',
                                 overflow: 'hidden',
                                 display: 'inline-block',
+                                cursor: 'inherit'
                             })
                         )
                     )
@@ -721,7 +723,8 @@
                             textAlign: 'left',
                             padding: '0px 12%',
                             position: 'relative',
-                            marginTop: '5px'
+                            marginTop: '5px',
+                            cursor: 'inherit'
                         })
                         .add(Block('image', 1)
                             .data({
@@ -742,7 +745,8 @@
                                 fontSize: '16px',
                                 position: 'relative',
                                 verticalAlign: 'middle',
-                                top: '-1px'
+                                top: '-1px',
+                                cursor: 'inherit'
                             })
                             .data('_')
                         )
@@ -775,7 +779,8 @@
                             padding: '0px 12% 0px calc(12% + 28px)',
                             position: 'relative',
                             marginTop: '5px',
-                            textIndent: '-28px'
+                            textIndent: '-28px',
+                            cursor: 'inherit'
                         })
                         .add(Block('image', 1)
                             .data({
@@ -797,8 +802,8 @@
                                 position: 'relative',
                                 verticalAlign: 'middle',
                                 top: '0px',
-                                cursor: 'pointer',
-                                letterSpacing: '-0.2px'
+                                letterSpacing: '-0.2px',
+                                cursor: 'inherit'
                             })
                             .data('_')
                             .on('mouseover', (e, b, d) => {
@@ -815,24 +820,44 @@
                         .add(Block('text', 'ellipsis')
                             .css({
                                 fontSize: '14px',
-                                cursor: 'pointer',
                                 position: 'relative',
                                 verticalAlign: 'middle',
-                                letterSpacing: '-0.3px'
+                                letterSpacing: '-0.3px',
+                                cursor: 'inherit'
                             })
                             .html('&nbsp;...&nbsp;')
+                            .on('mouseover', (e, b, d) => {
+                                if (block.key('tech') && block.key('tech').secondary.length > 0) {
+                                    b.sibling('sub').css('display', 'inline');
+                                    b.html(',&nbsp;');
+                                }
+                            })
+                            .on('mouseout', (e, b, d) => {
+                                b.sibling('sub').css('display', 'none');
+                                b.html('&nbsp;...&nbsp;');
+                            })
                         )
                         .add(Block('text', 'sub')
                             .css({
                                 fontSize: '10px',
-                                cursor: 'pointer',
                                 position: 'relative',
                                 verticalAlign: 'middle',
                                 top: '1px',
                                 letterSpacing: '-0.2px',
-                                display: 'none'
+                                display: 'none',
+                                cursor: 'inherit'
                             })
                             .data('_')
+                            .on('mouseover', (e, b, d) => {
+                                if (block.key('tech') && block.key('tech').secondary.length > 0) {
+                                    b.css('display', 'inline');
+                                    b.sibling('ellipsis').html(',&nbsp;');
+                                }
+                            })
+                            .on('mouseout', (e, b, d) => {
+                                b.css('display', 'none');
+                                b.sibling('ellipsis').html('&nbsp;...&nbsp;');
+                            })
                         )
                     )
                     .add(Block('div', 'lang')
@@ -840,7 +865,8 @@
                             textAlign: 'left',
                             padding: '0px 12%',
                             position: 'relative',
-                            marginTop: '5px'
+                            marginTop: '5px',
+                            cursor: 'inherit'
                         })
                         .add(Block('image', 1)
                             .data({
@@ -862,8 +888,8 @@
                                 position: 'relative',
                                 verticalAlign: 'middle',
                                 top: '0px',
-                                cursor: 'pointer',
-                                letterSpacing: '-0.2px'
+                                letterSpacing: '-0.2px',
+                                cursor: 'inherit'
                             })
                             .data('_')
                         )
