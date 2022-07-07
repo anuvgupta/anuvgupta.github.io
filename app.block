@@ -1111,11 +1111,17 @@
 
             data('tech', tech => {
                 block.key('tech', tech);
-                block.child('content/tech/text').html('').data(tech.primary.join(', '));
+                if (tech.primary.length > 0) {
+                    block.child('content/tech/text').html('').data(tech.primary.join(', '));
+                } else if (tech.secondary.length <= 0) {
+                    block.child('content/tech').css('display', 'none');
+                } else block.child('content/tech/text').html('N/A');
                 if (tech.secondary.length > 0) {
                     block.child('content/tech/sub').html('').data(tech.secondary.join(', '));
                 } else block.child('content/tech/sub').css('display', 'none').sibling('ellipsis').css('display', 'none');
-                block.child('content/lang/text').html('').data(tech.languages.join(', '));
+                if (tech.languages.length > 0) {
+                    block.child('content/lang/text').html('').data(tech.languages.join(', '));
+                } else block.child('content/lang').css('display', 'none');
             });
 
             data('complete', complete => {

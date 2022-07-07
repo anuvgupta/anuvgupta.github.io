@@ -141,7 +141,6 @@ tile sfgpa
     buttonLink sfgpa
     textalign center
     year 2015
-
 tile drummer
     title drummer
     desc Android app for creating basic drumbeats & patterns. Made for Android KitKat with Android Studio on OS X. Created at <a href="https://www.idtech.com/locations/california-summer-camps/held-at-stanford" target="_blank">ID Tech @ Stanford</a>.
@@ -150,7 +149,6 @@ tile drummer
     buttonLink https://www.youtube.com/watch?v=3RtFNokTpac
     textalign center
     year 2014
-
 tile hackintosh
     title hackintosh
     desc Custom-built PC, installed dual-boot Windows 10 and OS X Yosemite, with an exFAT file storage & transfer partition in between.
