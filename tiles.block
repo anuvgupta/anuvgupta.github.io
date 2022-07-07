@@ -61,7 +61,6 @@ tile messenger
     buttonLink http://messenger.anuv.me
     repo messenger
     year 2017
-
 tile p2p
     title peer2peer
     repo https://github.com/p2p-app/p2p-about
@@ -70,7 +69,6 @@ tile p2p
     buttonLink https://www.youtube.com/watch?v=PQ4SMc8Uc-E
     year 2016
     textalign center
-
 tile dolphin
     title dolphin
     desc PHP module for managing a MySQL database with minimal SQL. Built for peer2peer (previous).
@@ -129,12 +127,14 @@ tile murk
     repo murk
     textalign center
     year 2015
+
 tile pi
     title pi
     desc Approximating π with Java. Created for <a href="https://www.sfhs.com/" target="_blank">SFHS</a> computer science.
     repo pi
     textalign center
     year 2015
+
 tile sfgpa
     title sfgpa
     desc GPA and final grade calculator website. Based on <a href="https://www.sfhs.com/" target="_blank">SFHS</a> grading system. Rebuilt with block.js (above).
