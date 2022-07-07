@@ -488,8 +488,8 @@
                             display: 'block',
                             padding: '2px 12% 15px 12%',
                             // borderBottom: '1px solid #ddd',
-                            textAlign: 'justify',
-                            //textAlign: 'left',
+                            //textAlign: 'justify',
+                            textAlign: 'left',
                             cursor: 'inherit',
                             marginBottom: '2px',
                         })
