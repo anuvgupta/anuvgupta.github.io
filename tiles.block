@@ -156,9 +156,6 @@ tile hackintosh
     buttonLink hackintosh.html
     textalign center
     year 2014
-
-
-
 tile zineone-connectors
     title Z1 Data Gateway
     //desc ZineOne Connector Gateway is a standalone backend acting as an asynchronous gateway between the ZineOne data collection cloud platform and external customer data channels. Built with chain.js (next) and Node.js. Created for <a href="https://www.zineone.com/" target="_blank">ZineOne</a> (team of 3).
