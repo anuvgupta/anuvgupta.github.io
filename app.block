@@ -303,7 +303,7 @@
                         .add(Block('text', 1)
                             .data('Filter')
                             .css({
-                                'font-size': '15px',
+                                'font-size': 'inherit',
                                 'cursor': 'pointer',
                                 'color': 'inherit'
                             })
@@ -322,7 +322,7 @@
                                 var sibs = block.siblings();
                                 for (var s in sibs)
                                     sibs[s].on('deactivate');
-                                if (!block.sibling('counter')) {
+                                if (!block.parent().sibling('counter')) {
                                     block.parent(1).data({ subtitle: block.key('val') });
                                     sibs = block.parent(1).siblings();
                                 } else {
@@ -336,9 +336,9 @@
                                 }
                                 block.on('activate');
                                 setTimeout(_ => {
-                                    if (block.sibling('counter'))
-                                        block.sibling('counter').on('update');
-                                    else block.parent(1).sibling('counter').on('update');
+                                    if (block.parent().sibling('counter'))
+                                        block.parent().sibling('counter').on('update');
+                                    else block.parent(2).sibling('counter').on('update');
                                 }, 25);
                             } else {
                                 if (block.key('sub_showing') == 'false') {
@@ -365,7 +365,8 @@
                         border: 'none',
                         opacity: '0',
                         transition: 'opacity 0.2s ease',
-                        boxShadow: '0.3px 0.5px 6px rgba(104, 104, 104, 0.1)'
+                        boxShadow: '0.3px 0.5px 6px rgba(104, 104, 104, 0.1)',
+                        zIndex: '65'
                     })
                 )
             ;
@@ -407,7 +408,6 @@
                                 })
                                 .child('text')
                                     .css({
-                                        fontSize: '14px',
                                         letterSpacing: '-0.1px'
                                     })
                                     .parent(2);
@@ -1469,25 +1469,90 @@ app
             box-sizing border-box
             z-index 45
             box-shadow 0px 0.5px 10px rgba(104, 104, 104, 0.2)
-            padding-left 20px
         @query window height != 0
             {
                 if (window.innerWidth > 1100) {
                     var introWidth = block.sibling('intro').$().width();
                     var tilesWidth = window.innerWidth - introWidth;
+                    var counterWidth = block.child('counter').$().outerWidth();
                     block.css({
                         marginTop: '0',
                         left: introWidth + 'px',
                         width: (tilesWidth) + 'px'
                     });
+                    block.child('content').css({
+                        width: (tilesWidth - counterWidth) + 'px'
+                    });
                 } else {
                     var introHeight = block.sibling('intro').$().height();
                     var tilesWidth = window.innerWidth;
+                    var counterWidth = block.child('counter').$().outerWidth();
                     block.css({
                         marginTop: introHeight + 'px',
                         left: '0',
                         width: (tilesWidth) + 'px'
                     });
+                    block.child('content').css({
+                        width: (tilesWidth - counterWidth) + 'px'
+                    });
+                }
+            }
+        div content
+            css
+                height 100%
+                padding-left 20px
+                box-sizing border-box
+                white-space nowrap
+        @query window width != 0
+            {
+                var marginLevel = 10;  // 10
+                var paddingLevel = 15;  // 15
+                var letterSpacing = 'normal'; // normal
+                var fontSize = '15px'; // 15px
+                if (window.innerWidth > 1250) {
+                    marginLevel = 10;
+                    paddingLevel = 15;
+                    letterSpacing = 'normal';
+                    fontSize = '15px';
+                } else if (window.innerWidth > 1100) {
+                    marginLevel = 6;
+                    paddingLevel = 9;
+                    letterSpacing = 'normal';
+                    fontSize = '15px';
+                } else if (window.innerWidth > 950) {
+                    marginLevel = 10;
+                    paddingLevel = 15;
+                    letterSpacing = 'normal';
+                    fontSize = '15px';
+                } else if (window.innerWidth > 700) {
+                    marginLevel = 6;
+                    paddingLevel = 10;
+                    letterSpacing = '-0.5px';
+                    fontSize = '14px';
+                } else if (window.innerWidth > 525) { 
+                    marginLevel = 4;
+                    paddingLevel = 5;
+                    letterSpacing = '-0.5px';
+                    fontSize = '12px';
+                } else {
+                    marginLevel = 3;
+                    paddingLevel = 4;
+                    letterSpacing = '-0.7px';
+                    fontSize = '10px';
+                }
+                var children = block.child('content').children();
+                for (var c in children) {
+                    children[c]
+                        .css('margin-left', (marginLevel) + 'px')
+                        .css('font-size', (fontSize))
+                        .child('block/button').css({
+                            paddingLeft: (paddingLevel) + 'px',
+                            paddingRight: (paddingLevel) + 'px',
+                        }).child('text').css({
+                            letterSpacing: letterSpacing,
+                            fontSize: 'inherit'
+                        });
+                    ;
                 }
             }
         block counter
@@ -1504,9 +1569,13 @@ app
                 }
             css
                 position absolute
-                right 30px
+                right 0
                 top 0
                 width auto
+                padding-left 25px
+                padding-right 30px
+                background-color white
+                z-index 50
             text text
                 val 0 Projects
     div tiles

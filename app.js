@@ -165,11 +165,11 @@ var app = {
             var item = c.menubar.items[m];
             if (typeof item === "string")
                 app.block
-                    .child("menubar")
+                    .child("menubar/content")
                     .add(Block("menubar-item", item).data(item));
             else if (typeof item === "object") {
                 app.block
-                    .child("menubar")
+                    .child("menubar/content")
                     .add(
                         Block("menubar-item", item.value)
                             .data(item.value)
@@ -205,7 +205,7 @@ var app = {
             }, app.api.timeout);
             setTimeout((_) => {
                 app.block
-                    .child(`menubar/${c.menubar.default}/block/button`)
+                    .child(`menubar/content/${c.menubar.default}/block/button`)
                     .$()
                     .click();
                 if (next) next();
