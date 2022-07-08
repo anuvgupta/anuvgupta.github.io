@@ -19,10 +19,71 @@ var app = {
     // project filter
     limit_projects: (limit = null) => {
         var tiles = app.block.child("tiles").children();
+        var platforms = app.content.menubar.items[7].items;
+        // console.log(limit);
         if (limit == "featured") {
             for (var t in tiles) {
                 if (tiles[t].type() == "project-tile") {
                     if (tiles[t].key("featured") === true) {
+                        tiles[t].css("display", "block");
+                    } else tiles[t].css("display", "none");
+                }
+            }
+        } else if (limit == "creativity") {
+            for (var t in tiles) {
+                if (tiles[t].type() == "project-tile") {
+                    if (tiles[t].key("purpose") == "Creativity") {
+                        tiles[t].css("display", "block");
+                    } else tiles[t].css("display", "none");
+                }
+            }
+        } else if (limit == "games") {
+            for (var t in tiles) {
+                if (tiles[t].type() == "project-tile") {
+                    if (
+                        tiles[t].key("type") === "Game" ||
+                        tiles[t].key("purpose") == "Entertainment"
+                    ) {
+                        tiles[t].css("display", "block");
+                    } else tiles[t].css("display", "none");
+                }
+            }
+        } else if (limit == "tools") {
+            for (var t in tiles) {
+                if (tiles[t].type() == "project-tile") {
+                    if (
+                        tiles[t].key("type") === "Script" || // comment out this line if the category grows too big
+                        tiles[t].key("type") === "Library" || // also comment out this line if the category grows too big
+                        tiles[t].key("purpose") == "Utility"
+                    ) {
+                        tiles[t].css("display", "block");
+                    } else tiles[t].css("display", "none");
+                }
+            }
+        } else if (limit == "essentials") {
+            for (var t in tiles) {
+                if (tiles[t].type() == "project-tile") {
+                    if (tiles[t].key("purpose") == "Essentials") {
+                        tiles[t].css("display", "block");
+                    } else tiles[t].css("display", "none");
+                }
+            }
+        } else if (limit == "education") {
+            for (var t in tiles) {
+                if (tiles[t].type() == "project-tile") {
+                    if (
+                        tiles[t].key("purpose") == "School" ||
+                        tiles[t].key("purpose") == "Learning" ||
+                        tiles[t].key("purpose") == "Work"
+                    ) {
+                        tiles[t].css("display", "block");
+                    } else tiles[t].css("display", "none");
+                }
+            }
+        } else if (platforms.includes(limit)) {
+            for (var t in tiles) {
+                if (tiles[t].type() == "project-tile") {
+                    if (tiles[t].key("platform") === util.capitalize(limit)) {
                         tiles[t].css("display", "block");
                     } else tiles[t].css("display", "none");
                 }
@@ -68,7 +129,20 @@ var app = {
         },
         menubar: {
             default: "featured",
-            items: ["all", "featured"],
+            items: [
+                "all",
+                "featured",
+                "creativity",
+                "education",
+                "games",
+                "essentials",
+                "tools",
+                // "_spacer_",
+                {
+                    value: "platforms",
+                    items: ["web", "desktop", "mobile", "embedded"],
+                },
+            ],
         },
         tiles: {
             projects: [],
@@ -89,9 +163,19 @@ var app = {
         }
         for (var m in c.menubar.items) {
             var item = c.menubar.items[m];
-            app.block
-                .child("menubar")
-                .add(Block("menubar-item", item).data(item));
+            if (typeof item === "string")
+                app.block
+                    .child("menubar")
+                    .add(Block("menubar-item", item).data(item));
+            else if (typeof item === "object") {
+                app.block
+                    .child("menubar")
+                    .add(
+                        Block("menubar-item", item.value)
+                            .data(item.value)
+                            .data({ sub_items: item.items })
+                    );
+            }
         }
         app.tile_load((success) => {
             setTimeout((_) => {

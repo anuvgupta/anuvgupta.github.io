@@ -235,11 +235,14 @@
         {
             var block = Block('div');
             return block
+                .key('sub_items', {})
+                .key('sub_showing', 'false')
                 .css({
                     "margin-left": "10px",
                     "width": "auto",
                     "height": "100%",
-                    "display": "inline-block"
+                    "display": "inline-block",
+                    position: 'relative'
                 })
                 .on('activate', _ => {
                     block.key('activated', 'true');
@@ -254,6 +257,35 @@
                         backgroundColor: '#fff',
                         color: '#0253b5'
                     });
+                    block.data({
+                        subtitle: ''
+                    });
+                })
+                .on('hide_sub', (e, b, d) => {
+                    console.log('hide_sub');
+                    block.child('block/button').css('border-radius', '4px');
+                    setTimeout(_ => {
+                        block.child('submenu').css('opacity', '0');
+                        setTimeout(_ => {
+                            block.child('submenu').css('display', 'none');
+                            block.key('sub_showing', 'false');
+                        }, 220);
+                    }, 20);
+                    e.stopPropagation();
+                })
+                .on('show_sub', (e, b, d) => {
+                    console.log('show_sub');
+                    block.child('block/button').css('border-radius', '4px 4px 0 0');
+                    setTimeout(_ => {
+                        block.child('submenu').css('display', 'block');
+                        setTimeout(_ => {
+                            block.child('submenu').css('opacity', '1');
+                            setTimeout(_ => {
+                                block.key('sub_showing', 'true');
+                            }, 200);
+                        }, 20);
+                    }, 20);
+                    e.stopPropagation();
                 })
                 .add(Block('block', 1)
                     .css({ width: "auto" })
@@ -285,17 +317,56 @@
                                 b.css('background-color', '#fff');
                         })
                         .on('click', _ => {
-                            app.limit_projects(block.key('val'));
-                            var sibs = block.siblings();
-                            for (var s in sibs) {
-                                sibs[s].on('deactivate');
+                            if (Object.keys(block.key('sub_items')).length <= 0) {
+                                app.limit_projects(block.key('val'));
+                                var sibs = block.siblings();
+                                for (var s in sibs)
+                                    sibs[s].on('deactivate');
+                                if (!block.sibling('counter')) {
+                                    block.parent(1).data({ subtitle: block.key('val') });
+                                    sibs = block.parent(1).siblings();
+                                } else {
+                                    // special / hardcoded
+                                    block.sibling('platforms').on('hide_sub');
+                                    sibs = block.sibling('platforms').child('submenu').children();
+                                }
+                                for (var s in sibs) {
+                                    if (sibs[s].mark() != block.parent(1).mark())
+                                        sibs[s].on('deactivate');
+                                }
+                                block.on('activate');
+                                setTimeout(_ => {
+                                    if (block.sibling('counter'))
+                                        block.sibling('counter').on('update');
+                                    else block.parent(1).sibling('counter').on('update');
+                                }, 25);
+                            } else {
+                                if (block.key('sub_showing') == 'false') {
+                                    block.on('show_sub');
+                                } else {
+                                    block.on('hide_sub');
+                                }
                             }
-                            block.on('activate');
-                            setTimeout(_ => {
-                                block.sibling('counter').on('update');
-                            }, 25);
                         })
                     )
+                )
+                .add(Block('div', 'submenu')
+                    .css({
+                        display: 'none',
+                        height: 'auto',
+                        minHeight: '40px',
+                        borderRadius: '0 0 5px 5px',
+                        width: '100%',
+                        position: 'absolute',
+                        top: '80%',
+                        left: '0',
+                        backgroundColor: 'white',
+                        boxSizing: 'border-box',
+                        border: 'none',
+                        opacity: '0',
+                        transition: 'opacity 0.2s ease',
+                        boxShadow: '0.3px 0.5px 6px rgba(104, 104, 104, 0.1)'
+                    })
                 )
             ;
         }
@@ -303,10 +374,57 @@
         {
             data('val', val => {
                 block.key('val', val);
-                block.child('block/button/text').html('').data(val.charAt(0).toUpperCase() + val.slice(1));
+                if (val == '_spacer_') {
+                    block.child('block/button').css({'pointer-events': 'none','padding': '0px 12px'}).child('text').html('|');
+                } else block.child('block/button/text').html('').data(val.charAt(0).toUpperCase() + val.slice(1));
             });
             data('text', text => {
                 block.child('block/button/text').html('').data(text.charAt(0).toUpperCase() + text.slice(1));
+            });
+            data('sub_items', sub_items => {
+                block.key('sub_items', sub_items);
+                //console.log(sub_items);
+                var i = 0;
+                for (var s_i in sub_items) {
+                    var sub_item = sub_items[s_i];
+                    //console.log(sub_item);
+                    var new_item_view = Block("menubar-item", sub_item).data(sub_item)
+                        .css({
+                            width: '100%',
+                            boxSizing: 'border-box',
+                            margin: '0',
+                            display: 'block'
+                        })
+                        .child('block')
+                            .css({
+                                width: '100%'
+                            })
+                            .child('button')
+                                .css({
+                                    borderRadius: i == sub_items.length - 1 ? '0 0 5px 5px' : '0',
+                                    padding: '0',
+                                    width: '100%'
+                                })
+                                .child('text')
+                                    .css({
+                                        fontSize: '14px',
+                                        letterSpacing: '-0.1px'
+                                    })
+                                    .parent(2);
+                    block.child('submenu').add(new_item_view);
+                    i++;
+                    //block.child('block/button').css('min-width', (new_item_view.$().width()) + 'px');
+                    block.child('block/button').css('min-width', (50) + 'px');
+                }
+            });
+            data('subtitle', subtitle => {
+                block.key('subtitle', subtitle);
+                if (subtitle && subtitle.length > 0) {
+                    block.child('block/button/text').html(`${util.capitalize(subtitle)}`);
+                    //block.child('block/button/text').html(`${util.capitalize(block.mark())}&nbsp;:&nbsp;${util.capitalize(subtitle)}`);
+                } else {
+                    block.child('block/button/text').html(`${util.capitalize(block.mark())}`);
+                }
             });
         }
 !project-tile
