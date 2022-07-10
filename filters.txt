@@ -34,14 +34,14 @@ filters
     featured
         // featured
     create
-        purposes: creativity
-    music
-        categories: music
-    life
-        categories: quality of life, social media, health
+        purposes: creativity, essentials
     learn
         categories: education, student life
         purposes: school, work
+    //life
+    //    categories: quality of life, social media, health
+    music
+        categories: music
     game
         types: game
         categories: gaming
@@ -49,9 +49,7 @@ filters
     tools
         types: script, library
         categories: infrastructure
-        purposes: utility
-    core
-        purposes: essentials
+        purposes: utility 
     where
         platforms: web, desktop, mobile, embedded
         types: application (inc by all) , build (inc by desktop), static site (inc by web)

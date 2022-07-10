@@ -19,7 +19,7 @@ var app = {
     // project filter
     limit_projects: (limit = null) => {
         var tiles = app.block.child("tiles").children();
-        var platforms = app.content.menubar.items[9].items;
+        var platforms = app.content.menubar.items[7].items;
         // console.log(limit);
         if (limit == "featured") {
             for (var t in tiles) {
@@ -32,7 +32,10 @@ var app = {
         } else if (limit == "create") {
             for (var t in tiles) {
                 if (tiles[t].type() == "project-tile") {
-                    if (tiles[t].key("purpose") == "Creativity") {
+                    if (
+                        tiles[t].key("purpose") == "Creativity" ||
+                        tiles[t].key("purpose") == "Essentials"
+                    ) {
                         tiles[t].css("display", "block");
                     } else tiles[t].css("display", "none");
                 }
@@ -64,13 +67,14 @@ var app = {
                         tiles[t].key("category") == "Education" ||
                         tiles[t].key("category") == "Student Life" ||
                         tiles[t].key("purpose") == "School" ||
-                        tiles[t].key("purpose") == "Work"
+                        tiles[t].key("purpose") == "Work" ||
+                        tiles[t].key("purpose") == "Career"
                     ) {
                         tiles[t].css("display", "block");
                     } else tiles[t].css("display", "none");
                 }
             }
-        } else if (limit == "game") {
+        } else if (limit == "games") {
             for (var t in tiles) {
                 if (tiles[t].type() == "project-tile") {
                     if (
@@ -91,14 +95,6 @@ var app = {
                         tiles[t].key("category") == "Infrastructure" ||
                         tiles[t].key("purpose") == "Utility"
                     ) {
-                        tiles[t].css("display", "block");
-                    } else tiles[t].css("display", "none");
-                }
-            }
-        } else if (limit == "core") {
-            for (var t in tiles) {
-                if (tiles[t].type() == "project-tile") {
-                    if (tiles[t].key("purpose") == "Essentials") {
                         tiles[t].css("display", "block");
                     } else tiles[t].css("display", "none");
                 }
@@ -157,16 +153,15 @@ var app = {
                 "all",
                 "featured",
                 "create",
-                "music",
-                "life",
                 "learn",
-                "game",
+                //"life",
+                "music",
+                "games",
                 "tools",
-                "core",
                 // "_spacer_",
                 {
                     value: "where",
-                    items: ["web", "desktop", "mobile", "embedded"],
+                    items: ["embedded", "desktop", "mobile", "web"],
                 },
             ],
         },
