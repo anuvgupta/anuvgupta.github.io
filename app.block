@@ -327,8 +327,8 @@
                                     sibs = block.parent(1).siblings();
                                 } else {
                                     // special / hardcoded
-                                    block.sibling('platforms').on('hide_sub');
-                                    sibs = block.sibling('platforms').child('submenu').children();
+                                    block.sibling('where').on('hide_sub');
+                                    sibs = block.sibling('where').child('submenu').children();
                                 }
                                 for (var s in sibs) {
                                     if (sibs[s].mark() != block.parent(1).mark())

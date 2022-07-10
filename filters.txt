@@ -1,0 +1,57 @@
+types
+    -script
+    -library
+    -game
+    _build
+    _application
+    _static site
+platforms
+    -web
+    -desktop
+    -mobile
+    -embedded
+categories
+    -music
+    -gaming
+    -health
+    -social media
+    -quality of life
+    -student life
+    -infrastructure
+    -education
+purposes
+    -creativity
+    -entertainment
+    -essentials
+    -utility
+    -school
+    -work
+
+
+filters
+    all
+        // all
+    featured
+        // featured
+    create
+        purposes: creativity
+    music
+        categories: music
+    life
+        categories: quality of life, social media, health
+    learn
+        categories: education, student life
+        purposes: school, work
+    game
+        types: game
+        categories: gaming
+        purposes: entertainment
+    core
+        purposes: essentials
+    tools
+        types: script, library
+        categories: infrastructure
+        purposes: utility
+    where
+        platforms: web, desktop, mobile, embedded
+        types: application (inc by all) , build (inc by desktop), static site (inc by web)
