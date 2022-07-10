@@ -46,12 +46,12 @@ filters
         types: game
         categories: gaming
         purposes: entertainment
-    core
-        purposes: essentials
     tools
         types: script, library
         categories: infrastructure
         purposes: utility
+    core
+        purposes: essentials
     where
         platforms: web, desktop, mobile, embedded
         types: application (inc by all) , build (inc by desktop), static site (inc by web)

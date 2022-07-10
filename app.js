@@ -82,14 +82,6 @@ var app = {
                     } else tiles[t].css("display", "none");
                 }
             }
-        } else if (limit == "core") {
-            for (var t in tiles) {
-                if (tiles[t].type() == "project-tile") {
-                    if (tiles[t].key("purpose") == "Essentials") {
-                        tiles[t].css("display", "block");
-                    } else tiles[t].css("display", "none");
-                }
-            }
         } else if (limit == "tools") {
             for (var t in tiles) {
                 if (tiles[t].type() == "project-tile") {
@@ -99,6 +91,14 @@ var app = {
                         tiles[t].key("category") == "Infrastructure" ||
                         tiles[t].key("purpose") == "Utility"
                     ) {
+                        tiles[t].css("display", "block");
+                    } else tiles[t].css("display", "none");
+                }
+            }
+        } else if (limit == "core") {
+            for (var t in tiles) {
+                if (tiles[t].type() == "project-tile") {
+                    if (tiles[t].key("purpose") == "Essentials") {
                         tiles[t].css("display", "block");
                     } else tiles[t].css("display", "none");
                 }
@@ -161,8 +161,8 @@ var app = {
                 "life",
                 "learn",
                 "game",
-                "core",
                 "tools",
+                "core",
                 // "_spacer_",
                 {
                     value: "where",
