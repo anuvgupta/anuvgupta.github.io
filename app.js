@@ -19,12 +19,49 @@ var app = {
     // project filter
     limit_projects: (limit = null) => {
         var tiles = app.block.child("tiles").children();
-        var platforms = app.content.menubar.items[7].items;
+        var platforms = app.content.menubar.items[8].items;
         // console.log(limit);
         if (limit == "featured") {
             for (var t in tiles) {
                 if (tiles[t].type() == "project-tile") {
                     if (tiles[t].key("featured") === true) {
+                        tiles[t].css("display", "block");
+                    } else tiles[t].css("display", "none");
+                }
+            }
+        } else if (
+            limit.toLowerCase() == "ai/ml" ||
+            limit.toLowerCase() == "ai / ml"
+        ) {
+            for (var t in tiles) {
+                if (tiles[t].type() == "project-tile") {
+                    var tech_targets = [
+                        "ONNX",
+                        "Tensorflow",
+                        "TFLite",
+                        "PyTorch",
+                        "Torch",
+                        "SciKit-Learn",
+                        "Scikit-learn",
+                        "sklearn",
+                        "Pruning",
+                        "Quantization",
+                    ];
+                    var target_found = false;
+                    for (var t_t in tech_targets) {
+                        if (
+                            tiles[t]
+                                .key("tech")
+                                .primary.includes(tech_targets[t_t]) ||
+                            tiles[t]
+                                .key("tech")
+                                .secondary.includes(tech_targets[t_t])
+                        ) {
+                            target_found = true;
+                            break;
+                        }
+                    }
+                    if (target_found) {
                         tiles[t].css("display", "block");
                     } else tiles[t].css("display", "none");
                 }
@@ -152,10 +189,11 @@ var app = {
             items: [
                 "all",
                 "featured",
+                "AI / ML",
+                "music",
                 "create",
                 "learn",
                 //"life",
-                "music",
                 "games",
                 "tools",
                 // "_spacer_",
