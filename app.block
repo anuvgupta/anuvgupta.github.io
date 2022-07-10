@@ -764,7 +764,7 @@
                         )
                         .add(Block('text', 1)
                             .css({
-                                fontSize: '16px',
+                                fontSize: '15px',
                                 position: 'relative',
                                 verticalAlign: 'middle',
                                 top: '-1px',
@@ -777,6 +777,11 @@
                             var platform = block.key('platform') === 'None' ? null : block.key('platform');
                             var type = block.key('type') === 'None' ? null : block.key('type');
                             var purpose = block.key('purpose') === 'None' ? null : block.key('purpose');
+                            var category = block.key('category') === 'None' ? null : block.key('category');
+                            if (purpose && category) {
+                                purpose = `${category}/${purpose}`;
+                            } else if (category) purpose = `${category}`;
+                            else purpose = `${purpose}`;
                             if (platform && type && purpose) {
                                 meta_text = `${platform} ${type} — ${purpose}`;
                             } else if (platform && type) {
@@ -1276,6 +1281,10 @@
             });
             data('purpose', (purpose) => {
                 block.key('purpose', purpose);
+                block.child('content/meta').on('update');
+            });
+            data('category', (category) => {
+                block.key('category', category);
                 block.child('content/meta').on('update');
             });
 
