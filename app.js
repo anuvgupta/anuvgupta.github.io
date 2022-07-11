@@ -69,10 +69,7 @@ var app = {
         } else if (limit == "create") {
             for (var t in tiles) {
                 if (tiles[t].type() == "project-tile") {
-                    if (
-                        tiles[t].key("purpose") == "Creativity" ||
-                        tiles[t].key("purpose") == "Essentials"
-                    ) {
+                    if (tiles[t].key("purpose") == "Creativity") {
                         tiles[t].css("display", "block");
                     } else tiles[t].css("display", "none");
                 }
@@ -105,7 +102,8 @@ var app = {
                         tiles[t].key("category") == "Student Life" ||
                         tiles[t].key("purpose") == "School" ||
                         tiles[t].key("purpose") == "Work" ||
-                        tiles[t].key("purpose") == "Career"
+                        tiles[t].key("purpose") == "Career" ||
+                        tiles[t].key("purpose") == "Essentials"
                     ) {
                         tiles[t].css("display", "block");
                     } else tiles[t].css("display", "none");

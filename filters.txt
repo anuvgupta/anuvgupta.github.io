@@ -34,10 +34,10 @@ filters
     featured
         // featured
     create
-        purposes: creativity, essentials
+        purposes: creativity
     learn
         categories: education, student life
-        purposes: school, work
+        purposes: school, work, essentials
     //life
     //    categories: quality of life, social media, health
     music
