@@ -70,7 +70,7 @@ var app = {
             for (var t in tiles) {
                 if (tiles[t].type() == "project-tile") {
                     if (
-                        tiles[t].key("purpose") == "Creativity" ||
+                        tiles[t].key("purpose") == "Creativity"
                         // tiles[t].key("purpose") == "Essentials"
                     ) {
                         tiles[t].css("display", "block");
