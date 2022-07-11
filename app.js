@@ -71,7 +71,7 @@ var app = {
                 if (tiles[t].type() == "project-tile") {
                     if (
                         tiles[t].key("purpose") == "Creativity" ||
-                        tiles[t].key("purpose") == "Essentials"
+                        // tiles[t].key("purpose") == "Essentials"
                     ) {
                         tiles[t].css("display", "block");
                     } else tiles[t].css("display", "none");
