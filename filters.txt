@@ -37,7 +37,7 @@ filters
         purposes: creativity
     learn
         categories: education, student life
-        purposes: school, work, essentials
+        purposes: school, work
     //life
     //    categories: quality of life, social media, health
     music
@@ -49,7 +49,7 @@ filters
     tools
         types: script, library
         categories: infrastructure
-        purposes: utility 
+        purposes: utility, essentials
     where
         platforms: web, desktop, mobile, embedded
         types: application (inc by all) , build (inc by desktop), static site (inc by web)
