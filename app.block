@@ -576,7 +576,7 @@
                             .add(Block('image', 1)
                                 .css({
                                     display: 'none',
-                                    opacity: '0.95',
+                                    opacity: '0.77',
                                 })
                                 .data({
                                     height: '36px',
