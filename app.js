@@ -310,7 +310,7 @@ var app = {
                 }
                 console.log(error);
                 $.ajax({
-                    url: `/backup.json`,
+                    url: "/backup.json",
                     method: "get",
                     // data: { },
                     success: (result, status, xhr) => {
