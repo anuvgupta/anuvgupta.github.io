@@ -131,7 +131,7 @@ var app = {
                         tiles[t].key("type") === "Library" || // also comment out this line if the category grows too big
                         tiles[t].key("category") == "Infrastructure" ||
                         tiles[t].key("purpose") == "Utility" ||
-                        tiles[t].key("purpose") == "Essentials" // also this one
+                        // tiles[t].key("purpose") == "Essentials" // also this one
                     ) {
                         tiles[t].css("display", "block");
                     } else tiles[t].css("display", "none");
