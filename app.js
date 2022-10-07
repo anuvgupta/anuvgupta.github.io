@@ -309,7 +309,30 @@ var app = {
                     console.error(`${xhr.responseJSON.message}`.trim());
                 }
                 console.log(error);
-                if (next) next(false);
+                // try local backup instead
+                $.ajax({
+                    url: "/backup.json",
+                    method: "get",
+                    // data: { },
+                    success: (result, status, xhr) => {
+                        var newest_first = app.tile_sort_newest_first;
+                        result.projects.sort(util.ts_sort(newest_first));
+                        app.content.tiles.projects = result.projects;
+                        app.content.tiles.applications = result.applications;
+                        generate_blocks();
+                    },
+                    error: (xhr, status, error) => {
+                        if (
+                            xhr.responseJSON &&
+                            xhr.responseJSON.message &&
+                            `${xhr.responseJSON.message}`.trim().length > 0
+                        ) {
+                            console.error(`${xhr.responseJSON.message}`.trim());
+                        }
+                        console.log(error);
+                        if (next) next(false);
+                    },
+                });
             },
         });
     },
