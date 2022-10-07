@@ -130,7 +130,7 @@ var app = {
                         tiles[t].key("type") === "Script" || // comment out this line if the category grows too big
                         tiles[t].key("type") === "Library" || // also comment out this line if the category grows too big
                         tiles[t].key("category") == "Infrastructure" ||
-                        tiles[t].key("purpose") == "Utility" ||
+                        tiles[t].key("purpose") == "Utility" // ||
                         // tiles[t].key("purpose") == "Essentials" // also this one
                     ) {
                         tiles[t].css("display", "block");
@@ -309,9 +309,8 @@ var app = {
                     console.error(`${xhr.responseJSON.message}`.trim());
                 }
                 console.log(error);
-                // try local backup instead
                 $.ajax({
-                    url: "/backup.json",
+                    url: `/backup.json`,
                     method: "get",
                     // data: { },
                     success: (result, status, xhr) => {
