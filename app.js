@@ -19,7 +19,7 @@ var app = {
     // project filter
     limit_projects: (limit = null) => {
         var tiles = app.block.child("tiles").children();
-        var platforms = app.content.menubar.items[8].items;
+        var platforms = []; // app.content.menubar.items[8].items;
         // console.log(limit);
         if (limit == "featured") {
             for (var t in tiles) {
@@ -233,7 +233,7 @@ var app = {
                     .add(
                         Block("menubar-item", item.value)
                             .data(item.value)
-                            .data({ sub_items: item.items })
+                            .data({ sub_items: item.items }),
                     );
             }
         }
@@ -282,8 +282,8 @@ var app = {
                         .child("tiles")
                         .add(
                             Block("project-tile", `${projects[p].slug}`).data(
-                                projects[p]
-                            )
+                                projects[p],
+                            ),
                         );
                 }
             }
@@ -374,7 +374,7 @@ var app = {
                                             app.block.$().height(),
                                     },
                                     0,
-                                    "swing"
+                                    "swing",
                                 );
                         }
                         $(window).scroll(util.logScroll);
@@ -382,7 +382,7 @@ var app = {
                 }, 10);
             },
             "app",
-            "jQuery"
+            "jQuery",
         );
     },
 };
