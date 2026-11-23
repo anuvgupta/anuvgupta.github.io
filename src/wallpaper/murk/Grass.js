@@ -337,7 +337,9 @@ export class Grass {
           float waveF = sin( dot( root, uWindDir ) * 0.22 - uWindTravel * 0.9 + tr * 2.0 );
           float waveS = sin( dot( root, uWindDir ) * 0.16 - uWindTravelSlow * 0.7 + tr * 2.0 );
           float wave = mix( waveS, waveF, we ) * 0.5 + 0.5;
-          float flutter = sin( uTime * ( 2.2 + br * 1.5 ) + br * 6.28 + dot( root, uWindDir ) * 0.6 ) * 0.5;
+          // (Each blade's own flutter, a slow sway every 4-7 s: the game's
+          // 2-3 s flicker read as frantic on a still view.)
+          float flutter = sin( uTime * ( 0.9 + br * 0.6 ) + br * 6.28 + dot( root, uWindDir ) * 0.6 ) * 0.5;
           vec2 bend = facing * leanAmt;
           bend += uWindDir * ( w * ( 0.25 + 0.55 * wave ) + flutter * ( 0.03 + 0.1 * w ) );
           float blen = min( length( bend ), 1.6 );

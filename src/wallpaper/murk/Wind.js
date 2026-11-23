@@ -100,25 +100,30 @@ export class Wind {
     this.phaseTime -= dt;
     if (this.phaseTime <= 0) this.pickPhase();
 
-    // Rises into a gust, dies away more slowly (both gentler than the game's).
-    const rate = this.target > this.strength ? 0.5 : 0.3;
+    // Builds into a gust over ~5 s and dies away over ~8 s (the game's took
+    // about 1 s and 3 s), with a slow waver on top.
+    const rate = this.target > this.strength ? 0.2 : 0.12;
     this.strength += (this.target - this.strength) * (1 - Math.exp(-rate * dt));
-    const flutter = this.noise(this.time * 0.35, 3.7) * 0.06;
+    const flutter = this.noise(this.time * 0.12, 3.7) * 0.05;
     const s = Math.max(0, this.strength + flutter);
 
     const angle = this.baseAngle + this.noise(this.time * 0.015, 9.1) * 0.7;
     this.direction.set(Math.cos(angle), Math.sin(angle));
 
-    // Gust fronts move faster in stronger wind.
-    this.travel += dt * (3 + 9 * s);
-    this.slow += (s - this.slow) * (1 - Math.exp(-dt / 8));
-    this.travelSlow += dt * (1.2 + 3 * this.slow);
+    // Gust fronts move faster in stronger wind: 1.2-3.6 m/s here, unhurried
+    // for a view that never moves (the game's raced past at 3-12 m/s, so
+    // the waves over the hill cycled every second or so).
+    const speed = 1.2 + 3.6 * s;
+    this.travel += dt * speed;
+    this.slow += (s - this.slow) * (1 - Math.exp(-dt / 12));
+    const speedSlow = 0.6 + 1.5 * this.slow;
+    this.travelSlow += dt * speedSlow;
     // The gust noise repeats every 500/3 m (both its scales tile there).
     const wrap = (v, p) => v.set(((v.x % p) + p) % p, ((v.y % p) + p) % p);
-    wrap(this.offset.addScaledVector(this.direction, dt * (3 + 9 * s)), 500 / 3);
-    wrap(this.offsetSlow.addScaledVector(this.direction, dt * (1.2 + 3 * this.slow)), 500 / 3);
+    wrap(this.offset.addScaledVector(this.direction, dt * speed), 500 / 3);
+    wrap(this.offsetSlow.addScaledVector(this.direction, dt * speedSlow), 500 / 3);
     wrap(this.ripple.addScaledVector(this.direction, dt * 0.175), 1);
-    wrap(this.fogOffset.addScaledVector(this.direction, dt * (3 + 9 * s) * 0.35), 250);
+    wrap(this.fogOffset.addScaledVector(this.direction, dt * speed * 0.35), 250);
 
     if (this.stepHz > 0) {
       this._stepAcc += dt;
