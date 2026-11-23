@@ -131,11 +131,13 @@ export class Grass {
         mesh.boundingSphere = new THREE.Sphere(new THREE.Vector3(TILE / 2, 0, TILE / 2), TILE * 0.72 + 10);
         mesh.matrixAutoUpdate = false;
         this.group.add(mesh);
-        this.slots.push({ mesh, dx: tx, dz: tz });
+        this.slots.push({ mesh, dx: tx, dz: tz, box: new THREE.Box3() });
       }
     }
     this.terrain = terrain;
     this.centerTile = { x: NaN, z: NaN };
+    this.frustum = new THREE.Frustum();
+    this.viewProj = new THREE.Matrix4();
   }
 
   // Fraction of blades kept at distance d (mirrors the shader).
@@ -166,6 +168,10 @@ export class Grass {
     this.uniforms.uRadius.value = this.radius * this.radiusScale;
     this.centerTile.x = ctx;
     this.centerTile.z = ctz;
+    // Each tile is culled by a box that hugs its ground and blades: the
+    // mesh's own sphere is loose enough that the full-density tiles under
+    // and beside the viewer, below the bottom of the frame, still drew.
+    this.frustum.setFromProjectionMatrix(this.viewProj.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse));
 
     for (const slot of this.slots) {
       const mesh = slot.mesh;
@@ -176,11 +182,22 @@ export class Grass {
         mesh.position.set(x0, y, z0);
         mesh.updateMatrix();
         mesh.matrixWorld.copy(mesh.matrix);
+        let lo = Infinity;
+        let hi = -Infinity;
+        for (let i = 0; i <= 4; i++) {
+          for (let j = 0; j <= 4; j++) {
+            const h = this.terrain.heightAt(x0 + (i * TILE) / 4, z0 + (j * TILE) / 4);
+            lo = Math.min(lo, h);
+            hi = Math.max(hi, h);
+          }
+        }
+        slot.box.min.set(x0 - 1, lo - 1, z0 - 1);
+        slot.box.max.set(x0 + TILE + 1, hi + 1.5, z0 + TILE + 1);
       }
       const nx = Math.max(x0 - cam.x, 0, cam.x - (x0 + TILE));
       const nz = Math.max(z0 - cam.z, 0, cam.z - (z0 + TILE));
       const d = Math.hypot(nx, nz);
-      if (d > this.radius * this.radiusScale) {
+      if (d > this.radius * this.radiusScale || !this.frustum.intersectsBox(slot.box)) {
         mesh.visible = false;
         continue;
       }
