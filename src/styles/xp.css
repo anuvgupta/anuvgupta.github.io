@@ -1,7 +1,7 @@
 /* Windows XP-style desktop. All chrome is drawn with CSS; icons and wallpaper are SVGs in /img. */
 
 :root {
-  --taskbar-h: 30px;
+  --taskbar-h: 34px;
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --ui-font: Tahoma, Verdana, "Segoe UI", Geneva, sans-serif;
   --title-font: "Trebuchet MS", Tahoma, Verdana, sans-serif;
@@ -915,11 +915,13 @@ html:not(.js) .window[hidden]:target {
   cursor: default;
 }
 
-/* Circuit-board mark in the logo slot: XP's flag sits in about a 17px box on the 30px button. */
+/* Circuit-board mark in the logo slot, sized up from XP's ~17px flag so its detail reads. */
 .start-logo {
   flex: none;
-  width: 17px;
-  height: 17px;
+  width: 22px;
+  height: 22px;
+  /* The button's 2px bottom padding puts the text's ink at the bar's centre; this puts the icon there too. */
+  translate: 0 1px;
   background: url("/img/icons/circuit.svg") center / contain no-repeat;
   filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.5));
 }

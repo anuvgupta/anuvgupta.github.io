@@ -21,7 +21,7 @@
   </defs>
 
   <!-- Board -->
-  <rect x="1.7" y="1.7" width="28.6" height="28.6" rx="4" fill="url(#board)" stroke="#f4fff6" stroke-width="1.4"/>
+  <rect x="1.4" y="1.4" width="29.2" height="29.2" rx="4" fill="url(#board)" stroke="#f5d978" stroke-opacity=".45" stroke-width=".8"/>
 
   <!-- Copper traces -->
   <g fill="none" stroke="#f2c650" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
