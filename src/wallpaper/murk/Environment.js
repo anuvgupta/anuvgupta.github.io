@@ -241,6 +241,11 @@ export class Environment {
 
     const sunTime = this.timeOfDay;
     const sunDir = this.computeSunDirection(sunTime, this.sunDir);
+    // The view looks west, so mirror the morning half of the sun's path onto
+    // the west as well: it rises over the hill just as it sets there. The two
+    // halves meet at noon, overhead and out of frame. (The moon and stars keep
+    // the true path, through computeSunDirection.)
+    sunDir.x = -Math.abs(sunDir.x);
     const elev = sunDir.y;
     if (this.sky.material.uniforms.time) this.sky.material.uniforms.time.value = this.skyTime || 0;
 
