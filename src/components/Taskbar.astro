@@ -27,6 +27,10 @@ const { pages, openId } = Astro.props;
         </button>
       ))
     }
+    <button id="loader-task" class="task" type="button" aria-pressed="false" title="Live Wallpaper" hidden>
+      <img src="/img/icons/sun.svg" alt="" width="16" height="16" />
+      <span>Live Wallpaper</span>
+    </button>
   </div>
   <div class="tray">
     <div id="balloon" class="balloon" role="status" hidden></div>

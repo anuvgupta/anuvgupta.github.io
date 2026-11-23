@@ -1,0 +1,22 @@
+---
+// The live wallpaper's loading dialog. scripts/wallpaper-boot.ts shows it while the scene loads;
+// it can be minimized and moved, but not maximized or closed.
+---
+
+<section id="loader-window" class="window loader-window" role="dialog" aria-labelledby="loader-title" hidden>
+  <div class="title-bar">
+    <img class="title-icon" src="/img/icons/sun.svg" alt="" draggable="false" />
+    <span class="title-text" id="loader-title">Live Wallpaper</span>
+    <div class="title-controls">
+      <button class="tb-min" type="button" aria-label="Minimize" title="Minimize"></button>
+      <button class="tb-max" type="button" aria-label="Maximize" disabled></button>
+      <button class="tb-close" type="button" aria-label="Close" disabled></button>
+    </div>
+  </div>
+  <div class="loader-body">
+    <p id="loader-label">Loading the live wallpaper...</p>
+    <div class="xp-progress" role="progressbar" aria-labelledby="loader-label" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+      <div class="xp-progress-fill"></div>
+    </div>
+  </div>
+</section>

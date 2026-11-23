@@ -3,6 +3,7 @@ import '../styles/xp.css';
 import { site } from '../site';
 import AboutPage from '../components/AboutPage.astro';
 import DesktopIcon from '../components/DesktopIcon.astro';
+import LoaderWindow from '../components/LoaderWindow.astro';
 import ProjectsPage from '../components/ProjectsPage.astro';
 import StartMenu from '../components/StartMenu.astro';
 import Taskbar from '../components/Taskbar.astro';
@@ -45,6 +46,7 @@ const canonical = Astro.site?.href;
           </Window>
         ))
       }
+      <LoaderWindow />
     </main>
     <StartMenu site={site} />
     <Taskbar pages={site.pages} openId={site.openOnLoad} />

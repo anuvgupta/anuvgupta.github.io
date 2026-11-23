@@ -1,12 +1,14 @@
 /**
- * Boots the live wallpaper: shows an old-style block progress bar on a grey
- * screen while the 3D scene loads, then dissolves it away in pixel blocks.
+ * Boots the live wallpaper: shows a loading window with an XP block progress
+ * bar over a plain blue desktop while the 3D scene loads, then dissolves the
+ * blue away in pixel blocks.
  *
  * The scene itself is a separate chunk (src/wallpaper), loaded with a dynamic
  * import so the rest of the page never waits on it. If WebGL 2 is missing or
  * anything fails, the page falls back to the static wallpaper.
  */
 import { SUNRISE, SUNSET, NOON } from '../wallpaper/sun.js';
+import { nextZ } from './zorder';
 
 const root = document.documentElement;
 const host = document.getElementById('wallpaper');
@@ -26,109 +28,172 @@ function hasWebGL2() {
 
 // ---------------------------------------------------------------- the loader
 
-const BLOCKS = 16;
-const STEP_MS = 150; // one block at a time, slowly
-const COLORS = {
-  ground: '#808080',
-  outline: '#000000',
-  block: '#1b2f9e',
-  blockTop: '#3550c8',
-};
+const STEP_MS = 110; // one block at a time, like the real thing
+const BLOCK = 12; // XP's progress blocks: 12px wide, 2px apart
+const BLOCK_GAP = 2;
+const DESKTOP_BLUE = '#476ea4';
 
+/**
+ * The loading dialog: an XP window with a block progress bar. It can be
+ * minimized to the taskbar and moved, but not maximized or closed.
+ */
 class Loader {
-  canvas: HTMLCanvasElement;
-  ctx: CanvasRenderingContext2D;
-  target = 0; // blocks the real progress allows
+  win = document.getElementById('loader-window')!;
+  task = document.getElementById('loader-task') as HTMLButtonElement;
+  bar = this.win.querySelector<HTMLElement>('.xp-progress')!;
+  fill = this.win.querySelector<HTMLElement>('.xp-progress-fill')!;
+  target = 0; // fraction the real progress allows
   shown = 0; // blocks drawn so far
   last = 0;
-  done = false;
+  active = true;
   onFull: (() => void) | null = null;
   raf = 0;
 
-  constructor(parent: HTMLElement) {
-    this.canvas = document.createElement('canvas');
-    this.canvas.className = 'wallpaper-loader';
-    this.canvas.setAttribute('aria-hidden', 'true');
-    parent.appendChild(this.canvas);
-    this.ctx = this.canvas.getContext('2d')!;
-    this.resize();
-    window.addEventListener('resize', this.resize);
+  constructor() {
+    this.win.hidden = false;
+    this.task.hidden = false;
+    this.raise();
+    this.win.querySelector('.tb-min')!.addEventListener('click', () => this.setMinimized(true));
+    this.task.addEventListener('click', () => {
+      if (this.win.hidden) this.setMinimized(false);
+      else if (this.active) this.setMinimized(true);
+      else this.raise();
+    });
+    // Clicking the window brings it forward; clicking anything else leaves it inactive.
+    document.addEventListener('pointerdown', this.onPointerDown, true);
+    this.dragByTitle();
     this.raf = requestAnimationFrame(this.tick);
   }
 
-  resize = () => {
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    this.canvas.width = Math.round(this.canvas.clientWidth * dpr);
-    this.canvas.height = Math.round(this.canvas.clientHeight * dpr);
-    this.draw();
-  };
+  // How many blocks fit in the bar at its current width (kept while minimized, when it has none).
+  blocks = 20;
+  get total() {
+    const inner = this.bar.clientWidth - 4; // minus the inner border and padding
+    if (inner > 0) this.blocks = Math.max(1, Math.floor((inner + BLOCK_GAP) / (BLOCK + BLOCK_GAP)));
+    return this.blocks;
+  }
 
   setProgress(f: number) {
-    this.target = Math.max(this.target, Math.min(BLOCKS, Math.floor(f * BLOCKS + 1e-6)));
+    this.target = Math.max(this.target, Math.min(1, f));
   }
 
   // Fill the rest of the bar (still one block at a time), then call back.
   finish(cb: () => void) {
-    this.target = BLOCKS;
+    this.target = 1;
     this.onFull = cb;
+  }
+
+  close() {
+    cancelAnimationFrame(this.raf);
+    document.removeEventListener('pointerdown', this.onPointerDown, true);
+    this.win.hidden = true;
+    this.task.hidden = true;
   }
 
   tick = (now: number) => {
     this.raf = requestAnimationFrame(this.tick);
-    if (this.shown < this.target && now - this.last >= (reducedMotion ? 0 : STEP_MS)) {
-      this.shown++;
+    const total = this.total;
+    const want = Math.floor(this.target * total + 1e-6);
+    if (this.shown > total) this.draw(total); // the bar got narrower
+    if (this.shown < want && now - this.last >= (reducedMotion ? 0 : STEP_MS)) {
       this.last = now;
-      this.draw();
+      this.draw(this.shown + 1);
     }
-    if (this.shown >= BLOCKS && this.onFull && now - this.last >= 250) {
+    if (this.shown >= total && this.onFull && now - this.last >= 250) {
       const cb = this.onFull;
       this.onFull = null;
       cb();
     }
   };
 
-  // The bar is drawn on a coarse pixel grid: every "pixel" is `u` device
-  // pixels square, so the outline and the blocks' rounded corners step.
-  draw() {
-    const { ctx, canvas } = this;
-    ctx.fillStyle = COLORS.ground;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    const dpr = canvas.width / Math.max(1, canvas.clientWidth);
-    const blockW = 5;
-    const blockH = 8;
-    const gap = 2;
-    const pad = 2;
-    const innerW = BLOCKS * blockW + (BLOCKS - 1) * gap;
-    const barW = innerW + pad * 2 + 2; // + outline
-    const barH = blockH + pad * 2 + 2;
-    const cssU = canvas.clientWidth < barW * 3 + 32 ? 2 : 3;
-    const u = Math.max(1, Math.round(cssU * dpr));
-    const x0 = Math.round((canvas.width - barW * u) / 2 / u) * u;
-    const y0 = Math.round((canvas.height * 0.56 - (barH * u) / 2) / u) * u;
-    const px = (x: number, y: number, w: number, h: number, c: string) => {
-      ctx.fillStyle = c;
-      ctx.fillRect(x0 + x * u, y0 + y * u, w * u, h * u);
-    };
-    // Outline: a 1-pixel black frame with its corners knocked off.
-    px(1, 0, barW - 2, 1, COLORS.outline);
-    px(1, barH - 1, barW - 2, 1, COLORS.outline);
-    px(0, 1, 1, barH - 2, COLORS.outline);
-    px(barW - 1, 1, 1, barH - 2, COLORS.outline);
-    // Blocks: small rounded rectangles (corners knocked off), clearly apart.
-    for (let i = 0; i < this.shown; i++) {
-      const bx = 1 + pad + i * (blockW + gap);
-      const by = 1 + pad;
-      px(bx + 1, by, blockW - 2, 1, COLORS.blockTop);
-      px(bx, by + 1, blockW, blockH - 2, COLORS.block);
-      px(bx + 1, by + blockH - 1, blockW - 2, 1, COLORS.block);
-      px(bx + 1, by + 1, blockW - 2, 1, COLORS.blockTop);
+  draw(blocks: number) {
+    this.shown = blocks;
+    this.fill.style.width = blocks ? `${blocks * (BLOCK + BLOCK_GAP) - BLOCK_GAP}px` : '0';
+    this.bar.setAttribute('aria-valuenow', String(Math.round((blocks / this.total) * 100)));
+  }
+
+  // Bring the loader to the front; the page windows (run by desktop.ts) show as inactive until one is clicked.
+  raise() {
+    this.win.style.zIndex = String(nextZ());
+    this.setActive(true);
+    for (const w of document.querySelectorAll('.window[data-page]')) w.classList.add('inactive');
+    for (const t of document.querySelectorAll('.task[data-page]')) {
+      t.classList.remove('active');
+      t.setAttribute('aria-pressed', 'false');
     }
   }
 
-  // Pixelate away: the whole screen breaks into blocks that vanish in a
-  // scattered order, revealing what is behind.
-  dissolve(ms = reducedMotion ? 0 : 750): Promise<void> {
-    cancelAnimationFrame(this.raf);
+  setActive(on: boolean) {
+    this.active = on;
+    this.win.classList.toggle('inactive', !on);
+    this.task.classList.toggle('active', on);
+    this.task.setAttribute('aria-pressed', String(on));
+  }
+
+  setMinimized(min: boolean) {
+    this.win.hidden = min;
+    if (min) this.setActive(false);
+    else this.raise();
+  }
+
+  onPointerDown = (e: PointerEvent) => {
+    const t = e.target as Node;
+    if (this.win.contains(t)) this.raise();
+    else if (!this.task.contains(t)) this.setActive(false);
+  };
+
+  dragByTitle() {
+    const handle = this.win.querySelector<HTMLElement>('.title-bar')!;
+    handle.addEventListener('pointerdown', (e) => {
+      if (e.button !== 0 || (e.target as Element).closest('button')) return;
+      e.preventDefault();
+      const desk = this.win.offsetParent!.getBoundingClientRect();
+      const r = this.win.getBoundingClientRect();
+      const start = { x: e.clientX, y: e.clientY, left: r.left - desk.left, top: r.top - desk.top };
+      handle.setPointerCapture(e.pointerId);
+      const move = (ev: PointerEvent) => {
+        const left = start.left + ev.clientX - start.x;
+        const top = start.top + ev.clientY - start.y;
+        this.win.style.left = `${Math.min(Math.max(left, 80 - r.width), desk.width - 80)}px`;
+        this.win.style.top = `${Math.min(Math.max(top, 0), desk.height - 30)}px`;
+      };
+      const end = () => {
+        handle.removeEventListener('pointermove', move);
+        handle.removeEventListener('pointerup', end);
+        handle.removeEventListener('pointercancel', end);
+      };
+      handle.addEventListener('pointermove', move);
+      handle.addEventListener('pointerup', end);
+      handle.addEventListener('pointercancel', end);
+    });
+  }
+}
+
+/**
+ * A plain desktop-blue cover over the scene while it loads. When the scene is
+ * ready it breaks into pixel blocks that vanish in a scattered order.
+ */
+class Cover {
+  canvas = document.createElement('canvas');
+  ctx = this.canvas.getContext('2d')!;
+
+  constructor(parent: HTMLElement) {
+    this.canvas.className = 'wallpaper-loader';
+    this.canvas.setAttribute('aria-hidden', 'true');
+    parent.appendChild(this.canvas);
+    this.resize();
+    window.addEventListener('resize', this.resize);
+  }
+
+  resize = () => {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    this.canvas.width = Math.round(this.canvas.clientWidth * dpr);
+    this.canvas.height = Math.round(this.canvas.clientHeight * dpr);
+    this.ctx.fillStyle = DESKTOP_BLUE;
+    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+  };
+
+  dissolve(ms = reducedMotion ? 0 : 220): Promise<void> {
     window.removeEventListener('resize', this.resize);
     const { canvas, ctx } = this;
     const dpr = canvas.width / Math.max(1, canvas.clientWidth);
@@ -229,7 +294,8 @@ function setupWidget(api: WallpaperApi) {
 async function boot() {
   if (!host) return fallback();
   if (!hasWebGL2()) return fallback();
-  const loader = new Loader(host);
+  const cover = new Cover(host);
+  const loader = new Loader();
   try {
     // The chunk's download counts as the first stretch of the bar.
     loader.setProgress(0.06);
@@ -240,13 +306,15 @@ async function boot() {
       isHidden: () => !!document.querySelector('.window.maximized:not([hidden])'),
     });
     await new Promise<void>((resolve) => loader.finish(resolve));
+    loader.close();
     root.classList.add('wallpaper-live');
     setupWidget(api);
-    await loader.dissolve();
+    await cover.dissolve();
   } catch (err) {
     console.error('Live wallpaper unavailable:', err);
+    loader.close();
     fallback();
-    await loader.dissolve();
+    await cover.dissolve();
   }
 }
 

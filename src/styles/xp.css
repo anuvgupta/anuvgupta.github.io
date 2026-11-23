@@ -10,6 +10,7 @@
   --xp-frame: #0054e3;
   --xp-frame-edge: #00138c;
   --xp-link: #215dc6;
+  --desktop-blue: #476ea4; /* plain desktop while the live wallpaper loads (matches DESKTOP_BLUE in wallpaper-boot.ts) */
   color-scheme: light;
 }
 
@@ -48,10 +49,10 @@ input {
 /* ---------------------------------------------------------------- Wallpaper */
 
 /* Without JavaScript the static wallpaper on <body> shows. With it, the page
-   is a plain grey while the live wallpaper loads (its loader is drawn on top),
+   is plain blue while the live wallpaper loads (its loading window sits on top),
    and the static one comes back only if the live one can't run. */
 html.js body {
-  background: #808080;
+  background: var(--desktop-blue);
 }
 
 html.js.wallpaper-fallback body {
@@ -437,6 +438,11 @@ html:not(.js) .window[hidden]:target {
   background: radial-gradient(circle at 90% 90%, #cc4600 0%, #dc6527 55%, #cd7546 70%, #ffccb2 90%, #fff 100%);
 }
 
+.title-controls button:disabled {
+  opacity: 0.45;
+  filter: none;
+}
+
 .title-controls button::before,
 .title-controls button::after {
   content: "";
@@ -525,6 +531,44 @@ html:not(.js) .window[hidden]:target {
 .window.maximized .title-bar {
   margin: 0;
   border-radius: 0;
+}
+
+/* Wallpaper loading window: a small dialog with XP's block progress bar */
+
+.window.loader-window {
+  --win-w: min(340px, calc(100% - 16px));
+  left: calc((100% - var(--win-w)) / 2);
+  top: max(12px, calc(50% - 60px));
+  width: var(--win-w);
+  height: auto;
+  min-width: 0;
+}
+
+.loader-body {
+  padding: 12px 12px 16px;
+  background: var(--xp-face);
+}
+
+.loader-body p {
+  margin: 0 0 10px;
+}
+
+/* Sunken 2px edge (shadow, dark shadow / light, highlight), 1px padding, 19px blocks: 25px tall in all. */
+.xp-progress {
+  height: 25px;
+  padding: 2px;
+  border: 1px solid;
+  border-color: #aca899 #fff #fff #aca899;
+  background: var(--xp-face);
+  box-shadow:
+    inset 1px 1px #716f64,
+    inset -1px -1px #f1efe2;
+}
+
+.xp-progress-fill {
+  width: 0;
+  height: 19px;
+  background: repeating-linear-gradient(90deg, var(--xp-select) 0 12px, transparent 12px 14px);
 }
 
 /* Menu bar */
