@@ -871,16 +871,13 @@ html:not(.js) .window[hidden]:target {
   cursor: default;
 }
 
-/* Placeholder mark in the logo slot: XP's flag sits in about a 17px box on the 30px button. */
+/* Circuit-board mark in the logo slot: XP's flag sits in about a 17px box on the 30px button. */
 .start-logo {
   flex: none;
   width: 17px;
   height: 17px;
-  border-radius: 2px;
-  background: linear-gradient(135deg, #fff 0%, #e6efe6 100%);
-  box-shadow:
-    0 0 0 1px rgba(0, 0, 0, 0.25),
-    1px 1px 2px rgba(0, 0, 0, 0.5);
+  background: url("/img/icons/circuit.svg") center / contain no-repeat;
+  filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.5));
 }
 
 .start-button:hover {
