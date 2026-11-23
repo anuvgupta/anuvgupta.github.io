@@ -10,8 +10,11 @@ import { TERRAIN_HEIGHT_GLSL } from '../terrain.js';
 
 export function createTerrainMaterial({ noise, heightMap }) {
   const material = new THREE.MeshStandardMaterial({ roughness: 0.95, metalness: 0, envMapIntensity: 1.35 });
+  // How much of the Bliss green shows: 1 by day, 0 at night (set per frame).
+  material.userData.lush = { value: 1 };
   material.onBeforeCompile = (shader) => {
     shader.uniforms.uNoise = { value: noise };
+    shader.uniforms.uLush = material.userData.lush;
     shader.uniforms.uHeightMap = { value: heightMap };
 
     shader.vertexShader = shader.vertexShader
@@ -35,6 +38,7 @@ export function createTerrainMaterial({ noise, heightMap }) {
         varying vec3 vWPos;
         varying vec3 vWNormal;
         uniform sampler2D uHeightMap;
+        uniform float uLush;
         ${TERRAIN_HEIGHT_GLSL}
         ${GROUND_GLSL}`
       )
@@ -62,6 +66,16 @@ export function createTerrainMaterial({ noise, heightMap }) {
         float carpet = smoothstep( 0.5, 0.68, min( terrainSlope( vWPos.xz ), min( wn.y, faceN.y ) ) );
         groundDetail = 1.0 - smoothstep( 8.0, 40.0, length( vViewPosition ) );
         vec3 ground = groundColor( vWPos, wnClass, carpet );
+        // Bliss: past the blades the turf reads as one lush green carpet in
+        // broad, soft sweeps, and the far hills as a deeper green. By night
+        // the meadow's own moonlit colours come back.
+        {
+          float vd = length( vViewPosition );
+          float sweep = texture( uNoise, vWPos.xz * 0.0035 + 0.53 ).r * 0.7 + texture( uNoise, vWPos.xz * 0.011 + 0.2 ).g * 0.3;
+          vec3 lush = mix( vec3( 0.085, 0.30, 0.014 ), vec3( 0.15, 0.46, 0.022 ), smoothstep( 0.3, 0.7, sweep ) );
+          ground = mix( ground, lush, smoothstep( 60.0, 220.0, vd ) * 0.85 * uLush );
+          ground = mix( ground, vec3( 0.03, 0.15, 0.014 ), smoothstep( 650.0, 1000.0, vd ) * 0.8 * uLush );
+        }
         diffuseColor.rgb *= ground;`
       );
   };

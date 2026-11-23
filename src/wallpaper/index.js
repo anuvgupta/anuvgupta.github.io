@@ -106,7 +106,8 @@ class Wallpaper {
 
     this.noiseTexture = createNoiseTexture();
     this.terrain = new Terrain();
-    const ground = new THREE.Mesh(this.terrain.buildGeometry(), createTerrainMaterial({ noise: this.noiseTexture, heightMap: this.terrain.heightTexture }));
+    this.groundMaterial = createTerrainMaterial({ noise: this.noiseTexture, heightMap: this.terrain.heightTexture });
+    const ground = new THREE.Mesh(this.terrain.buildGeometry(), this.groundMaterial);
     ground.name = 'terrain';
     ground.matrixAutoUpdate = false;
     scene.add(ground);
@@ -177,6 +178,7 @@ class Wallpaper {
     env.setTime(this.manualHours ?? hoursNow());
     env.update(dt, this.camera.position, this.wind);
     this.renderer.toneMappingExposure = env.exposure;
+    this.groundMaterial.userData.lush.value = 1 - env.nightFactor;
     if (this.atmosphere) this.atmosphere.update(env.atmosphere, this.wind, this.noiseTexture, this.elapsed);
     this.sunInfo.color.copy(env.sun.color).multiplyScalar(env.sun.intensity);
     this.wind.update(dt);

@@ -20,7 +20,8 @@ export const GROUND_GLSL = /* glsl */ `
   // ---- Inert stand-ins for the game's map: all open meadow, no realm.
   // Mask channels: r grass, g road/path, b river bed, a paving.
   vec4 groundMask( vec2 p ) { return vec4( 1.0, 0.0, 0.0, 0.0 ); }
-  vec3 realmGrassTint( vec2 p ) { return vec3( 1.0 ); }
+  // The meadow's own tint: from olive toward Bliss's lush green.
+  vec3 realmGrassTint( vec2 p ) { return vec3( 0.78, 1.04, 0.5 ); }
   vec4 realmAt( vec2 p, out float snow ) { snow = 0.0; return vec4( 1.0 ); }
   float roadAmount( vec2 p, float g ) { return 0.0; }
   float roadVerge( vec4 m, float road ) { return smoothstep( 0.0, 0.08, m.g ) * ( 1.0 - road ) * ( 1.0 - m.b ); }
