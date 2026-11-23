@@ -1,6 +1,7 @@
 // Adapted from murk3d (github.com/anuvgupta/murk3d), src/world/Wind.js.
-// Copied as written; the windiness map is baked from these hills alone (the
-// game's lakes, village, realms and woods are gone).
+// Copied as written, but for the weather below, which is calmer than the
+// game's for a wallpaper; the windiness map is baked from these hills alone
+// (the game's lakes, village, realms and woods are gone).
 import * as THREE from 'three';
 import { createNoise2D, smoothstep } from './noise.js';
 import { WORLD_HALF } from '../terrain.js';
@@ -17,10 +18,14 @@ const MAP = 256; // texels across the world
 // gusts, and its direction wanders slowly. Shaders get the overall strength
 // plus a travel offset, which they use to scroll a noise field downwind so
 // gust fronts visibly roll across the grass and trees.
+// For the wallpaper the breeze is lighter and steadier, and gusts are
+// milder and rarer: a gust every few minutes rather than every half minute
+// (the game's: calm 0.04-0.14, breeze 0.28-0.48, gust 0.7-1.0, with 40% of
+// breezes turning into a gust).
 const PHASES = {
-  calm: { strength: [0.04, 0.14], duration: [6, 16], next: { calm: 0.15, breeze: 0.7, gust: 0.15 } },
-  breeze: { strength: [0.28, 0.48], duration: [8, 20], next: { calm: 0.35, breeze: 0.25, gust: 0.4 } },
-  gust: { strength: [0.7, 1.0], duration: [2.5, 7], next: { calm: 0.2, breeze: 0.8, gust: 0 } },
+  calm: { strength: [0.06, 0.14], duration: [8, 18], next: { calm: 0.2, breeze: 0.75, gust: 0.05 } },
+  breeze: { strength: [0.18, 0.32], duration: [12, 28], next: { calm: 0.3, breeze: 0.6, gust: 0.1 } },
+  gust: { strength: [0.45, 0.65], duration: [3, 6], next: { calm: 0.3, breeze: 0.7, gust: 0 } },
 };
 
 const rand = (a, b) => a + Math.random() * (b - a);
@@ -31,8 +36,8 @@ export class Wind {
     this.time = 0;
     this.baseAngle = 0.35; // radians; prevailing wind from the west-southwest
     this.direction = new THREE.Vector2(1, 0);
-    this.strength = 0.3;
-    this.target = 0.3;
+    this.strength = 0.25;
+    this.target = 0.25;
     this.phase = 'breeze';
     this.phaseTime = 10;
     this.travel = 0;
@@ -48,7 +53,7 @@ export class Wind {
     // Fog banks creep at a third of the gusts' pace (their noise tiles at 250 m).
     this.fogOffset = new THREE.Vector2();
     // The sheltered wind: strength smoothed over ~8 s, fronts rolling slowly.
-    this.slow = 0.3;
+    this.slow = 0.25;
     this.travelSlow = 0;
     this.mapData = new Float32Array(MAP * MAP).fill(0.5);
     this.mapTexture = new THREE.DataTexture(new Uint8Array(MAP * MAP).fill(128), MAP, MAP, THREE.RedFormat, THREE.UnsignedByteType);
@@ -95,8 +100,8 @@ export class Wind {
     this.phaseTime -= dt;
     if (this.phaseTime <= 0) this.pickPhase();
 
-    // Rises quickly into a gust, dies away more slowly.
-    const rate = this.target > this.strength ? 0.9 : 0.35;
+    // Rises into a gust, dies away more slowly (both gentler than the game's).
+    const rate = this.target > this.strength ? 0.5 : 0.3;
     this.strength += (this.target - this.strength) * (1 - Math.exp(-rate * dt));
     const flutter = this.noise(this.time * 0.35, 3.7) * 0.06;
     const s = Math.max(0, this.strength + flutter);
