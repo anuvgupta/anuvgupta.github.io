@@ -22,14 +22,14 @@ export const VIEW = {
   x: 120,
   z: 0,
   eye: 2.5, // standing on a low bank at the meadow's edge
-  fov: 34, // vertical, degrees: a slightly long lens, close in on the hill
-  pitch: 0.134, // radians up from level: the hills sit in the lower half
+  fov: 30, // vertical, degrees: a long lens, close in on the hill
+  pitch: 0.104, // radians up from level: the crest sits just below centre
 };
 
 // The landform's sizes, in the viewer's frame (metres ahead, to the right).
 const BANK = 4; // the viewer's bank above the meadow
 // Near enough that the grass blades reach over its crest.
-const MAIN = { f: 140, r: -18, h: 21, left: 40, right: 85, front: 85, back: 80 };
+const MAIN = { f: 140, r: -22, h: 21, left: 40, right: 85, front: 85, back: 80 };
 
 const coordOf = (k) => (WORLD_HALF * Math.sinh(WARP * ((2 * k) / SEGMENTS - 1))) / SINH_K;
 
