@@ -1,0 +1,49 @@
+---
+import type { Site } from '../site';
+import { PAGE_TYPES, initials } from '../theme';
+
+interface Props {
+  site: Site;
+}
+const { site } = Astro.props;
+
+// Text each Start menu entry matches when searching, beyond its title.
+function searchText(page: Site['pages'][number]) {
+  const extra =
+    page.type === 'projects'
+      ? site.projects.map((p) => `${p.name} ${p.description ?? ''}`)
+      : [site.name, site.tagline ?? '', ...site.links.map((l) => l.label)];
+  return [page.title, page.subtitle ?? '', ...extra].join(' ').toLowerCase().replace(/\s+/g, ' ').trim();
+}
+---
+
+<div id="start-menu" class="start-menu" role="dialog" aria-label="Start menu" hidden>
+  <div class="sm-header">
+    <div class="user-tile" aria-hidden="true">{initials(site.name)}</div>
+    <span class="sm-user">{site.name}</span>
+  </div>
+  <div class="sm-body">
+    <label class="sm-search">
+      <img src="/img/icons/search.svg" alt="" width="16" height="16" />
+      <input id="start-search" type="search" placeholder="Search pages" autocomplete="off" spellcheck="false" aria-label="Search pages" />
+    </label>
+    <div class="sm-sep"></div>
+    <ul id="start-list" class="sm-list" role="list">
+      {
+        site.pages.map((p) => (
+          <li data-search={searchText(p)}>
+            <button type="button" class="sm-item" data-page={p.id}>
+              <img src={PAGE_TYPES[p.type].icon} alt="" width="32" height="32" />
+              <span class="sm-item-text">
+                <strong>{p.title}</strong>
+                {p.subtitle && <small>{p.subtitle}</small>}
+              </span>
+            </button>
+          </li>
+        ))
+      }
+      <li class="sm-empty" hidden>No pages match “<span id="start-query"></span>”</li>
+    </ul>
+  </div>
+  <div class="sm-footer"></div>
+</div>

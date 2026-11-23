@@ -1,0 +1,45 @@
+---
+import type { Page } from '../site';
+import { PAGE_TYPES } from '../theme';
+
+interface Props {
+  page: Page;
+  open?: boolean;
+}
+const { page, open = false } = Astro.props;
+const icon = PAGE_TYPES[page.type].icon;
+const titleId = `win-title-${page.id}`;
+---
+
+<section class="window" data-page={page.id} role="dialog" aria-labelledby={titleId} hidden={!open}>
+  <div class="title-bar">
+    <img class="title-icon" src={icon} alt="" draggable="false" />
+    <span class="title-text" id={titleId}>{page.title}</span>
+    <div class="title-controls">
+      <button class="tb-min" type="button" data-action="minimize" aria-label="Minimize" title="Minimize"></button>
+      <button class="tb-max" type="button" data-action="maximize" aria-label="Maximize" title="Maximize"></button>
+      <button class="tb-close" type="button" data-action="close" aria-label="Close" title="Close"></button>
+    </div>
+  </div>
+  <nav class="menu-bar" aria-label="Window menu">
+    <div class="menu">
+      <button class="menu-btn" type="button" aria-haspopup="menu" aria-expanded="false">File</button>
+      <div class="menu-dropdown" role="menu">
+        <button type="button" role="menuitem" data-action="minimize">Minimize</button>
+        <button type="button" role="menuitem" data-action="maximize" class="max-item">Maximize</button>
+        <div class="menu-sep" role="separator"></div>
+        <button type="button" role="menuitem" data-action="close">Close</button>
+      </div>
+    </div>
+    <div class="menu">
+      <button class="menu-btn" type="button" aria-haspopup="menu" aria-expanded="false">Edit</button>
+      <div class="menu-dropdown" role="menu">
+        <button type="button" role="menuitem" data-action="select-all">Select All</button>
+        <button type="button" role="menuitem" data-action="copy-link">Copy Page Link</button>
+      </div>
+    </div>
+  </nav>
+  <div class="window-body" tabindex="-1">
+    <slot />
+  </div>
+</section>

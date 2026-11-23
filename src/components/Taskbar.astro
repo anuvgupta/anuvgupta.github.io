@@ -1,0 +1,35 @@
+---
+import type { Page } from '../site';
+import { PAGE_TYPES } from '../theme';
+
+interface Props {
+  pages: Page[];
+  openId?: string | null;
+}
+const { pages, openId } = Astro.props;
+---
+
+<footer class="taskbar">
+  <button id="start-button" class="start-button" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="start-menu">start</button>
+  <div id="tasks" class="taskbar-tasks" role="toolbar" aria-label="Open windows">
+    {
+      pages.map((p) => (
+        <button
+          class:list={['task', { active: p.id === openId }]}
+          type="button"
+          data-page={p.id}
+          aria-pressed={p.id === openId ? 'true' : 'false'}
+          title={p.title}
+          hidden={p.id !== openId}
+        >
+          <img src={PAGE_TYPES[p.type].icon} alt="" width="16" height="16" />
+          <span>{p.title}</span>
+        </button>
+      ))
+    }
+  </div>
+  <div class="tray">
+    <div id="balloon" class="balloon" role="status" hidden></div>
+    <time id="clock" class="clock"></time>
+  </div>
+</footer>

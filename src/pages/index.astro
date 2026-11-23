@@ -1,0 +1,50 @@
+---
+import '../styles/xp.css';
+import { site } from '../site';
+import AboutPage from '../components/AboutPage.astro';
+import DesktopIcon from '../components/DesktopIcon.astro';
+import ProjectsPage from '../components/ProjectsPage.astro';
+import StartMenu from '../components/StartMenu.astro';
+import Taskbar from '../components/Taskbar.astro';
+import Window from '../components/Window.astro';
+
+const canonical = Astro.site?.href;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{site.name}</title>
+    {site.description && <meta name="description" content={site.description} />}
+    {canonical && <link rel="canonical" href={canonical} />}
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={site.name} />
+    {site.description && <meta property="og:description" content={site.description} />}
+    {canonical && <meta property="og:url" content={canonical} />}
+    <meta name="twitter:card" content="summary" />
+    <meta name="theme-color" content="#245edb" />
+    <link rel="icon" href="/img/icons/projects.svg" type="image/svg+xml" />
+  </head>
+  <body data-open={site.openOnLoad ?? ''}>
+    <main id="desktop" class="desktop" aria-label="Desktop">
+      <div id="desktop-icons" class="desktop-icons" role="list">
+        {site.pages.map((p) => <DesktopIcon page={p} />)}
+      </div>
+      {
+        site.pages.map((p) => (
+          <Window page={p} open={p.id === site.openOnLoad}>
+            {p.type === 'projects' && <ProjectsPage page={p} projects={site.projects} />}
+            {p.type === 'about' && <AboutPage site={site} />}
+          </Window>
+        ))
+      }
+    </main>
+    <StartMenu site={site} />
+    <Taskbar pages={site.pages} openId={site.openOnLoad} />
+    <script>
+      import '../scripts/desktop';
+    </script>
+  </body>
+</html>

@@ -1,12 +1,24 @@
 {
+  "name": "Anuv Gupta",
+  "tagline": "engineer and artist",
+  "description": "Projects by Anuv Gupta, engineer and artist.",
+  "links": [
+    { "label": "GitHub", "url": "https://github.com/anuvgupta", "icon": "github" },
+    { "label": "LinkedIn", "url": "https://www.linkedin.com/in/anuvgupta", "icon": "linkedin" }
+  ],
+  "openOnLoad": "projects",
+  "pages": [
+    { "id": "projects", "type": "projects", "title": "Projects", "subtitle": "Things I have built" },
+    { "id": "about", "type": "about", "title": "About", "subtitle": "Who I am" }
+  ],
   "projects": [
     {
       "name": "Sample Project One",
       "description": "Placeholder entry showing every field: a short description, three screenshots, one GitHub repo and a couple of extra links. Replace with a real project.",
       "screenshots": [
-        { "src": "img/projects/sample-1.svg", "alt": "Sample Project One main screen" },
-        { "src": "img/projects/sample-2.svg", "alt": "Sample Project One settings" },
-        { "src": "img/projects/sample-3.svg", "alt": "Sample Project One results view" }
+        { "src": "content/projects/sample-1.svg", "alt": "Sample Project One main screen" },
+        { "src": "content/projects/sample-2.svg", "alt": "Sample Project One settings" },
+        { "src": "content/projects/sample-3.svg", "alt": "Sample Project One results view" }
       ],
       "github": ["https://github.com/anuvgupta/sample-project-one"],
       "links": [
@@ -18,20 +30,18 @@
       "name": "Sample Project Two",
       "description": "Placeholder entry with one screenshot and two GitHub repos (e.g. separate frontend and backend). With more than one repo, each button shows the repo name.",
       "screenshots": [
-        { "src": "img/projects/sample-4.svg", "alt": "Sample Project Two dashboard" }
+        { "src": "content/projects/sample-4.svg", "alt": "Sample Project Two dashboard" }
       ],
       "github": [
         "https://github.com/anuvgupta/sample-project-two-web",
         "https://github.com/anuvgupta/sample-project-two-server"
       ],
-      "links": [
-        { "label": "Video", "url": "https://example.com/video" }
-      ]
+      "links": [{ "label": "Video", "url": "https://example.com/video" }]
     },
     {
       "name": "Sample Project Three",
       "description": "Placeholder entry with no screenshots and no extra links, just a description and a repo.",
-      "github": "https://github.com/anuvgupta/sample-project-three"
+      "github": ["https://github.com/anuvgupta/sample-project-three"]
     }
   ]
 }

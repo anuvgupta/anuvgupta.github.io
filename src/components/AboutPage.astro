@@ -1,0 +1,25 @@
+---
+import type { Site } from '../site';
+import { LINK_ICONS, initials } from '../theme';
+import LinkButton from './LinkButton.astro';
+
+interface Props {
+  site: Site;
+}
+const { site } = Astro.props;
+---
+
+<div class="page about">
+  <div class="user-tile user-tile-lg" aria-hidden="true">{initials(site.name)}</div>
+  <h1>{site.name}</h1>
+  {site.tagline && <p class="tagline">{site.tagline}</p>}
+  {
+    site.links.length > 0 && (
+      <div class="about-links">
+        {site.links.map((l) => (
+          <LinkButton href={l.url} label={l.label} icon={LINK_ICONS[l.icon ?? 'link']} />
+        ))}
+      </div>
+    )
+  }
+</div>

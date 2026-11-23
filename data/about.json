@@ -1,8 +1,0 @@
-{
-  "name": "Anuv Gupta",
-  "tagline": "engineer and artist",
-  "links": [
-    { "label": "GitHub", "url": "https://github.com/anuvgupta", "icon": "img/icons/github.svg" },
-    { "label": "LinkedIn", "url": "https://www.linkedin.com/in/anuvgupta", "icon": "img/icons/linkedin.svg" }
-  ]
-}

@@ -1,0 +1,56 @@
+---
+import { Image } from 'astro:assets';
+import type { Page, Project } from '../site';
+import { LINK_ICONS, repoName } from '../theme';
+import LinkButton from './LinkButton.astro';
+
+interface Props {
+  page: Page;
+  projects: Project[];
+}
+const { page, projects } = Astro.props;
+---
+
+<div class="page">
+  <header class="page-header">
+    <h1>{page.title}</h1>
+    <p>{projects.length} {projects.length === 1 ? 'project' : 'projects'}</p>
+  </header>
+  {projects.length === 0 && <p class="notice">No projects yet.</p>}
+  {
+    projects.map((p) => (
+      <article class="project">
+        <h2 class="project-title">{p.name}</h2>
+        <div class="project-content">
+          {p.description && <p class="project-desc">{p.description}</p>}
+          {p.screenshots.length > 0 && (
+            <div class="project-shots">
+              {p.screenshots.map((s, i) => {
+                const alt = s.alt ?? `${p.name} screenshot ${i + 1}`;
+                return (
+                  <a href={s.image.src} target="_blank" rel="noopener" title="Open full size">
+                    {s.image.format === 'svg' ? (
+                      <img src={s.image.src} alt={alt} width={s.image.width} height={s.image.height} loading="lazy" decoding="async" />
+                    ) : (
+                      <Image src={s.image} alt={alt} widths={[400, 800, 1200]} sizes="(max-width: 699px) 100vw, 320px" loading="lazy" />
+                    )}
+                  </a>
+                );
+              })}
+            </div>
+          )}
+          {(p.github.length > 0 || p.links.length > 0) && (
+            <div class="project-links">
+              {p.github.map((g) => (
+                <LinkButton href={g.url} label={g.label ?? (p.github.length > 1 ? repoName(g.url) : 'GitHub')} icon={LINK_ICONS.github} />
+              ))}
+              {p.links.map((l) => (
+                <LinkButton href={l.url} label={l.label} icon={LINK_ICONS.link} />
+              ))}
+            </div>
+          )}
+        </div>
+      </article>
+    ))
+  }
+</div>
