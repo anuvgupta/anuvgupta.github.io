@@ -199,7 +199,7 @@ class Cover {
     window.removeEventListener('resize', this.resize);
     const { canvas, ctx } = this;
     const dpr = canvas.width / Math.max(1, canvas.clientWidth);
-    const cell = Math.max(8, Math.round(14 * dpr));
+    const cell = Math.max(4, Math.round(7 * dpr));
     const cols = Math.ceil(canvas.width / cell);
     const rows = Math.ceil(canvas.height / cell);
     const cx = canvas.width / 2;
@@ -215,8 +215,10 @@ class Cover {
       const t0 = performance.now();
       let cleared = 0;
       const step = (now: number) => {
-        // The front moves outward at a steady pace (by turn, not by block count).
-        const k = ms <= 0 ? 1 : Math.min(1, (now - t0) / ms);
+        // The front moves outward by turn, not by block count, easing out:
+        // quick from the centre, slowing as it reaches the edges.
+        const t = ms <= 0 ? 1 : Math.min(1, (now - t0) / ms);
+        const k = 1 - (1 - t) ** 2;
         for (; cleared < order.length && turn[order[cleared]!]! <= k; cleared++) {
           const c = order[cleared]!;
           ctx.clearRect((c % cols) * cell, Math.floor(c / cols) * cell, cell, cell);
