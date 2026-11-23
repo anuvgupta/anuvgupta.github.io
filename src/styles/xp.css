@@ -391,6 +391,12 @@ html:not(.js) .window[hidden]:target {
   touch-action: none;
 }
 
+/* While a window is dragged by its title bar, show the grabbing hand everywhere so it holds as the pointer crosses other elements. */
+html.window-dragging,
+html.window-dragging * {
+  cursor: grabbing !important;
+}
+
 .title-icon {
   flex: none;
   width: 16px;

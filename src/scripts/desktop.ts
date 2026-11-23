@@ -221,6 +221,7 @@ function makeDraggable(win: Win, handle: HTMLElement) {
     const g = win.geom;
     const start = { x: e.clientX, y: e.clientY, left: g.left, top: g.top };
     handle.setPointerCapture(e.pointerId);
+    document.documentElement.classList.add('window-dragging');
 
     const move = (ev: PointerEvent) => {
       const { w: dw, h: dh } = desktopSize();
@@ -229,6 +230,7 @@ function makeDraggable(win: Win, handle: HTMLElement) {
       applyGeom(win);
     };
     const end = () => {
+      document.documentElement.classList.remove('window-dragging');
       handle.removeEventListener('pointermove', move);
       handle.removeEventListener('pointerup', end);
       handle.removeEventListener('pointercancel', end);

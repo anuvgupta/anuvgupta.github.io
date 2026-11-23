@@ -151,6 +151,7 @@ class Loader {
       const r = this.win.getBoundingClientRect();
       const start = { x: e.clientX, y: e.clientY, left: r.left - desk.left, top: r.top - desk.top };
       handle.setPointerCapture(e.pointerId);
+      document.documentElement.classList.add('window-dragging');
       const move = (ev: PointerEvent) => {
         const left = start.left + ev.clientX - start.x;
         const top = start.top + ev.clientY - start.y;
@@ -158,6 +159,7 @@ class Loader {
         this.win.style.top = `${Math.min(Math.max(top, 0), desk.height - 30)}px`;
       };
       const end = () => {
+        document.documentElement.classList.remove('window-dragging');
         handle.removeEventListener('pointermove', move);
         handle.removeEventListener('pointerup', end);
         handle.removeEventListener('pointercancel', end);
