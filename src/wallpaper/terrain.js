@@ -22,13 +22,14 @@ export const VIEW = {
   x: 120,
   z: 0,
   eye: 2.5, // standing on a low bank at the meadow's edge
-  fov: 40, // vertical, degrees
-  pitch: 0.152, // radians up from level: the hills sit in the lower half
+  fov: 34, // vertical, degrees: a slightly long lens, close in on the hill
+  pitch: 0.134, // radians up from level: the hills sit in the lower half
 };
 
 // The landform's sizes, in the viewer's frame (metres ahead, to the right).
-const BANK = 5; // the viewer's bank above the meadow
-const MAIN = { f: 380, r: -31, h: 45, left: 125, right: 165, front: 140, back: 200 };
+const BANK = 4; // the viewer's bank above the meadow
+// Near enough that the grass blades reach over its crest.
+const MAIN = { f: 140, r: -18, h: 21, left: 40, right: 85, front: 85, back: 80 };
 
 const coordOf = (k) => (WORLD_HALF * Math.sinh(WARP * ((2 * k) / SEGMENTS - 1))) / SINH_K;
 
@@ -56,28 +57,28 @@ export class Terrain {
     const dome = (u) => Math.exp(-Math.pow(Math.abs(u), 2.6));
 
     // The meadow: flat, rising gently back to the viewer's bank.
-    const meadow = BANK * (1 - smoothstep(0, 170, f));
+    const meadow = BANK * (1 - smoothstep(0, 70, f));
 
     // The main hill: a rounded dome left of centre, its crest receding to the
-    // right. Its near face falls steeply from the crest, then rolls out into
+    // right. Its near face falls from the crest, then rolls out gently into
     // the meadow.
     const dr = r - MAIN.r;
-    const crestF = MAIN.f + 0.35 * Math.max(0, dr) + 8 * this.noiseA(r * 0.004, 1.3);
-    const crestH = MAIN.h * dome(dr / (dr < 0 ? MAIN.left : MAIN.right));
+    const crestF = MAIN.f + 0.35 * Math.max(0, dr) + 4 * this.noiseA(r * 0.008, 1.3);
+    const crestH = MAIN.h * gauss(dr, dr < 0 ? MAIN.left : MAIN.right);
     const df = f - crestF;
     const main = crestH * (df < 0 ? gauss(df, MAIN.front) : gauss(df, MAIN.back));
     // A long low shoulder running off to the right behind the dome.
-    const shoulder = 11 * gauss(f - 620, 300) * smoothstep(-150, 220, r);
+    const shoulder = 5 * gauss(f - 260, 130) * smoothstep(-40, 100, r);
 
-    // Two further hills, darker in the haze: a low one behind the dome's
-    // left flank and a taller one rising to the right edge.
-    const farLeft = 50 * gauss(f - 1000, 260) * dome((r + 600) / 420);
-    const farRight = 125 * gauss(f - 1150, 300) * dome((r - 820) / 520);
+    // Two further hills, darker in the haze, showing only at the ends of the
+    // view: a low one past the dome's left flank, a taller one at the right.
+    const farLeft = 44 * gauss(f - 600, 170) * dome((r + 350) / 170);
+    const farRight = 52 * gauss(f - 620, 180) * dome((r - 390) / 210);
     const far = farLeft + farRight;
 
     // Gentle unevenness so no slope is perfectly smooth: broad swells and a
     // little finer roll, both small.
-    const swell = fbm(this.noiseB, x * 0.004, z * 0.004, 4) * 2.5 + fbm(this.noiseA, x * 0.018, z * 0.018, 3) * 0.5;
+    const swell = fbm(this.noiseB, x * 0.004, z * 0.004, 4) * 1.2 + fbm(this.noiseA, x * 0.018, z * 0.018, 3) * 0.4;
 
     return meadow + main + shoulder + far + swell;
   }
