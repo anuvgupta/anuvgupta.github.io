@@ -7,9 +7,19 @@ import * as THREE from 'three';
 import { Sky } from 'three/addons/objects/Sky.js';
 import { smoothstep, mulberry32 } from './noise.js';
 import { applyCloudStyle, CLOUD_BANKS_GLSL } from './clouds.js';
-import { SUNRISE, DAY_LENGTH } from '../sun.js';
+import { SUNRISE, SUNSET, DAY_LENGTH } from '../sun.js';
 
 const LATITUDE_TILT = 0.6; // radians; noon sun sits ~56° up in the south (+z)
+
+// The moon the viewer sees keeps to the right of the westward view (the sun
+// keeps to the left): it climbs out from behind the hills there once dusk has
+// deepened, arcs a little way up and sinks behind them again before dawn.
+const MOONRISE = SUNSET + 0.4;
+const MOONSET = SUNRISE - 0.9;
+const MOON_LOW = -0.14; // radians; well under the hills' skyline, so it rises and sets behind them
+const MOON_HIGH = 0.2; // radians; its highest, about a quarter down from the top of the frame
+const MOON_YAW_RISE = 0.38; // radians right of straight ahead
+const MOON_YAW_SET = 0.2;
 
 // The sky's final output: soft-clip the in-scatter so a low sun grades into
 // a glow rather than a white-out, and cap it so bloom never runs away. Goes
@@ -195,6 +205,18 @@ export class Environment {
     return target.normalize();
   }
 
+  // Where the drawn moon stands at `hours` (see MOONRISE). Under the hills by
+  // day; moonDirection is still the sky's true turn, which the stars follow.
+  viewMoonDirection(hours, target) {
+    const span = (MOONSET - MOONRISE + 24) % 24;
+    const t = (hours - MOONRISE + 24) % 24;
+    const p = t < span ? t / span : 0;
+    const elev = MOON_LOW + (MOON_HIGH - MOON_LOW) * Math.pow(Math.sin(Math.PI * p), 0.6);
+    const yaw = THREE.MathUtils.lerp(MOON_YAW_RISE, MOON_YAW_SET, p);
+    // The view looks down -x with +z on its left.
+    return target.set(-Math.cos(yaw) * Math.cos(elev), Math.sin(elev), -Math.sin(yaw) * Math.cos(elev));
+  }
+
   computeSunDirection(hours, target) {
     // Rises due east (+x) at SUNRISE, sets due west (-x) DAY_LENGTH hours later.
     const theta = ((hours - SUNRISE) / DAY_LENGTH) * Math.PI;
@@ -266,7 +288,7 @@ export class Environment {
       const cloudy = this.nightClouds !== undefined ? this.nightClouds : hash(1) < 0.5 ? 1 : 0;
       const su = this.sky.material.uniforms;
       if (su.cloudCoverage) su.cloudCoverage.value = THREE.MathUtils.lerp(0.45, cloudy ? 0.75 : 0.05, this.nightFactor);
-      const moon = this.moonDirection(sunTime, this._cloudMoon || (this._cloudMoon = new THREE.Vector3()));
+      const moon = this.viewMoonDirection(sunTime, this._cloudMoon || (this._cloudMoon = new THREE.Vector3()));
       su.cloudMoonDir.value.copy(moon);
       const lit = 0.35 + 0.65 * smoothstep(-0.05, 0.25, moon.y);
       const hue = hash(2);
@@ -377,13 +399,11 @@ export class Environment {
     // Punchier by day; flat light at dusk and night stays soft.
     a.contrast = 1.0 + 0.14 * day * (1 - 0.5 * golden) + 0.06 * (1 - day);
     // While the sun is down the pass draws the moon instead: a small pale
-    // disc, faint halo, opposite the sun. It rises in the east as dusk
-    // deepens and is still setting in the west at dawn, fading as the sky
-    // brightens and sinking under the horizon rather than vanishing.
-    // (It used to be held at least 0.25 up and cut off the moment the
-    // dawn light began.)
-    const moonDir = this.moonDirection(sunTime, this._tmp2 || (this._tmp2 = new THREE.Vector3()));
-    const moonVis = smoothstep(-0.03, 0.05, moonDir.y) * (1 - smoothstep(-0.13, -0.015, elev));
+    // disc, faint halo, on its own path through the right of the view. The
+    // hills hide it as it rises and sets (the pass draws it only on sky), so
+    // it is not faded by height; it sets before the dawn light comes up.
+    const moonDir = this.viewMoonDirection(sunTime, this._tmp2 || (this._tmp2 = new THREE.Vector3()));
+    const moonVis = smoothstep(MOON_LOW, MOON_LOW + 0.02, moonDir.y) * (1 - smoothstep(-0.13, -0.015, elev));
     if (elev < -0.015 && moonVis > 0.001) {
       a.sunDir.copy(moonDir);
       a.sunVisible = moonVis;
