@@ -49,6 +49,10 @@ function nextTask() {
   });
 }
 
+// Frame rate cap: a wallpaper doesn't need every display refresh. The
+// adaptive stepper's thresholds are shares of it.
+const FPS_CAP = 30;
+
 const hoursNow = () => {
   const d = new Date();
   return d.getHours() + d.getMinutes() / 60 + d.getSeconds() / 3600;
@@ -196,6 +200,8 @@ class Wallpaper {
     let sinceStill = Infinity;
     const frame = (now) => {
       this.raf = requestAnimationFrame(frame);
+      // (The slack lets a 60 Hz display land on every other refresh.)
+      if (now - last < 1000 / FPS_CAP - 4) return;
       const dt = Math.min(0.1, (now - last) / 1000);
       last = now;
       // Nothing to draw while a window covers the whole desktop.
@@ -228,8 +234,9 @@ class Wallpaper {
   // frame rate stays low and back up when there is headroom. The level is
   // remembered (with the preset it applies to), so the next visit starts
   // where this one settled instead of stuttering through the first seconds.
-  //   down  ~3 s under 28 fps
-  //   up    ~12 s at 55+ fps; kept only if it holds 45+ for the next 6 s,
+  // With the frame rate capped, "headroom" means holding the cap:
+  //   down  ~3 s under 80% of FPS_CAP
+  //   up    ~12 s at the cap; kept only if it holds 90% for the next 6 s,
   //         otherwise it reverts and waits longer before trying again
   // Past the bottom rung the next visit starts on a lighter preset; at the
   // top rung on a lighter preset with room to spare, on a heavier one.
@@ -248,7 +255,7 @@ class Wallpaper {
     const a = this.adapt;
     if (this.elapsed < a.settleUntil) {
       // Just stepped up: hold it only if it stays smooth.
-      if (a.trial !== null && fps < 45) {
+      if (a.trial !== null && fps < FPS_CAP * 0.9) {
         this.applyAdaptLevel(a.trial);
         a.trial = null;
         a.settleUntil = this.elapsed + 4;
@@ -258,7 +265,7 @@ class Wallpaper {
       return;
     }
     a.trial = null;
-    if (fps < 28) {
+    if (fps < FPS_CAP * 0.8) {
       a.fast = 0;
       if (++a.slow < 6) return; // ~3 s of slow frames
       a.slow = 0;
@@ -276,7 +283,7 @@ class Wallpaper {
       return;
     }
     a.slow = Math.max(0, a.slow - 1);
-    if (fps < 55 || this.elapsed < a.nextTry) {
+    if (fps < FPS_CAP * 0.97 || this.elapsed < a.nextTry) {
       a.fast = 0;
       return;
     }
