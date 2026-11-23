@@ -161,6 +161,9 @@ export class Grass {
     const ctx = Math.floor(cam.x / TILE);
     const ctz = Math.floor(cam.z / TILE);
     const moved = ctx !== this.centerTile.x || ctz !== this.centerTile.z;
+    // The fade follows the reach the adaptive stepper leaves, so a shortened
+    // reach still thins out instead of ending in a hard edge.
+    this.uniforms.uRadius.value = this.radius * this.radiusScale;
     this.centerTile.x = ctx;
     this.centerTile.z = ctz;
 
@@ -241,7 +244,7 @@ export class Grass {
           float kk = uFullRadius / max( dist, uFullRadius );
           float keep = max( 0.02, kk * kk * kk );
           float thin = clamp( ( keep - aBlade.z ) / ( 0.3 * keep ), 0.0, 1.0 );
-          float fade = 1.0 - smoothstep( uRadius * 0.7, uRadius, dist );
+          float fade = 1.0 - smoothstep( uRadius * 0.85, uRadius, dist );
           // (Up to six and a half times as wide where they're thinnest, so
           // the middle distance stays covered without drawing more blades.)
           float widen = clamp( inversesqrt( keep ), 1.0, 6.5 );
