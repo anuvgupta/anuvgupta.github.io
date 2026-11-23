@@ -20,7 +20,7 @@ import { Motes } from './murk/Motes.js';
 import { Dust } from './murk/Dust.js';
 import { createNoiseTexture } from './murk/noiseTexture.js';
 import { createTerrainMaterial } from './murk/TerrainMaterial.js';
-import { settings, QUALITY, PRESET_ORDER, rememberQuality, ADAPT_LADDER, loadAdapt, rememberAdapt } from './murk/settings.js';
+import { settings, QUALITY, DEFAULT_QUALITY, PRESET_ORDER, rememberQuality, ADAPT_LADDER, loadAdapt, rememberAdapt } from './murk/settings.js';
 
 
 // Loading stages: name, weight (share of the load time) — as murk3d's Game.
@@ -242,7 +242,8 @@ class Wallpaper {
   //   up    ~12 s at the cap; kept only if it holds 90% for the next 6 s,
   //         otherwise it reverts and waits longer before trying again
   // Past the bottom rung the next visit starts on a lighter preset; at the
-  // top rung on a lighter preset with room to spare, on a heavier one.
+  // top rung on a lighter preset with room to spare, on a heavier one, but
+  // never above DEFAULT_QUALITY (heavier presets only by ?quality=).
   // (murk3d's Game.applyAdaptLevel / adaptQuality, without the game's toasts.)
   applyAdaptLevel(level) {
     const L = ADAPT_LADDER[level];
@@ -300,7 +301,7 @@ class Wallpaper {
     }
     // Top rung of a lighter preset and still plenty of room.
     const i = PRESET_ORDER.indexOf(QUALITY);
-    if (i > 0 && !a.presetNoted && ++a.fast >= 60) {
+    if (i > PRESET_ORDER.indexOf(DEFAULT_QUALITY) && !a.presetNoted && ++a.fast >= 60) {
       a.presetNoted = true;
       rememberQuality(PRESET_ORDER[i - 1]);
       rememberAdapt(PRESET_ORDER[i - 1], 1);

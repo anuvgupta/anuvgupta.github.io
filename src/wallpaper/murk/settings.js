@@ -8,12 +8,13 @@
 // reach costs little.
 const PRESETS = {
   low: { pixelRatio: 1, shadowMapSize: 2048, grassDensity: 200, grassFullDetail: 8, grassDrawDistance: 170, bloom: false },
-  medium: { pixelRatio: 1.25, shadowMapSize: 2048, grassDensity: 335, grassFullDetail: 10, grassDrawDistance: 180, bloom: true },
+  medium: { pixelRatio: 1, shadowMapSize: 2048, grassDensity: 335, grassFullDetail: 10, grassDrawDistance: 180, bloom: true },
   high: { pixelRatio: 1.5, shadowMapSize: 4096, grassDensity: 470, grassFullDetail: 12.5, grassDrawDistance: 190, bloom: true },
 };
 
-const KEY_QUALITY = 'wallpaper.quality';
-const KEY_ADAPT = 'wallpaper.adapt';
+// (v2: presets picked under the old uncapped frame rate aren't carried over.)
+const KEY_QUALITY = 'wallpaper.quality.v2';
+const KEY_ADAPT = 'wallpaper.adapt.v2';
 
 // A preset the adaptive stepper settled on last time is remembered.
 let saved = null;
@@ -22,11 +23,14 @@ try {
 } catch (e) {
   saved = null;
 }
-// (First visit on a phone or tablet: start on the light preset rather than
-// stuttering down the ladder from the top.)
-const firstGuess = typeof matchMedia === 'function' && matchMedia('(pointer: coarse)').matches ? 'low' : 'high';
+// Desktops start on medium: the wallpaper sits behind windows, and high's
+// extra resolution and grass barely show there but cost a lot of GPU. (First
+// visit on a phone or tablet: start on the light preset rather than
+// stuttering down the ladder.)
+export const DEFAULT_QUALITY = 'medium';
+const firstGuess = typeof matchMedia === 'function' && matchMedia('(pointer: coarse)').matches ? 'low' : DEFAULT_QUALITY;
 const requested = new URLSearchParams(window.location.search).get('quality') || saved || firstGuess;
-export const QUALITY = PRESETS[requested] ? requested : 'high';
+export const QUALITY = PRESETS[requested] ? requested : DEFAULT_QUALITY;
 export const PRESET_ORDER = ['high', 'medium', 'low'];
 export function rememberQuality(name) {
   try {
