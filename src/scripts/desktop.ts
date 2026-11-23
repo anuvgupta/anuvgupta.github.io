@@ -308,7 +308,7 @@ for (const menu of $$('.menu', desktopEl)) {
 
 // ---------------------------------------------------------------- desktop icons
 
-const icons = $$<HTMLButtonElement>('.desktop-icon', iconsEl);
+const icons = $$<HTMLAnchorElement>('.desktop-icon', iconsEl);
 
 function selectIcon(btn: HTMLElement | null) {
   for (const el of icons) el.classList.toggle('selected', el === btn);
@@ -321,8 +321,11 @@ for (const btn of icons) {
     pointerType = e.pointerType || 'mouse';
     selectIcon(btn);
   });
-  // Mouse: double-click opens. Touch and pen: a single tap opens.
-  btn.addEventListener('click', () => {
+  // Mouse: double-click opens. Touch and pen: a single tap opens. (The icons
+  // are links to #page so they work without the script; with it, the click
+  // never follows the link.)
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
     if (pointerType !== 'mouse') openPage(id);
   });
   btn.addEventListener('dblclick', () => openPage(id));

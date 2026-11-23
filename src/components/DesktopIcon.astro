@@ -9,7 +9,7 @@ const { page } = Astro.props;
 const icon = PAGE_TYPES[page.type].icon;
 ---
 
-<button class="desktop-icon" type="button" role="listitem" data-page={page.id} title={`Open ${page.title}`} style={`--icon: url("${icon}")`}>
+<a class="desktop-icon" href={`#${page.id}`} role="listitem" data-page={page.id} title={`Open ${page.title}`} style={`--icon: url("${icon}")`}>
   <span class="icon-img"><img src={icon} alt="" draggable="false" /></span>
   <span class="icon-label">{page.title}</span>
-</button>
+</a>

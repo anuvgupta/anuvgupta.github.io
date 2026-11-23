@@ -1,0 +1,41 @@
+---
+import { SUNRISE, SUNSET, NOON } from '../wallpaper/sun.js';
+
+// Marks along the 24-hour slider, at the hours the sky actually turns.
+const pct = (h: number) => `${((h / 24) * 100).toFixed(2)}%`;
+const marks = [
+  { label: 'Night', at: 0, align: 'start' },
+  { label: 'Sunrise', at: SUNRISE, align: 'mid' },
+  { label: 'Day', at: NOON, align: 'mid' },
+  { label: 'Sunset', at: SUNSET, align: 'mid' },
+  { label: 'Night', at: 24, align: 'end' },
+];
+---
+
+<section id="wallpaper-widget" class="wp-widget" aria-label="Wallpaper options" hidden>
+  <div class="wp-title">
+    <img src="/img/icons/sun.svg" alt="" width="14" height="14" />
+    <span>Wallpaper</span>
+    <button id="wp-collapse" class="wp-collapse" type="button" aria-expanded="true" aria-controls="wp-body" title="Hide options"></button>
+  </div>
+  <div id="wp-body" class="wp-body">
+    <div class="wp-row">
+      <label for="wp-time">Time of day</label>
+      <output id="wp-readout" for="wp-time"></output>
+    </div>
+    <input id="wp-time" class="wp-slider" type="range" min="0" max="24" step="0.0833333" value="12" aria-describedby="wp-readout" />
+    <div class="wp-ticks" aria-hidden="true">
+      {
+        marks.map((m) => (
+          <span class:list={['wp-tick', `wp-tick-${m.align}`]} style={`left: ${pct(m.at)}`}>
+            {m.label}
+          </span>
+        ))
+      }
+    </div>
+    <label class="wp-live">
+      <input id="wp-live" type="checkbox" checked />
+      Follow my clock
+    </label>
+  </div>
+</section>

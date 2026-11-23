@@ -7,6 +7,7 @@ import ProjectsPage from '../components/ProjectsPage.astro';
 import StartMenu from '../components/StartMenu.astro';
 import Taskbar from '../components/Taskbar.astro';
 import Window from '../components/Window.astro';
+import WallpaperWidget from '../components/WallpaperWidget.astro';
 
 const canonical = Astro.site?.href;
 ---
@@ -26,9 +27,13 @@ const canonical = Astro.site?.href;
     <meta name="twitter:card" content="summary" />
     <meta name="theme-color" content="#245edb" />
     <link rel="icon" href="/img/icons/projects.svg" type="image/svg+xml" />
+    <!-- Marks the page as scripted before it paints, so the static wallpaper never flashes before the live one. -->
+    <script is:inline>document.documentElement.classList.add('js');</script>
   </head>
   <body data-open={site.openOnLoad ?? ''}>
+    <div id="wallpaper" class="wallpaper" aria-hidden="true"></div>
     <main id="desktop" class="desktop" aria-label="Desktop">
+      <WallpaperWidget />
       <div id="desktop-icons" class="desktop-icons" role="list">
         {site.pages.map((p) => <DesktopIcon page={p} />)}
       </div>
@@ -45,6 +50,7 @@ const canonical = Astro.site?.href;
     <Taskbar pages={site.pages} openId={site.openOnLoad} />
     <script>
       import '../scripts/desktop';
+      import '../scripts/wallpaper-boot';
     </script>
   </body>
 </html>

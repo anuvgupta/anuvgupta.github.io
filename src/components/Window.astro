@@ -11,7 +11,7 @@ const icon = PAGE_TYPES[page.type].icon;
 const titleId = `win-title-${page.id}`;
 ---
 
-<section class="window" data-page={page.id} role="dialog" aria-labelledby={titleId} hidden={!open}>
+<section class="window" id={page.id} data-page={page.id} role="dialog" aria-labelledby={titleId} hidden={!open}>
   <div class="title-bar">
     <img class="title-icon" src={icon} alt="" draggable="false" />
     <span class="title-text" id={titleId}>{page.title}</span>
