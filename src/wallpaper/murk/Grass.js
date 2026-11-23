@@ -29,10 +29,12 @@ import { WIND_GLSL } from './Wind.js';
 // two-segment blade.
 
 const TILE = 16;
-// The least share of blades kept at any distance. The far hillside is seen
-// close up in this view, so it keeps enough blades to read as a lawn, not
-// as a scatter of widened leaves.
-const KEEP_FLOOR = 0.05;
+// The least density kept at any distance, in blades per m² (5% of the high
+// preset's). The far hillside is seen close up in this view, so it keeps
+// enough blades to read as a lawn, not as a scatter of widened leaves, and
+// the same lawn on every preset: lighter presets keep a larger share of
+// their blades there. Most far blades are one triangle, so it costs little.
+const FAR_DENSITY = 23.5;
 const BLADES_PER_TUFT = 5;
 const TUFT_RADIUS = 0.14;
 
@@ -65,6 +67,7 @@ export class Grass {
     this.group.name = 'grass';
 
     const density = settings.grassDensity; // blades per m² at full density
+    this.keepFloor = Math.min(1, FAR_DENSITY / density); // least share kept
     this.radius = settings.grassDrawDistance;
     this.fullRadius = settings.grassFullDetail;
     this.radiusScale = 1; // the adaptive stepper shrinks this on slow machines
@@ -148,7 +151,7 @@ export class Grass {
   keep(d) {
     if (d <= this.fullRadius) return 1;
     const k = this.fullRadius / d;
-    return Math.max(KEEP_FLOOR, k * k * Math.sqrt(k));
+    return Math.max(this.keepFloor, k * k * Math.sqrt(k));
   }
 
   countFor(f) {
@@ -263,7 +266,7 @@ export class Grass {
           vec3 groundN = onDisc > 0.5 ? vec3( 0.0, 1.0, 0.0 ) : normalize( vec3( hL - hR, 1.2, hD - hU ) );
           float dist = distance( vec3( root.x, ground, root.y ), cameraPosition );
           float kk = uFullRadius / max( dist, uFullRadius );
-          float keep = max( ${KEEP_FLOOR.toFixed(3)}, kk * kk * sqrt( kk ) );
+          float keep = max( ${this.keepFloor.toFixed(3)}, kk * kk * sqrt( kk ) );
           float thin = clamp( ( keep - aBlade.z ) / ( 0.3 * keep ), 0.0, 1.0 );
           float fade = 1.0 - smoothstep( uRadius * 0.85, uRadius, dist );
           // (Up to six and a half times as wide where they're thinnest, so
