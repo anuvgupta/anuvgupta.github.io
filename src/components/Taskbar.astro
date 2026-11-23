@@ -10,7 +10,7 @@ const { pages, openId } = Astro.props;
 ---
 
 <footer class="taskbar">
-  <button id="start-button" class="start-button" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="start-menu">start</button>
+  <button id="start-button" class="start-button" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="start-menu"><span class="start-logo" aria-hidden="true"></span>start</button>
   <div id="tasks" class="taskbar-tasks" role="toolbar" aria-label="Open windows">
     {
       pages.map((p) => (
