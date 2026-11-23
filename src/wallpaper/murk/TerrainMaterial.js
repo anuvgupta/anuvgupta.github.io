@@ -12,9 +12,13 @@ export function createTerrainMaterial({ noise, heightMap }) {
   const material = new THREE.MeshStandardMaterial({ roughness: 0.95, metalness: 0, envMapIntensity: 1.35 });
   // How much of the Bliss green shows: 1 by day, 0 at night (set per frame).
   material.userData.lush = { value: 1 };
+  // The horizon haze colour (the atmosphere's fog, set per frame): the far
+  // ranges fade into it, so they lie faint and layered on the horizon.
+  material.userData.haze = { value: new THREE.Color() };
   material.onBeforeCompile = (shader) => {
     shader.uniforms.uNoise = { value: noise };
     shader.uniforms.uLush = material.userData.lush;
+    shader.uniforms.uHaze = material.userData.haze;
     shader.uniforms.uHeightMap = { value: heightMap };
 
     shader.vertexShader = shader.vertexShader
@@ -39,6 +43,7 @@ export function createTerrainMaterial({ noise, heightMap }) {
         varying vec3 vWNormal;
         uniform sampler2D uHeightMap;
         uniform float uLush;
+        uniform vec3 uHaze;
         ${TERRAIN_HEIGHT_GLSL}
         ${GROUND_GLSL}`
       )
@@ -67,16 +72,27 @@ export function createTerrainMaterial({ noise, heightMap }) {
         groundDetail = 1.0 - smoothstep( 8.0, 40.0, length( vViewPosition ) );
         vec3 ground = groundColor( vWPos, wnClass, carpet );
         // Bliss: past the blades the turf reads as one lush green carpet in
-        // broad, soft sweeps, and the far hills as a deeper green. By night
+        // broad, soft sweeps, and the far ranges as a hazy purple-green. By night
         // the meadow's own moonlit colours come back.
         {
           float vd = length( vViewPosition );
           float sweep = texture( uNoise, vWPos.xz * 0.0035 + 0.53 ).r * 0.7 + texture( uNoise, vWPos.xz * 0.011 + 0.2 ).g * 0.3;
           vec3 lush = mix( vec3( 0.085, 0.30, 0.014 ), vec3( 0.15, 0.46, 0.022 ), smoothstep( 0.3, 0.7, sweep ) );
           ground = mix( ground, lush, smoothstep( 40.0, 150.0, vd ) * 0.85 * uLush );
-          ground = mix( ground, vec3( 0.03, 0.15, 0.014 ), smoothstep( 350.0, 550.0, vd ) * 0.8 * uLush );
+          // Indigo, like far mountains in a clear midday haze.
+          vec3 range = vec3( 0.07, 0.04, 0.22 );
+          ground = mix( ground, range, smoothstep( 700.0, 1200.0, vd ) * 0.9 * uLush );
         }
         diffuseColor.rgb *= ground;`
+      )
+      .replace(
+        '#include <opaque_fragment>',
+        `{
+          // Far ranges: extra haze past the meadow, more the further they lie.
+          float far = 1.0 - exp( -max( length( vViewPosition ) - 800.0, 0.0 ) * 0.0002 );
+          outgoingLight = mix( outgoingLight, uHaze * vec3( 0.76, 0.68, 1.2 ), far );
+        }
+        #include <opaque_fragment>`
       );
   };
   return material;

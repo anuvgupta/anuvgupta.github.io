@@ -30,6 +30,15 @@ export const VIEW = {
 const BANK = 4; // the viewer's bank above the meadow
 // Near enough that the grass blades reach over its crest.
 const MAIN = { f: 140, r: -22, h: 21, left: 40, right: 85, front: 85, back: 80 };
+// The far mountains, low on the horizon: [distance, offset right, height,
+// spread] in metres. Each is a wide cone with concave slopes and a definite
+// peak; only their tops clear the main hill.
+const PEAKS = [
+  [2650, 940, 150, 260],
+  [2900, 1380, 170, 280],
+  [2450, 620, 95, 210],
+  [2800, -1300, 235, 360],
+];
 
 const coordOf = (k) => (WORLD_HALF * Math.sinh(WARP * ((2 * k) / SEGMENTS - 1))) / SINH_K;
 
@@ -70,11 +79,13 @@ export class Terrain {
     // A long low shoulder running off to the right behind the dome.
     const shoulder = 5 * gauss(f - 260, 130) * smoothstep(-40, 100, r);
 
-    // Two further hills, darker in the haze, showing only at the ends of the
-    // view: a low one past the dome's left flank, a taller one at the right.
-    const farLeft = 44 * gauss(f - 600, 170) * dome((r + 350) / 170);
-    const farRight = 52 * gauss(f - 620, 180) * dome((r - 390) / 210);
-    const far = farLeft + farRight;
+    // The far mountains: the highest peak at each point wins, so they
+    // overlap like ranges one behind another.
+    let far = 0;
+    for (const [F, R, h, w] of PEAKS) {
+      const d = Math.hypot(r - R, f - F);
+      far = Math.max(far, h * Math.exp(-Math.pow(Math.sqrt(d * d + 400) / w, 0.7)));
+    }
 
     // Gentle unevenness so no slope is perfectly smooth: broad swells and a
     // little finer roll, both small.

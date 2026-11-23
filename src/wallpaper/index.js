@@ -179,6 +179,7 @@ class Wallpaper {
     env.update(dt, this.camera.position, this.wind);
     this.renderer.toneMappingExposure = env.exposure;
     this.groundMaterial.userData.lush.value = 1 - env.nightFactor;
+    this.groundMaterial.userData.haze.value.copy(env.atmosphere.fogColor);
     if (this.atmosphere) this.atmosphere.update(env.atmosphere, this.wind, this.noiseTexture, this.elapsed);
     this.sunInfo.color.copy(env.sun.color).multiplyScalar(env.sun.intensity);
     this.wind.update(dt);
