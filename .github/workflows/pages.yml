@@ -21,13 +21,20 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run build
+
       - uses: actions/configure-pages@v5
 
-      # Plain static site for now: publish the repo root as-is.
-      # When a framework is added, insert the build steps here and point `path` at its output dir.
       - uses: actions/upload-pages-artifact@v4
         with:
-          path: .
+          path: dist
 
   deploy:
     needs: build
