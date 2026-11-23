@@ -171,7 +171,7 @@ class Loader {
 
 /**
  * A plain desktop-blue cover over the scene while it loads. When the scene is
- * ready it breaks into pixel blocks that vanish in a scattered order.
+ * ready it breaks into pixel blocks that vanish from the centre outward.
  */
 class Cover {
   canvas = document.createElement('canvas');
@@ -193,25 +193,31 @@ class Cover {
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
   };
 
-  dissolve(ms = reducedMotion ? 0 : 220): Promise<void> {
+  // Blocks clear from the middle of the screen outward. Each block's turn is
+  // its distance from the centre plus some jitter, so the edge stays ragged.
+  dissolve(ms = reducedMotion ? 0 : 450): Promise<void> {
     window.removeEventListener('resize', this.resize);
     const { canvas, ctx } = this;
     const dpr = canvas.width / Math.max(1, canvas.clientWidth);
     const cell = Math.max(8, Math.round(14 * dpr));
     const cols = Math.ceil(canvas.width / cell);
     const rows = Math.ceil(canvas.height / cell);
-    const order = Array.from({ length: cols * rows }, (_, i) => i);
-    for (let i = order.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [order[i], order[j]] = [order[j]!, order[i]!];
-    }
+    const cx = canvas.width / 2;
+    const cy = canvas.height / 2;
+    const far = Math.hypot(cx, cy);
+    const JITTER = 0.25;
+    const turn = Array.from({ length: cols * rows }, (_, i) => {
+      const d = Math.hypot(((i % cols) + 0.5) * cell - cx, (Math.floor(i / cols) + 0.5) * cell - cy);
+      return (d / far) * (1 - JITTER) + Math.random() * JITTER;
+    });
+    const order = turn.map((_, i) => i).sort((a, b) => turn[a]! - turn[b]!);
     return new Promise((resolve) => {
       const t0 = performance.now();
       let cleared = 0;
       const step = (now: number) => {
+        // The front moves outward at a steady pace (by turn, not by block count).
         const k = ms <= 0 ? 1 : Math.min(1, (now - t0) / ms);
-        const want = Math.floor(order.length * k);
-        for (; cleared < want; cleared++) {
+        for (; cleared < order.length && turn[order[cleared]!]! <= k; cleared++) {
           const c = order[cleared]!;
           ctx.clearRect((c % cols) * cell, Math.floor(c / cols) * cell, cell, cell);
         }
