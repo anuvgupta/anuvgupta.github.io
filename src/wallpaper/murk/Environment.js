@@ -352,15 +352,17 @@ export class Environment {
     a.fogColor.copy(PALETTE.fogNight).lerp(this._tmpColor.copy(PALETTE.fogDay).lerp(PALETTE.fogGolden, golden * 0.85), dayFog);
     a.fogSunColor.copy(PALETTE.fogNight).lerp(this._tmpColor2.setRGB(0.3, 0.14, 0.2), duskI / 1.1);
     a.fogSunColor.lerp(this._tmpColor.setRGB(0.86, 0.84, 0.78).lerp(this._tmpColor2.setRGB(0.82, 0.58, 0.4), low), dayFog);
-    // Clear air at midday; haze thickens as the sun drops.
-    a.fogDensity = 0.00075 + 0.0011 * low * dayFog + 0.0003 * (1 - day);
+    // Clear air at midday (Bliss-clear, so the hills keep their green);
+    // haze thickens as the sun drops.
+    const clear = day * (1 - low);
+    a.fogDensity = 0.00075 * (1 - 0.6 * clear) + 0.0011 * low * dayFog + 0.0003 * (1 - day);
     a.fogHeight = this.focusHeight - 6;
     a.fogFalloff = 0.015;
     // Mist lies in the valley at dawn and dusk and thins through the day,
     // but never quite goes: its banks drifting slowly in the hollows and the
     // distance are part of the Vale (at a fifth of this by day, it read as
     // gone).
-    a.groundMist = 0.19 + 0.09 * low * day + 0.07 * (1 - day);
+    a.groundMist = (0.19 + 0.09 * low * day + 0.07 * (1 - day)) * (1 - 0.8 * clear);
     a.mistColor.setRGB(0.2, 0.25, 0.36).lerp(this._tmpColor.setRGB(0.92, 0.93, 0.92), dayFog);
     a.mistOwn = (1 - low * day) * (1 - Math.min(1, duskI));
     a.mistFill = 0;
