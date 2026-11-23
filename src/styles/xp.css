@@ -293,6 +293,7 @@ html:not(.js) .window[hidden]:target {
 
 .desktop-icon {
   width: 80px;
+  text-decoration: none;
   padding: 3px 2px;
   border: 0;
   background: none;

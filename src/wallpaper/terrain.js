@@ -20,9 +20,9 @@ const SINH_K = Math.sinh(WARP);
 export const VIEW = {
   x: 120,
   z: 0,
-  eye: 1.6,
-  fov: 38, // vertical, degrees
-  pitch: 0.055, // radians up from level
+  eye: 4.5, // standing a little above the meadow, as on a roadside bank
+  fov: 40, // vertical, degrees
+  pitch: 0.035, // radians up from level
 };
 
 const coordOf = (k) => (WORLD_HALF * Math.sinh(WARP * ((2 * k) / SEGMENTS - 1))) / SINH_K;
@@ -52,8 +52,8 @@ export class Terrain {
     // couple of hundred metres off, highest a little left of centre, lower
     // and further away to the right. Its near face is long and gentle, the
     // far side shorter.
-    const crestF = 250 + 45 * Math.tanh((r - 60) / 220) + 10 * this.noiseA(r * 0.004, 1.3);
-    const crestH = 30 + 9 * gauss(r + 70, 260) - 16 * smoothstep(80, 650, r) + 3 * this.noiseA(r * 0.006, 4.1);
+    const crestF = 230 + 60 * Math.tanh((r - 60) / 220) + 10 * this.noiseA(r * 0.004, 1.3);
+    const crestH = 24 + 18 * gauss(r + 60, 210) - 17 * smoothstep(40, 520, r) + 3 * this.noiseA(r * 0.006, 4.1);
     const df = f - crestF;
     const main = crestH * (df < 0 ? gauss(df, 205) : gauss(df, 125));
 
