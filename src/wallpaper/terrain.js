@@ -34,10 +34,10 @@ const MAIN = { f: 140, r: -22, h: 21, left: 40, right: 85, front: 85, back: 80 }
 // spread] in metres. Each is a wide cone with concave slopes and a definite
 // peak; only their tops clear the main hill.
 const PEAKS = [
-  [2650, 940, 150, 260],
-  [2900, 1380, 170, 280],
-  [2450, 620, 95, 210],
-  [2800, -1300, 235, 360],
+  [2650, 940, 128, 380],
+  [2900, 1380, 145, 420],
+  [2450, 620, 80, 300],
+  [2800, -1300, 196, 600],
 ];
 
 const coordOf = (k) => (WORLD_HALF * Math.sinh(WARP * ((2 * k) / SEGMENTS - 1))) / SINH_K;
@@ -84,7 +84,7 @@ export class Terrain {
     let far = 0;
     for (const [F, R, h, w] of PEAKS) {
       const d = Math.hypot(r - R, f - F);
-      far = Math.max(far, h * Math.exp(-Math.pow(Math.sqrt(d * d + 400) / w, 0.7)));
+      far = Math.max(far, h * Math.exp(-Math.pow(Math.sqrt(d * d + 400) / w, 0.85)));
     }
 
     // Gentle unevenness so no slope is perfectly smooth: broad swells and a
