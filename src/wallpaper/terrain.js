@@ -1,7 +1,8 @@
-// The rolling hills of the wallpaper: one broad grassy hill rising in front
-// of the viewer, its crest highest left of centre and easing down to the
-// right, with a darker, further hill behind it on the right and a faint far
-// ridge beyond.
+// The rolling hills of the wallpaper, laid out like Bliss: one rounded hill
+// left of centre whose near face falls steeply and rolls out into a flat
+// meadow, the meadow rising gently back to the viewer's bank, and two
+// further, darker hills showing past the main one, low on the left and
+// taller on the right.
 //
 // The grid and its GPU lookups are murk3d's (Terrain.js): an sinh-warped grid,
 // fine in the middle (where the near hill is) and coarse toward the edges,
@@ -20,10 +21,14 @@ const SINH_K = Math.sinh(WARP);
 export const VIEW = {
   x: 120,
   z: 0,
-  eye: 4.5, // standing a little above the meadow, as on a roadside bank
+  eye: 2.5, // standing on a low bank at the meadow's edge
   fov: 40, // vertical, degrees
-  pitch: 0.035, // radians up from level
+  pitch: 0.152, // radians up from level: the hills sit in the lower half
 };
+
+// The landform's sizes, in the viewer's frame (metres ahead, to the right).
+const BANK = 5; // the viewer's bank above the meadow
+const MAIN = { f: 380, r: -31, h: 45, left: 125, right: 165, front: 140, back: 200 };
 
 const coordOf = (k) => (WORLD_HALF * Math.sinh(WARP * ((2 * k) / SEGMENTS - 1))) / SINH_K;
 
@@ -47,26 +52,34 @@ export class Terrain {
     const f = VIEW.x - x;
     const r = -z;
     const gauss = (v, w) => Math.exp(-(v / w) * (v / w));
+    // Broad rounded top, firm flanks, then a long flat tail.
+    const dome = (u) => Math.exp(-Math.pow(Math.abs(u), 2.6));
 
-    // The main hill: a long smooth swell whose crest runs across the view a
-    // couple of hundred metres off, highest a little left of centre, lower
-    // and further away to the right. Its near face is long and gentle, the
-    // far side shorter.
-    const crestF = 230 + 60 * Math.tanh((r - 60) / 220) + 10 * this.noiseA(r * 0.004, 1.3);
-    const crestH = 24 + 18 * gauss(r + 60, 210) - 17 * smoothstep(40, 520, r) + 3 * this.noiseA(r * 0.006, 4.1);
+    // The meadow: flat, rising gently back to the viewer's bank.
+    const meadow = BANK * (1 - smoothstep(0, 170, f));
+
+    // The main hill: a rounded dome left of centre, its crest receding to the
+    // right. Its near face falls steeply from the crest, then rolls out into
+    // the meadow.
+    const dr = r - MAIN.r;
+    const crestF = MAIN.f + 0.35 * Math.max(0, dr) + 8 * this.noiseA(r * 0.004, 1.3);
+    const crestH = MAIN.h * dome(dr / (dr < 0 ? MAIN.left : MAIN.right));
     const df = f - crestF;
-    const main = crestH * (df < 0 ? gauss(df, 205) : gauss(df, 125));
+    const main = crestH * (df < 0 ? gauss(df, MAIN.front) : gauss(df, MAIN.back));
+    // A long low shoulder running off to the right behind the dome.
+    const shoulder = 11 * gauss(f - 620, 300) * smoothstep(-150, 220, r);
 
-    // A second, further hill on the right, showing past the main one's flank.
-    const second = 62 * gauss(f - 900, 260) * gauss(r - 520, 420);
-    // And a faint, broad ridge far behind both.
-    const far = 120 * gauss(f - 2050, 520) * gauss(r - 150, 1100) * (0.8 + 0.2 * this.noiseB(r * 0.0015, 2.0));
+    // Two further hills, darker in the haze: a low one behind the dome's
+    // left flank and a taller one rising to the right edge.
+    const farLeft = 50 * gauss(f - 1000, 260) * dome((r + 600) / 420);
+    const farRight = 125 * gauss(f - 1150, 300) * dome((r - 820) / 520);
+    const far = farLeft + farRight;
 
     // Gentle unevenness so no slope is perfectly smooth: broad swells and a
     // little finer roll, both small.
-    const swell = fbm(this.noiseB, x * 0.004, z * 0.004, 4) * 4 + fbm(this.noiseA, x * 0.018, z * 0.018, 3) * 0.7;
+    const swell = fbm(this.noiseB, x * 0.004, z * 0.004, 4) * 2.5 + fbm(this.noiseA, x * 0.018, z * 0.018, 3) * 0.5;
 
-    return main + second + far + swell;
+    return meadow + main + shoulder + far + swell;
   }
 
   // Height on the drawn mesh (the triangles), as the shaders see it.
