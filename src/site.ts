@@ -80,6 +80,8 @@ const page = z.strictObject({
 const siteSchema = z
   .strictObject({
     name: z.string().min(1),
+    // Browser tab and link-preview title; defaults to name.
+    title: z.string().min(1).optional(),
     tagline: z.string().optional(),
     description: z.string().optional(),
     links: z.array(link).default([]),
