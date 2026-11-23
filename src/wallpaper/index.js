@@ -66,7 +66,10 @@ const dayNumber = () => {
 class Wallpaper {
   constructor(container) {
     this.container = container;
-    const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
+    // No canvas MSAA: the scene is drawn into the composer's (non-MSAA) target
+    // and only a full-screen quad reaches the canvas. Low power keeps laptops
+    // with two GPUs on the integrated one.
+    const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'low-power' });
     this.fullRatio = Math.min(window.devicePixelRatio, settings.pixelRatio);
     this.baseRatio = this.fullRatio;
     renderer.setPixelRatio(this.baseRatio);
