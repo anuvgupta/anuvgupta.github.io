@@ -11,13 +11,8 @@ export const LINK_ICONS = {
   link: '/img/icons/link.svg',
 } as const;
 
-export const initials = (name: string) =>
-  name
-    .split(/\s+/)
-    .filter(Boolean)
-    .map((w) => w[0]!.toUpperCase())
-    .slice(0, 2)
-    .join('');
+/** The user picture in the Start menu header and on the About page. */
+export const USER_PICTURE = '/img/icons/circuit.svg';
 
 export function repoName(url: string) {
   try {

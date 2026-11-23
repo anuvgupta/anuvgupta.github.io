@@ -1,6 +1,6 @@
 ---
 import type { Site } from '../site';
-import { PAGE_TYPES, initials } from '../theme';
+import { PAGE_TYPES, USER_PICTURE } from '../theme';
 
 interface Props {
   site: Site;
@@ -19,7 +19,7 @@ function searchText(page: Site['pages'][number]) {
 
 <div id="start-menu" class="start-menu" role="dialog" aria-label="Start menu" hidden>
   <div class="sm-header">
-    <div class="user-tile" aria-hidden="true">{initials(site.name)}</div>
+    <span class="user-tile"><img src={USER_PICTURE} alt="" /></span>
     <span class="sm-user">{site.name}</span>
   </div>
   <div class="sm-body">

@@ -1,6 +1,6 @@
 ---
 import type { Site } from '../site';
-import { LINK_ICONS, initials } from '../theme';
+import { LINK_ICONS, USER_PICTURE } from '../theme';
 import LinkButton from './LinkButton.astro';
 
 interface Props {
@@ -10,7 +10,7 @@ const { site } = Astro.props;
 ---
 
 <div class="page about">
-  <div class="user-tile user-tile-lg" aria-hidden="true">{initials(site.name)}</div>
+  <span class="user-tile user-tile-lg"><img src={USER_PICTURE} alt="" /></span>
   <h1>{site.name}</h1>
   {site.tagline && <p class="tagline">{site.tagline}</p>}
   {

@@ -855,19 +855,24 @@ html:not(.js) .window[hidden]:target {
 
 .user-tile {
   flex: none;
+  display: block;
   width: 44px;
   height: 44px;
-  display: grid;
-  place-items: center;
+  overflow: hidden;
   border: 2px solid #fff;
   border-radius: 4px;
-  background: linear-gradient(135deg, #fbc25e, #e9781a);
   box-shadow:
     0 0 0 1px rgba(0, 0, 0, 0.2),
     1px 2px 4px rgba(0, 0, 0, 0.4);
-  color: #fff;
-  font: bold 17px var(--title-font);
-  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.35);
+}
+
+/* The picture's board is drawn with rounded corners at 1.25–30.75 of its 32-unit box. Scaling by 32/27
+   crops it to 2.5–29.5, inside the corner curves, so the board fills the frame edge to edge. */
+.user-tile img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  scale: 1.19;
 }
 
 .user-tile-lg {
@@ -875,7 +880,6 @@ html:not(.js) .window[hidden]:target {
   height: 96px;
   border-width: 3px;
   border-radius: 6px;
-  font-size: 36px;
 }
 
 /* ------------------------------------------------------------------ Taskbar */
