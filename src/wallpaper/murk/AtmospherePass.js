@@ -281,17 +281,20 @@ const compositeShader = {
           // the sun's own colour. Dark enough to show once the face is
           // tone-mapped (the old threads sat at a third of the face's
           // brightness, which still clips to white, so they never showed).
-          vec2 sq = sm * 0.3;
+          // Broad, low-frequency noise: the disc is only a few dozen pixels
+          // across, and finer noise broke the markings into blocky speckle.
+          vec2 sq = sm * 0.14;
           float ts = uTime * 0.01;
           vec2 warp = ( vec2( texture2D( uNoise, sq + vec2( 0.11 + ts, 0.37 - ts * 0.8 ) ).r, texture2D( uNoise, sq * 1.3 + vec2( 0.61 - ts * 0.6, 0.23 + ts ) ).g ) - 0.5 ) * 1.4;
           float nn = texture2D( uNoise, sq * 1.1 + warp * 0.5 + vec2( 0.29 + ts * 1.2, 0.73 ) ).r;
-          float wisp = pow( 1.0 - abs( nn * 2.0 - 1.0 ), 2.2 );
-          float ring = 1.0 - smoothstep( 0.03, 0.09, abs( texture2D( uNoise, sq * 0.9 - warp * 0.3 + vec2( 0.47, 0.19 - ts * 0.7 ) ).r - 0.5 ) );
-          float mark = max( wisp * 0.9, ring * 0.7 );
+          float wisp = smoothstep( 0.3, 1.0, 1.0 - abs( nn * 2.0 - 1.0 ) );
+          float ring = 1.0 - smoothstep( 0.02, 0.18, abs( texture2D( uNoise, sq * 0.9 - warp * 0.3 + vec2( 0.47, 0.19 - ts * 0.7 ) ).r - 0.5 ) );
+          // Feathered: soft edges, and fading out toward the limb.
+          float mark = max( wisp * 0.6, ring * 0.45 ) * smoothstep( 0.0, 0.6, mu );
           float spotA = mark;
           float spotB = 0.0;
           vec3 surf = vec3( 1.0, 0.96, 0.86 ) * 9.0;
-          surf = mix( surf, vec3( 1.0, 0.66, 0.38 ) * 1.75, mark );
+          surf = mix( surf, vec3( 1.0, 0.74, 0.48 ) * 3.6, mark );
           surf *= ( 0.93 + 0.14 * gran ) * ( 0.62 + 0.38 * mu );
           surf *= mix( vec3( 1.0, 0.86, 0.6 ), vec3( 1.0 ), mu );
           surf *= 1.0 + 0.03 * b3;
