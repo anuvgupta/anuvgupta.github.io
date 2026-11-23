@@ -313,9 +313,13 @@ const compositeShader = {
         // (Not the moon: its faint halo shouldn't glow on the hill it has set behind.)
         float openG = uMoon > 0.5 ? open : max( open, 0.075 );
         float coronaK = 0.3 + 0.7 * openG;
+        // The land in front of a hidden sun takes none of its glow: the halo
+        // and shafts land on the ground only as far as the disc is in view,
+        // so a sun behind the hill leaves no pale column down its face.
+        float onLand = isSky ? 1.0 : open * open;
         color += uSunColor * disc * uDiscStrength;
-        color += uSunColor * corona * uGlowStrength * coronaK * ( 0.7 + 0.3 * headroom );
-        color += uSunColor * shaft * uShaftStrength * ( 0.7 + 0.3 * headroom );
+        color += uSunColor * corona * uGlowStrength * coronaK * onLand * ( 0.7 + 0.3 * headroom );
+        color += uSunColor * shaft * uShaftStrength * onLand * ( 0.7 + 0.3 * headroom );
         // Lens glare: looking near the sun, a few faint ghosts along the line
         // through the frame's centre and a thin horizontal streak. Subtle.
         if ( uMoon < 0.5 ) {
