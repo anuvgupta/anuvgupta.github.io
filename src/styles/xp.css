@@ -902,7 +902,7 @@ html:not(.js) .window[hidden]:target {
   flex: none;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 9px;
   height: var(--taskbar-h);
   padding: 0 24px 2px 10px;
   border: 0;
