@@ -6,6 +6,8 @@
  * shows and hides it.
  */
 
+import { isFront, nextZ } from './zorder';
+
 type Geom = { left: number; top: number; width: number; height: number };
 
 type Win = {
@@ -36,7 +38,6 @@ const startEmpty = $('.sm-empty', startList)!;
 const startQuery = $('#start-query')!;
 
 const wins = new Map<string, Win>();
-let zTop = 10;
 let activeId: string | null = null;
 let openCount = 0; // cascades newly opened windows
 let taskOrder = 0; // keeps taskbar buttons in the order windows were opened
@@ -105,7 +106,7 @@ function showBalloon(text: string) {
 function focusWin(id: string) {
   const win = wins.get(id);
   if (!win || !win.open || win.minimized) return;
-  if (activeId !== id) win.el.style.zIndex = String(++zTop);
+  if (activeId !== id || !isFront(win.el)) win.el.style.zIndex = String(nextZ());
   activeId = id;
   for (const w of wins.values()) {
     const on = w.id === id;
@@ -270,7 +271,7 @@ for (const el of $$('.window[data-page]', desktopEl)) {
     if (win.minimized) {
       setMinimized(win, false);
       focusWin(id);
-    } else if (activeId === id) {
+    } else if (activeId === id && isFront(win.el)) {
       setMinimized(win, true);
     } else {
       focusWin(id);
