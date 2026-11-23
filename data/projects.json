@@ -1,0 +1,37 @@
+{
+  "projects": [
+    {
+      "name": "Sample Project One",
+      "description": "Placeholder entry showing every field: a short description, three screenshots, one GitHub repo and a couple of extra links. Replace with a real project.",
+      "screenshots": [
+        { "src": "img/projects/sample-1.svg", "alt": "Sample Project One main screen" },
+        { "src": "img/projects/sample-2.svg", "alt": "Sample Project One settings" },
+        { "src": "img/projects/sample-3.svg", "alt": "Sample Project One results view" }
+      ],
+      "github": ["https://github.com/anuvgupta/sample-project-one"],
+      "links": [
+        { "label": "Live demo", "url": "https://example.com" },
+        { "label": "Write-up", "url": "https://example.com/write-up" }
+      ]
+    },
+    {
+      "name": "Sample Project Two",
+      "description": "Placeholder entry with one screenshot and two GitHub repos (e.g. separate frontend and backend). With more than one repo, each button shows the repo name.",
+      "screenshots": [
+        { "src": "img/projects/sample-4.svg", "alt": "Sample Project Two dashboard" }
+      ],
+      "github": [
+        "https://github.com/anuvgupta/sample-project-two-web",
+        "https://github.com/anuvgupta/sample-project-two-server"
+      ],
+      "links": [
+        { "label": "Video", "url": "https://example.com/video" }
+      ]
+    },
+    {
+      "name": "Sample Project Three",
+      "description": "Placeholder entry with no screenshots and no extra links, just a description and a repo.",
+      "github": "https://github.com/anuvgupta/sample-project-three"
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1b5bcc"/>
+      <stop offset=".35" stop-color="#3a86e6"/>
+      <stop offset=".62" stop-color="#7db8f2"/>
+      <stop offset=".8" stop-color="#bfdff9"/>
+    </linearGradient>
+    <linearGradient id="farHill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5fa83a"/>
+      <stop offset="1" stop-color="#2f7418"/>
+    </linearGradient>
+    <linearGradient id="hill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9ad85a"/>
+      <stop offset=".25" stop-color="#6dbb34"/>
+      <stop offset=".6" stop-color="#3f8f1c"/>
+      <stop offset="1" stop-color="#2a6a10"/>
+    </linearGradient>
+    <radialGradient id="sun" cx=".42" cy=".5" r=".55">
+      <stop offset="0" stop-color="#e9ffb0" stop-opacity=".55"/>
+      <stop offset="1" stop-color="#e9ffb0" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft" x="-30%" y="-60%" width="160%" height="220%">
+      <feGaussianBlur stdDeviation="16"/>
+    </filter>
+    <filter id="wisp" x="-30%" y="-100%" width="160%" height="300%">
+      <feGaussianBlur stdDeviation="7"/>
+    </filter>
+    <filter id="grass" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012 0.06" numOctaves="3" seed="7"/>
+      <feColorMatrix values="0 0 0 0 0.12  0 0 0 0 0.32  0 0 0 0 0.05  0 0 0 0.9 -0.35"/>
+    </filter>
+    <clipPath id="hillClip">
+      <path d="M0 745C220 610 520 540 820 580C1100 618 1360 700 1600 690V1000H0Z"/>
+    </clipPath>
+  </defs>
+
+  <rect width="1600" height="1000" fill="url(#sky)"/>
+
+  <!-- clouds -->
+  <g fill="#fff">
+    <g filter="url(#soft)" opacity=".9">
+      <ellipse cx="300" cy="230" rx="170" ry="48"/>
+      <ellipse cx="400" cy="205" rx="120" ry="52"/>
+      <ellipse cx="220" cy="250" rx="110" ry="34"/>
+      <ellipse cx="1150" cy="170" rx="210" ry="50"/>
+      <ellipse cx="1270" cy="145" rx="130" ry="50"/>
+      <ellipse cx="1040" cy="190" rx="120" ry="34"/>
+      <ellipse cx="760" cy="360" rx="180" ry="32"/>
+      <ellipse cx="840" cy="345" rx="90" ry="30"/>
+      <ellipse cx="1440" cy="400" rx="150" ry="26"/>
+    </g>
+    <g filter="url(#wisp)" opacity=".55">
+      <ellipse cx="560" cy="120" rx="220" ry="12"/>
+      <ellipse cx="1350" cy="300" rx="180" ry="10"/>
+      <ellipse cx="120" cy="420" rx="160" ry="10"/>
+      <ellipse cx="980" cy="470" rx="240" ry="12"/>
+    </g>
+  </g>
+
+  <!-- hills -->
+  <path d="M0 690C260 640 540 650 820 660C1100 670 1380 610 1600 580V1000H0Z" fill="url(#farHill)"/>
+  <path d="M0 745C220 610 520 540 820 580C1100 618 1360 700 1600 690V1000H0Z" fill="url(#hill)"/>
+  <rect width="1600" height="1000" fill="url(#sun)" clip-path="url(#hillClip)"/>
+  <rect width="1600" height="1000" filter="url(#grass)" clip-path="url(#hillClip)" opacity=".55"/>
+</svg>
