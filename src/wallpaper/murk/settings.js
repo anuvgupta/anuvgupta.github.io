@@ -12,9 +12,10 @@ const PRESETS = {
   high: { pixelRatio: 1.5, shadowMapSize: 4096, grassDensity: 470, grassFullDetail: 12.5, grassDrawDistance: 190, bloom: true },
 };
 
-// (v2: presets picked under the old uncapped frame rate aren't carried over.)
-const KEY_QUALITY = 'wallpaper.quality.v2';
-const KEY_ADAPT = 'wallpaper.adapt.v2';
+// (v3: presets and levels picked before the frame cap and multisampling
+// aren't carried over.)
+const KEY_QUALITY = 'wallpaper.quality.v3';
+const KEY_ADAPT = 'wallpaper.adapt.v3';
 
 // A preset the adaptive stepper settled on last time is remembered.
 let saved = null;

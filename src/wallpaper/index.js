@@ -66,9 +66,9 @@ const dayNumber = () => {
 class Wallpaper {
   constructor(container) {
     this.container = container;
-    // No canvas MSAA: the scene is drawn into the composer's (non-MSAA) target
-    // and only a full-screen quad reaches the canvas. Low power keeps laptops
-    // with two GPUs on the integrated one.
+    // No canvas MSAA: the scene is drawn into the composer's own multisampled
+    // target and only a full-screen quad reaches the canvas. Low power keeps
+    // laptops with two GPUs on the integrated one.
     const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'low-power' });
     this.fullRatio = Math.min(window.devicePixelRatio, settings.pixelRatio);
     this.baseRatio = this.fullRatio;
@@ -165,6 +165,10 @@ class Wallpaper {
     // The atmosphere pass reads scene depth, so the composer's buffers carry one.
     const target = new THREE.WebGLRenderTarget(size.x * dpr, size.y * dpr, {
       type: THREE.HalfFloatType,
+      // 4x MSAA: grass blades are thinner than a pixel at 1x resolution and
+      // stair-stepped into grain; tile-based GPUs resolve this cheaply, far
+      // cheaper than rendering at a higher resolution.
+      samples: 4,
       depthTexture: new THREE.DepthTexture(size.x * dpr, size.y * dpr, THREE.UnsignedIntType),
     });
     this.composer = new EffectComposer(this.renderer, target);
