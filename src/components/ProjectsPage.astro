@@ -16,8 +16,10 @@ for (const p of projects) {
   if (last && last.title === p.section) last.projects.push(p);
   else groups.push({ title: p.section, projects: [p] });
 }
-// Under section headings, project titles drop a level.
-const ProjectTitle = groups.some((g) => g.title) ? 'h3' : 'h2';
+// Sections become tabs, the first one open.
+const tabbed = groups.some((g) => g.title);
+const tabId = (i: number) => `${page.id}-tab-${i}`;
+const panelId = (i: number) => `${page.id}-panel-${i}`;
 ---
 
 <div class="page projects-page">
@@ -27,13 +29,37 @@ const ProjectTitle = groups.some((g) => g.title) ? 'h3' : 'h2';
   </header>
   {projects.length === 0 && <p class="notice">No projects yet.</p>}
   {
-    groups.map((g) => (
-      <Fragment>
-        {g.title && <h2 class="project-section">{g.title}</h2>}
+    tabbed && (
+      <div class="project-tabs" role="tablist" aria-label="Project sections">
+        {groups.map((g, i) => (
+          <button
+            class="project-tab"
+            type="button"
+            role="tab"
+            id={tabId(i)}
+            aria-controls={panelId(i)}
+            aria-selected={i === 0 ? 'true' : 'false'}
+            tabindex={i === 0 ? 0 : -1}
+          >
+            {g.title ?? 'Other'}
+          </button>
+        ))}
+      </div>
+    )
+  }
+  {
+    groups.map((g, i) => (
+      <div
+        class="project-panel"
+        id={panelId(i)}
+        role={tabbed ? 'tabpanel' : undefined}
+        aria-labelledby={tabbed ? tabId(i) : undefined}
+        hidden={i > 0}
+      >
         <div class="project-grid">
           {g.projects.map((p) => (
             <article class="project">
-              <ProjectTitle class="project-title">{p.name}</ProjectTitle>
+              <h2 class="project-title">{p.name}</h2>
               <div class="project-content">
                 {p.description && <p class="project-desc">{p.description}</p>}
                 {p.screenshots.length > 0 && (
@@ -66,7 +92,33 @@ const ProjectTitle = groups.some((g) => g.title) ? 'h3' : 'h2';
             </article>
           ))}
         </div>
-      </Fragment>
+      </div>
     ))
   }
 </div>
+
+<script>
+  // Windows-style tabs: click or arrow keys to switch, one tab stop for the strip.
+  for (const strip of document.querySelectorAll<HTMLElement>('.project-tabs')) {
+    const tabs = [...strip.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+    const select = (tab: HTMLButtonElement) => {
+      for (const t of tabs) {
+        const on = t === tab;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+        document.getElementById(t.getAttribute('aria-controls')!)!.hidden = !on;
+      }
+    };
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => select(tab));
+      tab.addEventListener('keydown', (e) => {
+        const step = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
+        if (!step) return;
+        e.preventDefault();
+        const next = tabs[(i + step + tabs.length) % tabs.length];
+        select(next);
+        next.focus();
+      });
+    });
+  }
+</script>

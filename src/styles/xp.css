@@ -1001,15 +1001,6 @@ html.window-dragging * {
 
 /* Projects (styled after the XP Explorer task pane) */
 
-.project-section {
-  margin: 22px 0 0;
-  padding-bottom: 3px;
-  font: bold 16px var(--title-font);
-  color: #0b3a9e;
-  border-bottom: 1px solid;
-  border-image: linear-gradient(90deg, #7a96df, transparent) 1;
-}
-
 /* Cards sit two to a row, three when the window is maximized, and one in a narrow window. */
 .projects-page {
   container: projects / inline-size;
@@ -1020,10 +1011,6 @@ html.window-dragging * {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
   margin-top: 16px;
-}
-
-.project-section + .project-grid {
-  margin-top: 10px;
 }
 
 .window.maximized .project-grid {
