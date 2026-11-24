@@ -464,8 +464,8 @@ html.ui-98,
   }
 }
 
-/* The cards drift very slowly and slightly, each along its own wandering path and at its own pace, so the
-   motion never lines up into a pattern. */
+/* Every few seconds each card glides about a pixel to a new spot, then rests, each along its own path and at
+   its own pace so the cards never move together. */
 .projects-page .project {
   box-shadow: var(--raised), 0 6px 14px rgba(0, 0, 0, 0.5);
   animation: card-drift-a 19s ease-in-out infinite;
@@ -488,50 +488,92 @@ html.ui-98,
 }
 
 @keyframes card-drift-a {
-  0%,
-  100% {
+  0% {
     translate: 0 0;
   }
-  25% {
+  18% {
+    translate: 0 0;
+  }
+  24% {
     translate: 1px -1.5px;
   }
-  50% {
+  43% {
+    translate: 1px -1.5px;
+  }
+  49% {
     translate: -0.5px -2px;
   }
-  75% {
+  68% {
+    translate: -0.5px -2px;
+  }
+  74% {
     translate: -1px -0.5px;
+  }
+  93% {
+    translate: -1px -0.5px;
+  }
+  99% {
+    translate: 0 0;
   }
 }
 
 @keyframes card-drift-b {
-  0%,
-  100% {
+  0% {
     translate: 0 0;
   }
-  30% {
+  18% {
+    translate: 0 0;
+  }
+  24% {
     translate: -1px -1px;
   }
-  60% {
+  43% {
+    translate: -1px -1px;
+  }
+  49% {
     translate: 0.5px -2px;
   }
-  85% {
+  68% {
+    translate: 0.5px -2px;
+  }
+  74% {
     translate: 1px -0.5px;
+  }
+  93% {
+    translate: 1px -0.5px;
+  }
+  99% {
+    translate: 0 0;
   }
 }
 
 @keyframes card-drift-c {
-  0%,
-  100% {
+  0% {
     translate: 0 0;
   }
-  20% {
+  18% {
+    translate: 0 0;
+  }
+  24% {
     translate: 0.5px -1.5px;
   }
-  55% {
+  43% {
+    translate: 0.5px -1.5px;
+  }
+  49% {
     translate: 1.2px -0.5px;
   }
-  80% {
+  68% {
+    translate: 1.2px -0.5px;
+  }
+  74% {
     translate: -0.8px -1.5px;
+  }
+  93% {
+    translate: -0.8px -1.5px;
+  }
+  99% {
+    translate: 0 0;
   }
 }
 
