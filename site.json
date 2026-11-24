@@ -53,7 +53,7 @@
     },
     {
       "name": "turnstile-solver",
-      "description": "A fork of a multi-threaded Cloudflare Turnstile solver API, adding Camoufox support, a Docker Compose setup, a page-readiness wait option and a /health endpoint for automatic recovery.",
+      "description": "A fork of a Cloudflare Turnstile solver for sites that check where a token was solved and hide their content behind the challenge. The original solves the widget on a fake localhost page, so those sites reject its tokens, and it hands back only a token. This fork solves on the real page, lets the page's own callback submit and reload, and returns the unlocked page's HTML, with a hardened browser fingerprint so the challenge passes.",
       "github": ["https://github.com/anuvgupta/Turnstile-Solver"]
     },
     {
@@ -95,7 +95,7 @@
       ]
     },
     {
-      "name": "b",
+      "name": "b.js: build automation script",
       "description": "A tiny Node CLI that runs named build targets from a project's b.json, like a lightweight Make. Used across my web and infrastructure repos.",
       "github": ["https://github.com/anuvgupta/b"]
     },
@@ -175,7 +175,7 @@
         "apple-notes-sync",
         "git-autosync",
         "block.js",
-        "b"
+        "b.js: build automation script"
       ]
     }
   ]
