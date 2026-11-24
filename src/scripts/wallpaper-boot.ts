@@ -297,6 +297,10 @@ class Widget {
   inTray = false; // minimized to the system tray
 
   constructor(onToggle: (on: boolean) => void) {
+    // Every visit starts on the clock. Browsers can restore a reloaded page's last slider and switch
+    // (autocomplete="off" stops most), which would apply a stale hand-set time after first paint.
+    this.live.checked = this.live.defaultChecked;
+    this.slider.value = this.slider.defaultValue;
     // The UI's day and night themes follow the wallpaper's time of day too.
     this.slider.addEventListener('input', () => {
       this.live.checked = false;

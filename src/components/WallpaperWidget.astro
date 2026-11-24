@@ -25,7 +25,7 @@ const marks = [
         <label for="wp-time">Time of day</label>
         <output id="wp-readout" for="wp-time"></output>
       </div>
-      <input id="wp-time" class="wp-slider" type="range" min="0" max="24" step="0.0833333" value="12" aria-describedby="wp-readout" />
+      <input id="wp-time" class="wp-slider" type="range" autocomplete="off" min="0" max="24" step="0.0833333" value="12" aria-describedby="wp-readout" />
       <div class="wp-ticks" aria-hidden="true">
         {
           marks.map((m) => (
@@ -37,12 +37,12 @@ const marks = [
       </div>
       <label class="wp-switch-row">
         <span>Follow my clock</span>
-        <input id="wp-live" class="xp-switch" type="checkbox" role="switch" checked />
+        <input id="wp-live" class="xp-switch" type="checkbox" role="switch" autocomplete="off" checked />
       </label>
     </fieldset>
     <label class="wp-switch-row wp-enabled-row">
       <span>Show wallpaper</span>
-      <input id="wp-enabled" class="xp-switch" type="checkbox" role="switch" checked />
+      <input id="wp-enabled" class="xp-switch" type="checkbox" role="switch" autocomplete="off" checked />
     </label>
   </div>
 </section>
