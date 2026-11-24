@@ -268,17 +268,6 @@ html:not(.js) .window[hidden]:target {
   right: 0;
 }
 
-.wp-live {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  margin-top: 4px;
-}
-
-.wp-live input {
-  margin: 0;
-}
-
 .wp-time-group {
   min-width: 0;
   margin: 0;
@@ -295,11 +284,20 @@ html:not(.js) .window[hidden]:target {
   align-items: center;
   justify-content: space-between;
   gap: 8px;
+  margin-top: 4px;
+  cursor: pointer;
+}
+
+.wp-time-group:disabled .wp-switch-row {
+  cursor: default;
+}
+
+/* The wallpaper's own switch sits apart from the time-of-day controls. */
+.wp-enabled-row {
   margin-top: 8px;
   padding-top: 7px;
   border-top: 1px solid #c5c2b2;
   box-shadow: inset 0 1px #fff;
-  cursor: pointer;
 }
 
 /* An on/off switch drawn in the XP palette: a sunken track that turns green when on. */
@@ -345,6 +343,11 @@ html:not(.js) .window[hidden]:target {
 
 .xp-switch:disabled {
   opacity: 0.6;
+  cursor: default;
+}
+
+/* (Disabled only while the scene loads.) */
+.wp-enabled-row .xp-switch:disabled {
   cursor: progress;
 }
 
