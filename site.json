@@ -16,6 +16,7 @@
   "projects": [
     {
       "name": "SkyTube: Watch YouTube while playing Skyrim",
+      "year": 2026,
       "description": "Video player mod for Skyrim. Watch YouTube, streams, or videos while you play. Auto-pauses during dialogue. Picture-in-picture with resize, drag, fade. Resumes last video when you load in. SKSE plugin, no ESP, nothing in saves.",
       "github": ["https://github.com/anuvgupta/skytube"],
       "links": [
@@ -24,15 +25,18 @@
     },
     {
       "name": "Project Portfolio",
+      "year": 2026,
       "description": "This site: a Windows XP-style desktop built with Astro, with draggable windows, a Start menu and a live, procedurally drawn wallpaper.",
       "github": ["https://github.com/anuvgupta/anuvgupta.github.io"]
     },
     {
       "name": "Murk3D",
+      "year": 2026,
       "description": "A first-person, high-fantasy open-world RPG built with Three.js. Roam a lush vale of rolling hills and forests, with cozy villages, legendary swords, huge bouncy mushrooms, magical orbs, epic rock formations and vast landscapes, under a full day-night cycle."
     },
     {
       "name": "Self-Hosted Voice Assistant",
+      "year": 2026,
       "description": "A voice assistant on a Raspberry Pi 5 with a four-mic array:\n\n* Custom Claude harness for replies and tool calling to smart home (Home Assistant) and media server (Jellyfin/Radarr).\n* Fine-tuned Laya decision model to smart wake without wake word. Self-hosted alongside Whisper on an old GPU for privacy and speed.\n* Deepgram speech-to-text, Piper text-to-speech. Pipecat for Silero, Smart Turn, and the pipeline.\n\nJust ask!",
       "screenshots": [
         { "src": "content/projects/voice-assistant.mp4", "alt": "The voice assistant's screen moving between resting, listening, speaking and smart wake states" }
@@ -40,11 +44,13 @@
     },
     {
       "name": "apple-notes-sync",
+      "year": 2026,
       "description": "Access your iCloud notes via Claude Code. Keeps a folder of Markdown files in sync with Apple Notes every 15 seconds, so Obsidian, grep or Basic Memory's semantic search can read your notes. Plain Python, run as a macOS launchd agent.",
       "github": ["https://github.com/anuvgupta/apple-notes-sync"]
     },
     {
       "name": "PiWii",
+      "year": 2026,
       "description": "Install games onto your Wii over WiFi. Raspberry Pi 4B powers and passes through a 1 TB drive to a modded Wii over USB, letting you access a massive game library directly on the Wii. Self-hosted website takes requests and manages converting+uploading games to the Pi's NFS over LAN.",
       "screenshots": [
         { "src": "content/projects/piwii.png", "alt": "piwii's Wii Menu-style library page" }
@@ -53,24 +59,29 @@
     },
     {
       "name": "turnstile-solver",
+      "year": 2026,
       "description": "A fork of a Cloudflare Turnstile solver for scraping stricter websites:\n\n* Original solves challenge on a fake local page & returns the token.\n* Strict sites only unlock their content when the token is *both* solved and redeemed on their own page.\n* This fork solves on the real page with a hardened browser fingerprint, lets the page unlock itself, and returns the content behind the challenge rather than a token.",
       "github": ["https://github.com/anuvgupta/Turnstile-Solver"]
     },
     {
       "name": "git-autosync",
+      "year": 2026,
       "description": "Auto-commits, syncs, and pushes any git repo on a schedule, each repo with its own scheduler and lock. Works on macOS (launchd), Linux (cron or systemd) and Windows. Great for AI-managed markdown knowledge bases.",
       "github": ["https://github.com/anuvgupta/git-autosync"]
     },
     {
       "name": "Projector Screen Controller",
+      "year": 2026,
       "description": "An ESPHome controller for a motorized projector screen. A Home Assistant automation lowers it whenever the NVIDIA Shield is on or the projector's smart plug shows it drawing power, and raises it once both are off."
     },
     {
       "name": "Presence-Based LED Light Strips",
+      "year": 2026,
       "description": "Hallway LED strips that follow you as you walk: LD2450 mmWave radar sensors publish targets over MQTT, a fusion service tracks each person along the hallway, and WLED strips light up where they are. Ambient light controls and occupancy show up in Home Assistant."
     },
     {
       "name": "Sound Design AI: Talk to Your Synthesizer",
+      "year": 2026,
       "description": "Added a voice chat agent to the open-source Vital wavetable synth.\n\n* Describe what you want instead of hunting through menus for knobs.\n* Shape sounds hands-free, while you play keys.\n* Iterate through synth patches faster.\n\nNever touch your synth again.",
       "screenshots": [
         { "src": "content/projects/sound-design-ai.mp4", "alt": "Typing a request into the chat panel in Vital; the agent turns on oscillator 2, sets it to a square wave, and keys are played" }
@@ -83,6 +94,7 @@
     },
     {
       "name": "CityScape",
+      "year": 2026,
       "description": "A procedurally generated 3D city in a single HTML file with Three.js: skyscrapers clustered into downtowns, buildings of varied footprints and heights with shader-drawn lit windows, sliders to reshape the skyline, and touch controls tuned for iPad Safari.",
       "github": ["https://github.com/anuvgupta/cityscape"],
       "links": [
@@ -91,6 +103,7 @@
     },
     {
       "name": "Sketchy: Image Gen Sketchpad",
+      "year": 2024,
       "description": "A website for generating images with Stable Diffusion: a ComfyUI worker on RunPod's serverless GPUs, AWS infrastructure in CDK, and a simple web frontend.",
       "github": ["https://github.com/anuvgupta/image-gen-frontend", "https://github.com/anuvgupta/image-gen-infra", "https://github.com/anuvgupta/runpod-worker-comfyui", "https://github.com/anuvgupta/runpod-pod-downloader"],
       "links": [
@@ -99,15 +112,18 @@
     },
     {
       "name": "b.js – Build Automation Script",
+      "year": 2023,
       "description": "A tiny Node CLI that runs named build targets from a project's b.json, like a lightweight Make. Used across my web and infrastructure repos.",
       "github": ["https://github.com/anuvgupta/b"]
     },
     {
       "name": "Edge AI: Computer Vision Competition",
+      "year": 2022,
       "description": "Compressed MobileNet into a 30 KB network that predicts in about 1 ms with over 70% accuracy on CIFAR-10. Won 1st in the speed competition for UT's EE379K Edge AI course."
     },
     {
       "name": "Rubbr.io",
+      "year": 2017,
       "description": "A multiplayer .io-style car arena with socket.io and HTML5 canvas: crash cars, collect cash and race to the top of the leaderboard.",
       "screenshots": [
         { "src": "content/projects/rubbr.png", "alt": "rubbr gameplay: a car among cash pickups" }
@@ -116,7 +132,8 @@
     },
     {
       "name": "block.js – Simple UI Prototyping",
-      "description": "A lightweight JavaScript library for building web UIs from modular, event-driven templates. Never touch HTML again. Made in B.C. (Before Claude) so, use at your own risk!",
+      "year": 2016,
+      "description": "A lightweight JavaScript library for building web UIs from modular, event-driven templates. Never touch HTML again.",
       "screenshots": [
         { "src": "content/projects/blockjs.png", "alt": "block.js logo" }
       ],
