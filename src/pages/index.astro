@@ -28,6 +28,10 @@ const canonical = Astro.site?.href;
     <meta name="twitter:card" content="summary" />
     <meta name="theme-color" content="#245edb" />
     <link rel="icon" href="/img/icons/circuit.svg" type="image/svg+xml" />
+    <!-- Open Sans for the About page where Segoe UI isn't installed, as in the pilo dashboard it copies. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" />
     <!-- Marks the page as scripted before it paints, so the static wallpaper never flashes before the live one. -->
     <script is:inline>document.documentElement.classList.add('js');</script>
   </head>
