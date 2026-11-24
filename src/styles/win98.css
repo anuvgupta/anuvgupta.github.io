@@ -467,7 +467,7 @@ html.ui-98 {
   height: 20px;
   border: 0;
   border-radius: 0;
-  background: linear-gradient(90deg, #a9a9a9, #929292);
+  background: linear-gradient(90deg, #b4b4b4, #858585);
   box-shadow: var(--sunken);
 }
 
@@ -484,7 +484,7 @@ html.ui-98 {
 }
 
 .ui-98 .xp-switch:checked {
-  background: linear-gradient(90deg, #1f3a9f, #000080);
+  background: linear-gradient(90deg, #3358c4, #000080);
 }
 
 .ui-98 .xp-switch:checked::before {
