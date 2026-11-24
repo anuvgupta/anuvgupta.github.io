@@ -508,11 +508,11 @@ html.ui-98 {
 .ui-98 .start-button {
   height: calc(var(--taskbar-h) - 6px);
   margin: 3px 2px 3px 3px;
-  padding: 0 7px 0 4px;
-  gap: 4px;
+  padding: 0 10px 0 5px;
+  gap: 8px;
   border-radius: 0;
   color: #000;
-  font: 18px/1 var(--ui-font);
+  font: 15px/1 var(--ui-font);
   text-transform: capitalize;
   background: var(--xp-face);
   box-shadow: var(--raised);
