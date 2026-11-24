@@ -2,7 +2,8 @@
    swaps the chrome: grey bevelled faces, square corners, navy title bars, and a grey taskbar. */
 
 html.ui-98 {
-  --ui-font: "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Geneva, sans-serif;
+  /* W95FA redraws MS Sans Serif's bitmap on a 12-unit em, so it's pixel-exact at 12px (and 18px, 24px). */
+  --ui-font: "W95FA", "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Geneva, sans-serif;
   --title-font: var(--ui-font);
   --taskbar-h: 32px;
   --xp-face: #c0c0c0;
@@ -25,8 +26,20 @@ html.ui-98 {
   --dither: repeating-conic-gradient(var(--face-light) 0 25%, var(--xp-face) 0 50%) 0 0 / 2px 2px;
 }
 
+/* Bitmap-style text: no smoothing, and every size a whole multiple of the font's pixel. */
 .ui-98 body {
-  -webkit-font-smoothing: auto;
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+}
+
+.ui-98 :is(.page, .address-bar, .address-input, .wp-widget, .wp-ticks, .sm-item-text small) {
+  font-size: 12px;
+}
+
+/* The font has no bold; Windows drew bold bitmap text by overstriking it one pixel to the right. */
+.ui-98 :is(b, strong, h1, h2, h3, .title-text, .start-button, .task.active, .wp-title, .sm-user) {
+  font-weight: normal;
+  text-shadow: 1px 0 currentColor;
 }
 
 /* ------------------------------------------------------------------ Windows */
@@ -67,9 +80,8 @@ html.ui-98 {
 }
 
 .ui-98 .title-text {
-  font: bold 12px var(--title-font);
+  font: 12px var(--title-font);
   letter-spacing: 0;
-  text-shadow: none;
 }
 
 .ui-98 .window.inactive .title-text {
@@ -276,7 +288,16 @@ html.ui-98 {
 }
 
 .ui-98 .page-header h1 {
+  font-size: 24px;
+}
+
+.ui-98 .project-section,
+.ui-98 .dialog h1 {
   font-size: 18px;
+}
+
+.ui-98 .project-title {
+  font-size: 12px;
 }
 
 .ui-98 .page-header p {
@@ -358,8 +379,7 @@ html.ui-98 {
 .ui-98 .wp-title {
   height: 18px;
   padding: 0 2px 0 4px;
-  font: bold 11px var(--title-font);
-  text-shadow: none;
+  font: 12px var(--title-font);
   background: var(--navy-bar);
 }
 
@@ -452,11 +472,9 @@ html.ui-98 {
   gap: 4px;
   border-radius: 0;
   color: #000;
-  font: bold 14px/1 var(--ui-font);
+  font: 12px/1 var(--ui-font);
   letter-spacing: 0;
-  text-shadow: none;
   text-transform: capitalize;
-  -webkit-text-stroke: 0.6px currentColor; /* heavier than plain bold */
   background: var(--xp-face);
   box-shadow: var(--raised);
 }
@@ -498,7 +516,6 @@ html.ui-98 {
 }
 
 .ui-98 .task.active {
-  font-weight: bold;
   background: var(--dither);
   box-shadow: var(--sunken);
 }
@@ -542,8 +559,7 @@ html.ui-98 {
 }
 
 .ui-98 .sm-user {
-  font: bold 14px var(--title-font);
-  text-shadow: none;
+  font: 18px var(--title-font);
 }
 
 .ui-98 .sm-header .user-tile {
