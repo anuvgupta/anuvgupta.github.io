@@ -7,7 +7,7 @@ interface Props {
   open?: boolean;
 }
 const { page, open = false } = Astro.props;
-const { icon, fit, address: hasAddress } = PAGE_TYPES[page.type];
+const { icon, fit, address: hasAddress, maximize: canMaximize } = PAGE_TYPES[page.type];
 const titleId = `win-title-${page.id}`;
 // The page's public address; the desktop script swaps in the address it was actually opened from.
 const address = `${Astro.site?.href ?? '/'}#${page.id}`;
@@ -19,7 +19,7 @@ const address = `${Astro.site?.href ?? '/'}#${page.id}`;
     <span class="title-text" id={titleId}>{page.title}</span>
     <div class="title-controls">
       <button class="tb-min" type="button" data-action="minimize" aria-label="Minimize" title="Minimize"></button>
-      <button class="tb-max" type="button" data-action="maximize" aria-label="Maximize" title="Maximize"></button>
+      <button class="tb-max" type="button" data-action="maximize" aria-label="Maximize" title="Maximize" disabled={!canMaximize}></button>
       <button class="tb-close" type="button" data-action="close" aria-label="Close" title="Close"></button>
     </div>
   </div>
@@ -28,7 +28,7 @@ const address = `${Astro.site?.href ?? '/'}#${page.id}`;
       <button class="menu-btn" type="button" aria-haspopup="menu" aria-expanded="false">File</button>
       <div class="menu-dropdown" role="menu">
         <button type="button" role="menuitem" data-action="minimize">Minimize</button>
-        <button type="button" role="menuitem" data-action="maximize" class="max-item">Maximize</button>
+        <button type="button" role="menuitem" data-action="maximize" class="max-item" disabled={!canMaximize}>Maximize</button>
         <div class="menu-sep" role="separator"></div>
         <button type="button" role="menuitem" data-action="close">Close</button>
       </div>

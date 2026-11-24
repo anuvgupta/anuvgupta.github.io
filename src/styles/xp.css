@@ -912,6 +912,11 @@ html.window-dragging * {
   outline: none;
 }
 
+.menu-dropdown button:disabled {
+  color: #a7a6aa;
+  background: none;
+}
+
 .menu-sep {
   height: 1px;
   margin: 3px 1px;

@@ -194,6 +194,7 @@ function setMinimized(win: Win, minimized: boolean) {
 }
 
 function setMaximized(win: Win, maximized: boolean) {
+  if (maximized && win.maxBtn.disabled) return;
   win.maximized = maximized;
   win.el.classList.toggle('maximized', maximized);
   const label = maximized ? 'Restore' : 'Maximize';

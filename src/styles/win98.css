@@ -201,6 +201,12 @@ html.ui-98,
   box-shadow: var(--raised), 2px 2px 0 rgba(0, 0, 0, 0.25);
 }
 
+/* Disabled items are engraved: grey text over a white copy one pixel down and right. */
+.ui-98 .menu-dropdown button:disabled {
+  color: #808080;
+  text-shadow: 1px 1px #fff;
+}
+
 .ui-98 .menu-sep {
   height: 2px;
   margin: 3px 1px;
