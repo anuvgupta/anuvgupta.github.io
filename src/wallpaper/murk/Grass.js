@@ -29,12 +29,13 @@ import { WIND_GLSL } from './Wind.js';
 // two-segment blade.
 
 const TILE = 16;
-// The least density kept at any distance, in blades per m² (5% of the high
-// preset's). The far hillside is seen close up in this view, so it keeps
-// enough blades to read as a lawn, not as a scatter of widened leaves, and
-// the same lawn on every preset: lighter presets keep a larger share of
-// their blades there. Most far blades are one triangle, so it costs little.
-const FAR_DENSITY = 23.5;
+// The least density kept at any distance, in blades per m² (about a tenth
+// of the high preset's). The far hillside is seen close up in this view, so
+// it keeps enough blades to read as a lawn, not as a scatter of widened
+// leaves, and the same lawn on every preset: lighter presets keep a larger
+// share of their blades there. Most far blades are one triangle, so it
+// costs little.
+const FAR_DENSITY = 50;
 const BLADES_PER_TUFT = 5;
 const TUFT_RADIUS = 0.14;
 
