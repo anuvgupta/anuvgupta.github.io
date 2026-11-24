@@ -1145,8 +1145,18 @@ html.window-dragging * {
   outline-offset: -3px;
 }
 
+/* A message box's icon, like the warning and info icons of a real one. */
+.dialog-icon {
+  flex: none;
+  display: block;
+}
+
 .dialog-text {
   min-width: 0;
+}
+
+.dialog-text p {
+  margin: 0;
 }
 
 .dialog h1 {

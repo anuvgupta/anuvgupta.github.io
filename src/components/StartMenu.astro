@@ -12,7 +12,9 @@ function searchText(page: Site['pages'][number]) {
   const extra =
     page.type === 'projects'
       ? site.projects.map((p) => `${p.name} ${p.description ?? ''}`)
-      : [site.name, site.title, site.tagline ?? '', ...site.links.map((l) => l.label)];
+      : page.type === 'about'
+        ? [site.name, site.title, site.tagline ?? '', ...site.links.map((l) => l.label)]
+        : ['cv'];
   return [page.title, page.subtitle ?? '', ...extra].join(' ').toLowerCase().replace(/\s+/g, ' ').trim();
 }
 ---

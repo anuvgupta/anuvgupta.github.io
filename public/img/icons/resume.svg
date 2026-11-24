@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="sheet" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#e4e9f2"/>
+    </linearGradient>
+    <linearGradient id="fold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#c3cddf"/>
+    </linearGradient>
+    <linearGradient id="head" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7cb0f5"/>
+      <stop offset="1" stop-color="#2459c4"/>
+    </linearGradient>
+  </defs>
+  <path d="M10.5 3.5h20l9 9v31a1.5 1.5 0 0 1-1.5 1.5H12a1.5 1.5 0 0 1-1.5-1.5z" fill="url(#sheet)" stroke="#7d8aa6"/>
+  <path d="M30.5 3.5v7.5a1.5 1.5 0 0 0 1.5 1.5h7.5z" fill="url(#fold)" stroke="#7d8aa6" stroke-linejoin="round"/>
+  <rect x="15" y="10" width="11" height="3" rx="1" fill="url(#head)"/>
+  <rect x="15" y="15.5" width="7" height="1.6" rx=".8" fill="#9aa8c2"/>
+  <g stroke="#b5c0d4" stroke-width="1.6" stroke-linecap="round">
+    <path d="M15 22h19M15 26h19M15 30h15M15 36h19M15 40h12"/>
+  </g>
+  <path d="M15 33.2h8" stroke="#2c6fdc" stroke-width="1.6" stroke-linecap="round"/>
+</svg>

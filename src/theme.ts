@@ -3,6 +3,7 @@
 // fit: the window sizes itself to its content instead of filling most of the desktop.
 export const PAGE_TYPES = {
   projects: { icon: '/img/icons/projects.svg', fit: false },
+  resume: { icon: '/img/icons/resume.svg', fit: true },
   about: { icon: '/img/icons/about.svg', fit: true },
 } as const;
 

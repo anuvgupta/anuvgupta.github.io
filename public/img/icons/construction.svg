@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <clipPath id="board"><rect x="4" y="15" width="40" height="11" rx="1.5"/></clipPath>
+    <radialGradient id="lamp" cx=".4" cy=".35" r=".7">
+      <stop offset="0" stop-color="#fff2b8"/>
+      <stop offset=".5" stop-color="#ffb21e"/>
+      <stop offset="1" stop-color="#d86b00"/>
+    </radialGradient>
+  </defs>
+  <!-- Legs and feet -->
+  <g fill="#8a8f99" stroke="#4d525c" stroke-width=".8">
+    <rect x="9" y="12" width="3.5" height="30"/>
+    <rect x="35.5" y="12" width="3.5" height="30"/>
+    <rect x="5.5" y="41" width="10.5" height="3" rx="1"/>
+    <rect x="32" y="41" width="10.5" height="3" rx="1"/>
+  </g>
+  <!-- Striped board -->
+  <g clip-path="url(#board)">
+    <rect x="4" y="15" width="40" height="11" fill="#ffd21f"/>
+    <path d="M2 30l12-17h6L8 30zM16 30l12-17h6L22 30zM30 30l12-17h6L36 30z" fill="#1f1f1f"/>
+  </g>
+  <rect x="4" y="15" width="40" height="11" rx="1.5" fill="none" stroke="#7a5a00"/>
+  <rect x="9" y="30" width="30" height="4" fill="#e9e9e9" stroke="#8a8f99" stroke-width=".8"/>
+  <!-- Warning lamp -->
+  <rect x="22.5" y="9.5" width="3" height="5.5" fill="#4d525c"/>
+  <circle cx="24" cy="7.5" r="4.5" fill="url(#lamp)" stroke="#9b4d00" stroke-width=".8"/>
+</svg>

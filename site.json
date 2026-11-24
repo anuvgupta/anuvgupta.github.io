@@ -10,6 +10,7 @@
   "openOnLoad": null,
   "pages": [
     { "id": "projects", "type": "projects", "title": "Projects", "subtitle": "Things I have built" },
+    { "id": "resume", "type": "resume", "title": "Resume", "subtitle": "Under construction" },
     { "id": "about", "type": "about", "title": "About", "subtitle": "More Info" }
   ],
   "projects": [

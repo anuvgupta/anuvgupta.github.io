@@ -7,6 +7,7 @@ import AboutPage from '../components/AboutPage.astro';
 import DesktopIcon from '../components/DesktopIcon.astro';
 import LoaderWindow from '../components/LoaderWindow.astro';
 import ProjectsPage from '../components/ProjectsPage.astro';
+import ResumePage from '../components/ResumePage.astro';
 import StartMenu from '../components/StartMenu.astro';
 import Taskbar from '../components/Taskbar.astro';
 import Window from '../components/Window.astro';
@@ -50,6 +51,7 @@ const canonical = Astro.site?.href;
         site.pages.map((p) => (
           <Window page={p} open={p.id === site.openOnLoad}>
             {p.type === 'projects' && <ProjectsPage page={p} projects={site.projects} />}
+            {p.type === 'resume' && <ResumePage />}
             {p.type === 'about' && <AboutPage site={site} />}
           </Window>
         ))
