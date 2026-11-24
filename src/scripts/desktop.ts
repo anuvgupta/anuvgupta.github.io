@@ -41,32 +41,29 @@ const startQuery = $('#start-query')!;
 
 const wins = new Map<string, Win>();
 let activeId: string | null = null;
-let openCount = 0; // cascades newly opened windows
 let taskOrder = 0; // keeps taskbar buttons in the order windows were opened
 
 // ---------------------------------------------------------------- helpers
 
 const desktopSize = () => ({ w: desktopEl.clientWidth, h: desktopEl.clientHeight });
 
+// Every window opens centred on the desktop.
 function defaultGeom(win: Win): Geom {
   const { w: dw, h: dh } = desktopSize();
-  const step = openCount % 6;
+  let width: number;
+  let height: number;
   if (win.fit) {
-    // Centred on the desktop.
-    const { width, height } = win.el.getBoundingClientRect();
-    const left = clamp(Math.round((dw - width) / 2), 0, dw - width);
-    const top = clamp(Math.round((dh - height) / 2), 0, dh - height);
-    return { left, top, width, height };
+    ({ width, height } = win.el.getBoundingClientRect());
+  } else if (dw < 700) {
+    width = dw - 12;
+    height = Math.max(220, dh - 12);
+  } else {
+    width = Math.min(dw - 24, Math.max(560, Math.round((dw * 2) / 3)));
+    height = Math.max(240, dh - 24);
   }
-  if (dw < 700) {
-    const top = 6 + step * 10;
-    return { left: 6, top, width: dw - 12, height: Math.max(220, dh - top - 6) };
-  }
-  const width = Math.min(dw - 24, Math.max(560, Math.round((dw * 2) / 3)));
-  const offset = step * 28;
-  const top = clamp(12 + offset, 0, dh - 240);
-  const left = clamp(Math.round((dw - width) / 2) + offset, 0, dw - width);
-  return { left, top, width, height: Math.max(240, dh - top - 12) };
+  const left = clamp(Math.round((dw - width) / 2), 0, dw - width);
+  const top = clamp(Math.round((dh - height) / 2), 0, dh - height);
+  return { left, top, width, height };
 }
 
 function measureGeom(el: HTMLElement): Geom {
@@ -150,7 +147,6 @@ function openPage(id: string) {
     win.open = true;
     win.el.hidden = false;
     win.geom = defaultGeom(win);
-    openCount++;
     applyGeom(win);
     win.task.hidden = false;
     win.task.style.order = String(++taskOrder);
@@ -476,7 +472,6 @@ if (initial && wins.has(hashId) && hashId !== initial.id) {
 if (initial?.open) {
   initial.geom = measureGeom(initial.el);
   applyGeom(initial);
-  openCount++;
   focusWin(initial.id);
 }
 if (wins.has(hashId)) openPage(hashId);
