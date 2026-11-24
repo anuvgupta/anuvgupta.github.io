@@ -362,6 +362,54 @@ html.ui-98 {
   box-shadow: var(--sunken);
 }
 
+/* Projects at night: a dark well with dark bevelled cards, keeping the light grey window chrome. Redefining the
+   face colours here re-derives every bevel, button and scrollbar inside it. */
+
+.ui-98 .window-body:has(> .projects-page) {
+  --xp-face: #3a3a3a;
+  --face-light: #686868;
+  --face-hilite: #4c4c4c;
+  --face-shadow: #222;
+  --face-dark: #000;
+  --raised: inset -1px -1px var(--face-dark), inset 1px 1px var(--face-hilite), inset -2px -2px var(--face-shadow),
+    inset 2px 2px var(--face-light);
+  --sunken: inset -1px -1px var(--face-light), inset 1px 1px var(--face-shadow), inset -2px -2px var(--face-hilite),
+    inset 2px 2px var(--face-dark);
+  --dither: repeating-conic-gradient(var(--face-hilite) 0 25%, var(--xp-face) 0 50%) 0 0 / 2px 2px;
+  /* The well's own edge belongs to the chrome, so it keeps the light bevel. */
+  border-color: #808080 #fff #fff #808080;
+  color: #dcdcdc;
+  background: #1a1a1a;
+}
+
+.ui-98 .projects-page :is(.page-header h1, .project-section) {
+  color: #9db9ff;
+}
+
+.ui-98 .projects-page .page-header {
+  border-image: linear-gradient(90deg, #6f8fe6, rgba(111, 143, 230, 0)) 1;
+}
+
+.ui-98 .projects-page .project-section {
+  border-image: linear-gradient(90deg, #4f6bb8, transparent) 1;
+}
+
+.ui-98 .projects-page .page-header p {
+  color: #a0a0a0;
+}
+
+.ui-98 .projects-page .project-shots a {
+  background: #000;
+}
+
+.ui-98 .projects-page .xp-btn {
+  color: #dcdcdc;
+}
+
+.ui-98 .projects-page :is(.project-shots a, .xp-btn):focus-visible {
+  outline-color: #fff;
+}
+
 /* ------------------------------------------------------------------ Desktop */
 
 .ui-98 .desktop-icon.selected .icon-img::after {
