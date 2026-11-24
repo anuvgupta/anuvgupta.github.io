@@ -34,7 +34,7 @@ const { pages, openId } = Astro.props;
   </div>
   <div class="tray">
     <div id="balloon" class="balloon" role="status" hidden></div>
-    <button id="tray-wallpaper" class="tray-icon" type="button" aria-label="Show wallpaper options" title="Wallpaper options" hidden>
+    <button id="tray-wallpaper" class="tray-icon" type="button" aria-controls="wallpaper-widget" aria-expanded="false" aria-label="Show wallpaper options" title="Show wallpaper options" hidden>
       <img src="/img/icons/sun.svg" alt="" width="16" height="16" />
     </button>
     <time id="clock" class="clock"></time>

@@ -321,7 +321,7 @@ class Widget {
     this.setupTray();
   }
 
-  // The X minimizes it to a sun in the system tray, which brings it back. Remembered for next time.
+  // A sun in the system tray shows and hides it; the X also minimizes it there. Remembered for next time.
   setupTray() {
     try {
       this.inTray = localStorage.getItem('wallpaper.widgetInTray') === 'true';
@@ -331,7 +331,7 @@ class Widget {
       this.setInTray(true);
       this.trayIcon.focus();
     });
-    this.trayIcon.addEventListener('click', () => this.setInTray(false));
+    this.trayIcon.addEventListener('click', () => this.setInTray(!this.inTray));
   }
 
   setInTray(inTray: boolean) {
@@ -344,7 +344,11 @@ class Widget {
 
   place() {
     this.el.hidden = !this.available || this.inTray;
-    this.trayIcon.hidden = !this.available || !this.inTray;
+    this.trayIcon.hidden = !this.available;
+    const label = this.inTray ? 'Show wallpaper options' : 'Hide wallpaper options';
+    this.trayIcon.setAttribute('aria-label', label);
+    this.trayIcon.title = label;
+    this.trayIcon.setAttribute('aria-expanded', String(!this.inTray));
   }
 
   // It can't be switched on, so there's nothing to offer.
