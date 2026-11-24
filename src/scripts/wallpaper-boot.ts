@@ -201,11 +201,12 @@ class Cover {
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
   };
 
-  // Blocks clear from the middle of the screen outward as a growing, slightly
-  // rounded rectangle with the screen's proportions. Each block's turn is how
-  // far out it sits (0 at the centre, 1 in the corners) plus some jitter, so
-  // the edge stays ragged.
-  dissolve(ms = reducedMotion ? 0 : 250): Promise<void> {
+  // The whole screen pixelates away at once, but faster towards the middle:
+  // each block clears at a random moment, and that moment's latest possible
+  // time grows with the block's distance from the centre (measured as a
+  // slightly rounded rectangle with the screen's proportions). So the centre
+  // is gone early while the edges keep thinning out until the end.
+  dissolve(ms = reducedMotion ? 0 : 500): Promise<void> {
     window.removeEventListener('resize', this.resize);
     const { canvas, ctx } = this;
     const dpr = canvas.width / Math.max(1, canvas.clientWidth);
@@ -214,22 +215,22 @@ class Cover {
     const rows = Math.ceil(canvas.height / cell);
     const cx = canvas.width / 2;
     const cy = canvas.height / 2;
-    const JITTER = 0.1; // how wide the ragged edge is, as a share of the way out
+    const CENTRE = 0.3; // share of the run the very centre takes to clear; the corners take all of it
     const ROUND = 6; // superellipse exponent: higher is squarer
     const corner = 2 ** (1 / ROUND);
     const turn = Array.from({ length: cols * rows }, (_, i) => {
       const dx = Math.min(1, Math.abs(((i % cols) + 0.5) * cell - cx) / cx);
       const dy = Math.min(1, Math.abs((Math.floor(i / cols) + 0.5) * cell - cy) / cy);
       const d = (dx ** ROUND + dy ** ROUND) ** (1 / ROUND) / corner;
-      return d * (1 - JITTER) + Math.random() * JITTER;
+      return Math.random() * (CENTRE + (1 - CENTRE) * d);
     });
     const order = turn.map((_, i) => i).sort((a, b) => turn[a]! - turn[b]!);
     return new Promise((resolve) => {
       const t0 = performance.now();
       let cleared = 0;
       const step = (now: number) => {
-        // The front moves outward by turn, not by block count, easing out:
-        // quick from the centre, slowing as it reaches the edges.
+        // Blocks clear by turn, not by count, easing out: quick at first,
+        // slowing as the last of the edges thin out.
         const t = ms <= 0 ? 1 : Math.min(1, (now - t0) / ms);
         const k = 1 - (1 - t) ** 2;
         for (; cleared < order.length && turn[order[cleared]!]! <= k; cleared++) {
