@@ -98,7 +98,7 @@
       ]
     },
     {
-      "name": "b.js: build automation script",
+      "name": "b.js – Build Automation Script",
       "description": "A tiny Node CLI that runs named build targets from a project's b.json, like a lightweight Make. Used across my web and infrastructure repos.",
       "github": ["https://github.com/anuvgupta/b"]
     },
@@ -115,7 +115,7 @@
       "github": ["https://github.com/anuvgupta/rubbr"]
     },
     {
-      "name": "block.js",
+      "name": "block.js – Simple UI Prototyping",
       "description": "A lightweight JavaScript library for building web UIs from modular, event-driven templates. Never touch HTML again. Made in B.C. (Before Claude) so, use at your own risk!",
       "screenshots": [
         { "src": "content/projects/blockjs.png", "alt": "block.js logo" }
@@ -177,8 +177,8 @@
         "turnstile-solver",
         "apple-notes-sync",
         "git-autosync",
-        "block.js",
-        "b.js: build automation script"
+        "block.js – Simple UI Prototyping",
+        "b.js – Build Automation Script"
       ]
     }
   ]
