@@ -19,6 +19,11 @@
 // along -cloudDrift. The wallpaper sets it to carry the clouds forward into
 // the distance with a slight lean to one side (see Environment).
 const DRIFT = 'cloudDrift';
+// How much of the cover the sky keeps at a view elevation, 1 overhead down to
+// a third near the horizon. The cloud plane is seen ever more edge-on toward
+// the horizon, so its banks crowded into a stack of thin slivers; thinning the
+// cover with distance (fewer banks, not fainter ones) keeps the far sky open.
+const FAR_COVER = 'mix( 0.35, 1.0, smoothstep( 0.03, 0.28, direction.y ) )';
 
 export const CLOUD_STYLES = ['realistic', 'ghibli', 'painterly'];
 // Where the chosen style is kept. (Renamed when painterly became the
@@ -223,7 +228,8 @@ const STYLES = {
       uvLo += drift * T * 1.7;
       vec2 q = churn( uvLo, T, 0.8 );
       float region = noise( q * 0.12 ) * 0.5 + 0.5;
-      float cov = clamp( cloudCoverage * 0.8 + ( region - 0.5 ) * 1.0, 0.0, 1.0 );
+      float farCover = ${FAR_COVER};
+      float cov = clamp( cloudCoverage * 0.8 * farCover + ( region - 0.5 ) * 1.0, 0.0, 1.0 );
       float th = 1.0 - cov;
       float bank = fbm( q * 0.45, T * 0.4 ) * 0.5 + 0.5;
       float brush = fbm( vec2( q.x * 1.4, q.y * 0.6 ) * 1.6 + 9.0, T * 0.6 ) * 0.5 + 0.5;
@@ -259,7 +265,9 @@ const STYLES = {
       vec2 st = churn( uvHi, T * 1.5, 0.6 );
       float streak = fbm( vec2( st.x * 0.55, st.y * 2.0 ) * 1.2, T * 0.7 ) * 0.5 + 0.5;
       float breakup = noise( st * 0.4 + 4.0 ) * 0.5 + 0.5;
-      float cirrus = smoothstep( 0.66, 0.84, streak ) * smoothstep( 0.52, 0.74, breakup ) * 0.2;
+      // (Fewer strokes far off, as the banks: the threshold rises toward the horizon.)
+      float cirrusTh = 0.66 + 0.14 * ( 1.0 - farCover ) / 0.65;
+      float cirrus = smoothstep( cirrusTh, cirrusTh + 0.18, streak ) * smoothstep( 0.52, 0.74, breakup ) * 0.2;
       vec3 cirrusColor = ( skyAmb * 1.2 + sunCol * 1.0 ) * max( dayFactor, 0.03 );
       texColor = mix( texColor, mix( texColor, cirrusColor, Fex ), cirrus * horizonFade );
       texColor = mix( texColor, cloudNightCol * 0.8, cirrus * horizonFade * nightK );
@@ -316,7 +324,7 @@ export const CLOUD_BANKS_GLSL = /* glsl */ `
     vec2 uvLo = direction.xz / ( max( direction.y, 0.02 ) * 0.42 ) * cloudScale * 2500.0 + ${DRIFT} * T * 1.7;
     vec2 q = churn( uvLo, T, 0.8 );
     float region = noise( q * 0.12 ) * 0.5 + 0.5;
-    float th = 1.0 - clamp( cloudCoverage * 0.8 + ( region - 0.5 ) * 1.0, 0.0, 1.0 );
+    float th = 1.0 - clamp( cloudCoverage * 0.8 * ${FAR_COVER} + ( region - 0.5 ) * 1.0, 0.0, 1.0 );
     float field = ( fbm( q * 0.45, T * 0.4 ) * 0.5 + 0.5 ) * 0.85 + ( fbm( vec2( q.x * 1.4, q.y * 0.6 ) * 1.6 + 9.0, T * 0.6 ) * 0.5 + 0.5 ) * 0.45;
     float dens = smoothstep( 0.0, 0.22, max( 0.0, field - th ) );
     return dens * smoothstep( 0.0, 0.06, direction.y ) * clamp( cloudDensity * 1.5, 0.0, 0.75 );
