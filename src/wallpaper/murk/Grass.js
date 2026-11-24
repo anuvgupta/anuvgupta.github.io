@@ -507,7 +507,7 @@ export class Grass {
           // where a wave lays it over and darker where it stands back up: the
           // same waves, as group light and dark sweeps rolling over the hill.
           // (Centred on the usual breeze, so on average the colour holds.)
-          vColor.rgb *= mix( 1.0, clamp( 1.0 + 0.45 * ( sweep - 0.27 ) + 0.55 * big, 0.55, 1.5 ), calm );
+          vColor.rgb *= mix( 1.0, clamp( 1.0 + 0.45 * ( sweep - 0.34 ) + 0.55 * big, 0.55, 1.5 ), calm );
           vColor.rgb *= 1.0 + 0.22 * gust;
 `
         );

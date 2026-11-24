@@ -23,9 +23,9 @@ const MAP = 256; // texels across the world
 // (the game's: calm 0.04-0.14, breeze 0.28-0.48, gust 0.7-1.0, with 40% of
 // breezes turning into a gust).
 const PHASES = {
-  calm: { strength: [0.06, 0.14], duration: [8, 18], next: { calm: 0.2, breeze: 0.75, gust: 0.05 } },
-  breeze: { strength: [0.18, 0.32], duration: [12, 28], next: { calm: 0.3, breeze: 0.6, gust: 0.1 } },
-  gust: { strength: [0.45, 0.65], duration: [3, 6], next: { calm: 0.3, breeze: 0.7, gust: 0 } },
+  calm: { strength: [0.08, 0.18], duration: [8, 18], next: { calm: 0.2, breeze: 0.75, gust: 0.05 } },
+  breeze: { strength: [0.24, 0.42], duration: [12, 28], next: { calm: 0.3, breeze: 0.6, gust: 0.1 } },
+  gust: { strength: [0.55, 0.8], duration: [3, 6], next: { calm: 0.3, breeze: 0.7, gust: 0 } },
 };
 
 const rand = (a, b) => a + Math.random() * (b - a);
