@@ -3,13 +3,12 @@
 // the site's own storage keys. The game's field of view, look sensitivity and
 // pixelation settings are left out (the wallpaper has none of them).
 
-// Grass reaches past the main hill's crest (about 140 m out) at every preset;
-// past a few tens of metres it is the sparse, widened far tier, so the extra
-// reach costs little.
+// (How far grass is drawn isn't a preset setting: it is fixed by the view,
+// GRASS_REACH in terrain.js.)
 const PRESETS = {
-  low: { pixelRatio: 1, shadowMapSize: 2048, grassDensity: 200, grassFullDetail: 8, grassDrawDistance: 170, bloom: false },
-  medium: { pixelRatio: 1, shadowMapSize: 2048, grassDensity: 335, grassFullDetail: 10, grassDrawDistance: 180, bloom: true },
-  high: { pixelRatio: 1.5, shadowMapSize: 4096, grassDensity: 470, grassFullDetail: 12.5, grassDrawDistance: 190, bloom: true },
+  low: { pixelRatio: 1, shadowMapSize: 2048, grassDensity: 200, grassFullDetail: 8, bloom: false },
+  medium: { pixelRatio: 1, shadowMapSize: 2048, grassDensity: 335, grassFullDetail: 10, bloom: true },
+  high: { pixelRatio: 1.5, shadowMapSize: 4096, grassDensity: 470, grassFullDetail: 12.5, bloom: true },
 };
 
 // (v3: presets and levels picked before the frame cap and multisampling

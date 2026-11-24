@@ -26,6 +26,15 @@ export const VIEW = {
   pitch: 0.104, // radians up from level: the crest sits just below centre
 };
 
+// How far out grass blades are drawn: just enough for the whole hill, up to
+// its skyline, and nothing past it. Fixed, whatever the quality: on 16:10
+// and 16:9 screens the farthest hill ground in view is about 150 m out, and
+// blades fade over the last 15% of their reach, so the crest stays fully
+// grassed. (Only on ultra-wide screens does the hill's far right flank,
+// receding to ~270 m, end in the ground's turf colour instead.) Re-measure
+// if the hill or the view changes.
+export const GRASS_REACH = 185;
+
 // The landform's sizes, in the viewer's frame (metres ahead, to the right).
 const BANK = 4; // the viewer's bank above the meadow
 // Near enough that the grass blades reach over its crest.

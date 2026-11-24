@@ -4,7 +4,7 @@
 // parting the blades (there is no player). Quality settings come in as options.
 import * as THREE from 'three';
 import { mulberry32 } from './noise.js';
-import { TERRAIN_HEIGHT_GLSL } from '../terrain.js';
+import { TERRAIN_HEIGHT_GLSL, GRASS_REACH } from '../terrain.js';
 import { GROUND_GLSL } from './ground.js';
 import { WIND_GLSL } from './Wind.js';
 
@@ -69,7 +69,7 @@ export class Grass {
 
     const density = settings.grassDensity; // blades per m² at full density
     this.keepFloor = Math.min(1, FAR_DENSITY / density); // least share kept
-    this.radius = settings.grassDrawDistance;
+    this.radius = GRASS_REACH;
     this.fullRadius = settings.grassFullDetail;
     const tufts = Math.round((TILE * TILE * density) / BLADES_PER_TUFT);
     this.perTile = tufts * BLADES_PER_TUFT;
