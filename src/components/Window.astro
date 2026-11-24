@@ -44,7 +44,7 @@ const address = `${Astro.site?.href ?? '/'}#${page.id}`;
   <div class="address-bar">
     <span class="address-label" aria-hidden="true">Address</span>
     <div class="address-field">
-      <img src={icon} alt="" width="16" height="16" draggable="false" />
+      <img src="/img/icons/globe.svg" alt="" width="16" height="16" draggable="false" />
       <input class="address-input" type="text" value={address} readonly spellcheck="false" aria-label="Address" />
       <span class="address-drop" aria-hidden="true"></span>
     </div>

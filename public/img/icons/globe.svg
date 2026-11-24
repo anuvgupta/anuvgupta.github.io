@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <defs>
+    <radialGradient id="sea" cx=".36" cy=".3" r=".8">
+      <stop offset="0" stop-color="#e9f5ff"/>
+      <stop offset=".45" stop-color="#8fc2f5"/>
+      <stop offset="1" stop-color="#2f6fcf"/>
+    </radialGradient>
+    <clipPath id="ball">
+      <circle cx="16" cy="16" r="13"/>
+    </clipPath>
+  </defs>
+  <!-- Sphere -->
+  <circle cx="16" cy="16" r="13" fill="url(#sea)"/>
+  <!-- Wireframe: meridians and parallels -->
+  <g clip-path="url(#ball)" fill="none" stroke="#1d4f9e" stroke-opacity=".75" stroke-width="1.3">
+    <ellipse cx="16" cy="16" rx="5.5" ry="13"/>
+    <path d="M16 3v26"/>
+    <path d="M3 16h26"/>
+    <path d="M5 9.5c6.5 2.6 15.5 2.6 22 0"/>
+    <path d="M5 22.5c6.5-2.6 15.5-2.6 22 0"/>
+  </g>
+  <circle cx="16" cy="16" r="13" fill="none" stroke="#174290" stroke-width="1.4"/>
+  <!-- Highlight -->
+  <ellipse cx="11.5" cy="9.5" rx="5" ry="3" fill="#fff" fill-opacity=".45" transform="rotate(-30 11.5 9.5)"/>
+</svg>
