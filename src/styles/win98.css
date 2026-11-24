@@ -1,6 +1,6 @@
 /* Windows 98 skin, shown at night (html.ui-98; see scripts/ui-theme.ts). It reuses xp.css's layout and
    swaps the chrome: grey bevelled faces, square corners, navy title bars, and a grey taskbar.
-   The projects page wears it day and night; only its background changes at night. */
+   The projects page wears it day and night. */
 
 html.ui-98,
 .projects-page {
@@ -280,8 +280,8 @@ html.ui-98,
   color: #404040;
 }
 
-/* Section tabs: Windows 98 tabs over a bevelled frame. The frame keeps the page's own background (white by day,
-   near-black at night) behind the cards; the open tab overlaps its top edge so the two read as one piece. */
+/* Section tabs: Windows 98 tabs over a bevelled frame, a shade darker than the page behind it; the open tab
+   overlaps the frame's top edge so the two read as one piece. */
 
 .project-tabs {
   display: flex;
@@ -317,6 +317,7 @@ html.ui-98,
 
 .project-panel[role="tabpanel"] {
   padding: 12px;
+  background: #6e6e6e;
   box-shadow: var(--raised);
 }
 
@@ -381,22 +382,23 @@ html.ui-98,
   box-shadow: var(--sunken);
 }
 
-/* At night only the projects page's background changes, to near-black; its headings turn light to stay readable. */
+/* The projects page sits on Windows 98's dark workspace grey, day and night, with the tab frame a shade darker;
+   its headings are light to read on it. */
 
-.ui-98 .window-body:has(> .projects-page) {
-  background: #222;
+.window-body:has(> .projects-page) {
+  background: #808080;
 }
 
-.ui-98 .projects-page .page-header h1 {
-  color: #9db9ff;
+.projects-page .page-header h1 {
+  color: #fff;
 }
 
-.ui-98 .projects-page .page-header {
-  border-image: linear-gradient(90deg, #6f8fe6, rgba(111, 143, 230, 0)) 1;
+.projects-page .page-header {
+  border-image: linear-gradient(90deg, #fff, rgba(255, 255, 255, 0)) 1;
 }
 
-.ui-98 .projects-page :is(.page-header p, .notice) {
-  color: #a0a0a0;
+.projects-page :is(.page-header p, .notice) {
+  color: #e0e0e0;
 }
 
 /* ------------------------------------------------------------------ Desktop */
