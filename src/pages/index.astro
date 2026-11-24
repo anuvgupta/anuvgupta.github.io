@@ -11,7 +11,6 @@ import Window from '../components/Window.astro';
 import WallpaperWidget from '../components/WallpaperWidget.astro';
 
 const canonical = Astro.site?.href;
-const title = site.title ?? site.name;
 ---
 
 <!doctype html>
@@ -19,11 +18,11 @@ const title = site.title ?? site.name;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>{title}</title>
+    <title>{site.title}</title>
     {site.description && <meta name="description" content={site.description} />}
     {canonical && <link rel="canonical" href={canonical} />}
     <meta property="og:type" content="website" />
-    <meta property="og:title" content={title} />
+    <meta property="og:title" content={site.title} />
     {site.description && <meta property="og:description" content={site.description} />}
     {canonical && <meta property="og:url" content={canonical} />}
     <meta name="twitter:card" content="summary" />

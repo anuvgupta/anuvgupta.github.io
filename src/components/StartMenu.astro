@@ -12,7 +12,7 @@ function searchText(page: Site['pages'][number]) {
   const extra =
     page.type === 'projects'
       ? site.projects.map((p) => `${p.name} ${p.description ?? ''}`)
-      : [site.name, site.tagline ?? '', ...site.links.map((l) => l.label)];
+      : [site.name, site.title, site.tagline ?? '', ...site.links.map((l) => l.label)];
   return [page.title, page.subtitle ?? '', ...extra].join(' ').toLowerCase().replace(/\s+/g, ' ').trim();
 }
 ---
@@ -20,7 +20,7 @@ function searchText(page: Site['pages'][number]) {
 <div id="start-menu" class="start-menu" role="dialog" aria-label="Start menu" hidden>
   <div class="sm-header">
     <span class="user-tile"><img src={USER_PICTURE} alt="" /></span>
-    <span class="sm-user">{site.name}</span>
+    <span class="sm-user">{site.title}</span>
   </div>
   <div class="sm-body">
     <label class="sm-search">

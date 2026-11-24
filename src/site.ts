@@ -80,7 +80,7 @@ const page = z.strictObject({
 const siteSchema = z
   .strictObject({
     name: z.string().min(1),
-    // Browser tab and link-preview title; defaults to name.
+    // Shown in the browser tab, link previews, the Start menu header and the About heading; defaults to name.
     title: z.string().min(1).optional(),
     tagline: z.string().optional(),
     description: z.string().optional(),
@@ -104,7 +104,7 @@ if (!result.success) {
   throw new Error(`site.json is invalid:\n${z.prettifyError(result.error)}`);
 }
 
-export const site = result.data;
+export const site = { ...result.data, title: result.data.title ?? result.data.name };
 export type Site = typeof site;
 export type Page = Site['pages'][number];
 export type Project = Site['projects'][number];
