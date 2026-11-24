@@ -52,11 +52,10 @@ function defaultGeom(win: Win): Geom {
   const { w: dw, h: dh } = desktopSize();
   const step = openCount % 6;
   if (win.fit) {
-    // Centred a little above the middle, cascading like the others.
+    // Centred on the desktop.
     const { width, height } = win.el.getBoundingClientRect();
-    const offset = step * (dw < 700 ? 10 : 28);
-    const left = clamp(Math.round((dw - width) / 2) + offset, 0, dw - width);
-    const top = clamp(Math.round((dh - height) / 3) + offset, 0, dh - height);
+    const left = clamp(Math.round((dw - width) / 2), 0, dw - width);
+    const top = clamp(Math.round((dh - height) / 2), 0, dh - height);
     return { left, top, width, height };
   }
   if (dw < 700) {
