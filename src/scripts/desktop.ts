@@ -73,7 +73,7 @@ function defaultGeom(win: Win): Geom {
     height = Math.max(220, dh - 12);
   } else {
     width = Math.min(dw - 24, Math.max(560, Math.round((dw * 2) / 3)));
-    height = Math.max(240, dh - 24);
+    height = Math.min(dh - 24, Math.max(240, Math.round(dh * 0.86)));
   }
   const ref = frontWin(win);
   if (!ref || ref.maximized) {

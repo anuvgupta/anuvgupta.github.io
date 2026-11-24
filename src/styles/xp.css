@@ -487,13 +487,14 @@ html:not(.js) .window[hidden]:target {
 /* ------------------------------------------------------------------ Windows */
 
 .window {
-  /* Default size and position (about 2/3 wide, nearly full height). Inline styles from the script take over once a window moves. */
+  /* Default size and position (about 2/3 wide, 86% tall, centred), matching defaultGeom in desktop.ts.
+     Inline styles from the script take over once a window opens or moves. */
   --win-w: min(calc(100% - 24px), max(560px, 66.667%));
   position: absolute;
   left: calc((100% - var(--win-w)) / 2);
-  top: 12px;
+  top: 7%;
   width: var(--win-w);
-  height: calc(100% - 24px);
+  height: 86%;
   display: flex;
   flex-direction: column;
   min-width: 240px;
