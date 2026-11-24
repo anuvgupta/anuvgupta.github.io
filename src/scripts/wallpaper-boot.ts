@@ -278,22 +278,25 @@ function setupWidget(api: WallpaperApi) {
   });
   setInterval(() => live.checked && show(), 15_000);
 
-  // Collapsed or open, remembered for next time.
+  // Collapsed by default; opening or closing it is remembered for next time. (The earlier
+  // 'wallpaper.widget' key was saved as open on every visit, so it isn't read.)
   const setOpen = (open: boolean) => {
     body.hidden = !open;
     collapse.setAttribute('aria-expanded', String(open));
     collapse.title = open ? 'Hide options' : 'Show options';
     widget.classList.toggle('collapsed', !open);
-    try {
-      localStorage.setItem('wallpaper.widget', open ? 'open' : 'closed');
-    } catch {}
   };
-  let open = true;
+  let open = false;
   try {
-    open = localStorage.getItem('wallpaper.widget') !== 'closed';
+    open = localStorage.getItem('wallpaper.widgetOpen') === 'true';
   } catch {}
   setOpen(open);
-  collapse.addEventListener('click', () => setOpen(body.hidden));
+  collapse.addEventListener('click', () => {
+    setOpen(body.hidden);
+    try {
+      localStorage.setItem('wallpaper.widgetOpen', String(!body.hidden));
+    } catch {}
+  });
 
   show();
   widget.hidden = false;
