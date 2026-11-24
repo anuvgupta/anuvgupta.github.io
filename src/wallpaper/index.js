@@ -20,7 +20,6 @@ import { Motes } from './murk/Motes.js';
 import { Dust } from './murk/Dust.js';
 import { createNoiseTexture } from './murk/noiseTexture.js';
 import { createTerrainMaterial } from './murk/TerrainMaterial.js';
-import { createCarpet } from './carpet.js';
 import { settings, QUALITY, DEFAULT_QUALITY, PRESET_ORDER, rememberQuality, ADAPT_LADDER, loadAdapt, rememberAdapt } from './murk/settings.js';
 
 
@@ -127,7 +126,6 @@ class Wallpaper {
     this.sunInfo = { direction: this.environment.lightDir, color: new THREE.Color() };
     this.grass = new Grass({ terrain: this.terrain, noise: this.noiseTexture, wind: this.wind, sun: this.sunInfo, settings });
     scene.add(this.grass.group);
-    scene.add(createCarpet({ geometry: ground.geometry, terrain: this.terrain, noise: this.noiseTexture, wind: this.wind, sun: this.sunInfo }));
     await mark('grass');
 
     this.motes = new Motes({ wind: this.wind, sun: this.sunInfo });
