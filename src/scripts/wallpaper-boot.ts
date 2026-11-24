@@ -207,10 +207,11 @@ class Cover {
 
   // The whole screen pixelates away at once, but faster towards the middle:
   // each block clears at a random moment, and that moment's latest possible
-  // time grows with the block's distance from the centre (measured as a
-  // slightly rounded rectangle with the screen's proportions). So the centre
-  // is gone early while the edges keep thinning out until the end. The blocks
-  // still standing fade out over the same time, so the scene fades in too.
+  // time grows with the block's distance from the centre. Distance is measured
+  // against a spiky star with the screen's proportions, so the clearing
+  // reaches out along its points first. So the centre is gone early while the
+  // edges keep thinning out until the end. The blocks still standing fade out
+  // over the same time, so the scene fades in too.
   dissolve(ms = reducedMotion ? 0 : 500): Promise<void> {
     window.removeEventListener('resize', this.resize);
     const { canvas, ctx } = this;
@@ -220,15 +221,21 @@ class Cover {
     const rows = Math.ceil(canvas.height / cell);
     const cx = canvas.width / 2;
     const cy = canvas.height / 2;
-    const CENTRE = 0.3; // share of the run the very centre takes to clear; the corners take all of it
-    const ROUND = 6; // superellipse exponent: higher is squarer
-    const corner = 2 ** (1 / ROUND);
-    const turn = Array.from({ length: cols * rows }, (_, i) => {
-      const dx = Math.min(1, Math.abs(((i % cols) + 0.5) * cell - cx) / cx);
-      const dy = Math.min(1, Math.abs((Math.floor(i / cols) + 0.5) * cell - cy) / cy);
-      const d = (dx ** ROUND + dy ** ROUND) ** (1 / ROUND) / corner;
-      return Math.random() * (CENTRE + (1 - CENTRE) * d);
+    const CENTRE = 0.3; // share of the run the very centre takes to clear; the farthest blocks take all of it
+    const ROUND = 6; // superellipse exponent for the star's overall outline: higher is squarer
+    const SPIKES = 10; // points on the star
+    const SHARP = 3; // higher makes the points narrower
+    const DEPTH = 0.5; // how far the gaps between points sit inside the tips
+    const spin = Math.random() * Math.PI * 2;
+    const reach = Array.from({ length: cols * rows }, (_, i) => {
+      const nx = (((i % cols) + 0.5) * cell - cx) / cx;
+      const ny = ((Math.floor(i / cols) + 0.5) * cell - cy) / cy;
+      const d = (Math.abs(nx) ** ROUND + Math.abs(ny) ** ROUND) ** (1 / ROUND);
+      const tip = ((1 + Math.cos(SPIKES * Math.atan2(ny, nx) + spin)) / 2) ** SHARP;
+      return d / (1 - DEPTH * (1 - tip));
     });
+    const far = reach.reduce((m, r) => Math.max(m, r), 0);
+    const turn = reach.map((r) => Math.random() * (CENTRE + (1 - CENTRE) * (r / far)));
     const order = turn.map((_, i) => i).sort((a, b) => turn[a]! - turn[b]!);
     return new Promise((resolve) => {
       const t0 = performance.now();
