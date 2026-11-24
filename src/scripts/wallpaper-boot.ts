@@ -209,7 +209,8 @@ class Cover {
   // each block clears at a random moment, and that moment's latest possible
   // time grows with the block's distance from the centre (measured as a
   // slightly rounded rectangle with the screen's proportions). So the centre
-  // is gone early while the edges keep thinning out until the end.
+  // is gone early while the edges keep thinning out until the end. The blocks
+  // still standing fade out over the same time, so the scene fades in too.
   dissolve(ms = reducedMotion ? 0 : 500): Promise<void> {
     window.removeEventListener('resize', this.resize);
     const { canvas, ctx } = this;
@@ -237,6 +238,7 @@ class Cover {
         // slowing as the last of the edges thin out.
         const t = ms <= 0 ? 1 : Math.min(1, (now - t0) / ms);
         const k = 1 - (1 - t) ** 2;
+        canvas.style.opacity = String(1 - t);
         for (; cleared < order.length && turn[order[cleared]!]! <= k; cleared++) {
           const c = order[cleared]!;
           ctx.clearRect((c % cols) * cell, Math.floor(c / cols) * cell, cell, cell);
