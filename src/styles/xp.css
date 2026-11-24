@@ -1005,12 +1005,42 @@ html.window-dragging * {
   border-image: linear-gradient(90deg, #7a96df, transparent) 1;
 }
 
-.project-section + .project {
+/* Cards sit two to a row, three when the window is maximized, and one in a narrow window. */
+.projects-page {
+  container: projects / inline-size;
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.project-section + .project-grid {
   margin-top: 10px;
 }
 
+.window.maximized .project-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@container projects (max-width: 760px) {
+  .window.maximized .project-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@container projects (max-width: 480px) {
+  .project-grid,
+  .window.maximized .project-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 .project {
-  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
   border-radius: 4px 4px 0 0;
   overflow: hidden;
   box-shadow: 0 0 0 1px #c6d3f7;
@@ -1025,6 +1055,7 @@ html.window-dragging * {
 }
 
 .project-content {
+  flex: 1;
   padding: 10px 12px 12px;
   background: #eef2fc;
 }
