@@ -201,9 +201,10 @@ class Cover {
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
   };
 
-  // Blocks clear from the middle of the screen outward as a growing rectangle
-  // with the screen's proportions. Each block's turn is how far out it sits
-  // (0 at the centre, 1 at the edges) plus some jitter, so the edge stays ragged.
+  // Blocks clear from the middle of the screen outward as a growing, slightly
+  // rounded rectangle with the screen's proportions. Each block's turn is how
+  // far out it sits (0 at the centre, 1 in the corners) plus some jitter, so
+  // the edge stays ragged.
   dissolve(ms = reducedMotion ? 0 : 650): Promise<void> {
     window.removeEventListener('resize', this.resize);
     const { canvas, ctx } = this;
@@ -214,10 +215,13 @@ class Cover {
     const cx = canvas.width / 2;
     const cy = canvas.height / 2;
     const JITTER = 0.25;
+    const ROUND = 6; // superellipse exponent: higher is squarer
+    const corner = 2 ** (1 / ROUND);
     const turn = Array.from({ length: cols * rows }, (_, i) => {
-      const dx = Math.abs(((i % cols) + 0.5) * cell - cx) / cx;
-      const dy = Math.abs((Math.floor(i / cols) + 0.5) * cell - cy) / cy;
-      return Math.min(1, Math.max(dx, dy)) * (1 - JITTER) + Math.random() * JITTER;
+      const dx = Math.min(1, Math.abs(((i % cols) + 0.5) * cell - cx) / cx);
+      const dy = Math.min(1, Math.abs((Math.floor(i / cols) + 0.5) * cell - cy) / cy);
+      const d = (dx ** ROUND + dy ** ROUND) ** (1 / ROUND) / corner;
+      return d * (1 - JITTER) + Math.random() * JITTER;
     });
     const order = turn.map((_, i) => i).sort((a, b) => turn[a]! - turn[b]!);
     return new Promise((resolve) => {
