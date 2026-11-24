@@ -1,10 +1,11 @@
 /** Theme-level mappings: which page types exist and which icon each page type and link uses. */
 
 // fit: the window sizes itself to its content instead of filling most of the desktop.
+// address: the window shows an Explorer-style address bar.
 export const PAGE_TYPES = {
-  projects: { icon: '/img/icons/projects.svg', fit: false },
-  resume: { icon: '/img/icons/resume.svg', fit: true },
-  about: { icon: '/img/icons/about.svg', fit: true },
+  projects: { icon: '/img/icons/projects.svg', fit: false, address: true },
+  resume: { icon: '/img/icons/resume.svg', fit: true, address: false },
+  about: { icon: '/img/icons/about.svg', fit: true, address: false },
 } as const;
 
 export const LINK_ICONS = {

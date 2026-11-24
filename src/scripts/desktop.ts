@@ -295,9 +295,11 @@ for (const el of $$('.window[data-page]', desktopEl)) {
   wins.set(id, win);
 
   // The address bar shows this page's address and selects it all on focus, like Explorer's.
-  const address = $<HTMLInputElement>('.address-input', el)!;
-  address.value = pageUrl(id);
-  address.addEventListener('focus', () => address.select());
+  const address = $<HTMLInputElement>('.address-input', el);
+  if (address) {
+    address.value = pageUrl(id);
+    address.addEventListener('focus', () => address.select());
+  }
 
   el.addEventListener('pointerdown', () => focusWin(id), true);
   el.addEventListener('click', (e) => {
