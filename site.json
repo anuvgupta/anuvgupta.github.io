@@ -140,10 +140,7 @@
       "screenshots": [
         { "src": "content/projects/blockjs.png", "alt": "block.js logo" }
       ],
-      "github": ["https://github.com/anuvgupta/block.js"],
-      "links": [
-        { "label": "Docs", "url": "https://github.anuv.me/block.js/" }
-      ]
+      "github": ["https://github.com/anuvgupta/block.js"]
     }
   ]
 }
