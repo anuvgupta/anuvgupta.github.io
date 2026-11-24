@@ -116,6 +116,7 @@ html:not(.js) .window[hidden]:target {
 
 .wp-title {
   display: flex;
+  cursor: pointer;
   align-items: center;
   gap: 5px;
   height: 22px;
@@ -141,7 +142,7 @@ html:not(.js) .window[hidden]:target {
   border: 1px solid #fff;
   border-radius: 3px;
   background: radial-gradient(circle at 90% 90%, #0054e9 0%, #2263d5 55%, #4479e4 70%, #a3bbec 90%, #fff 100%);
-  cursor: default;
+  cursor: pointer;
 }
 
 .wp-collapse::before {
@@ -303,7 +304,7 @@ html:not(.js) .window[hidden]:target {
   align-items: center;
   gap: 4px;
   color: #fff;
-  cursor: default;
+  cursor: pointer;
   user-select: none;
   -webkit-user-select: none;
 }
@@ -385,7 +386,7 @@ html:not(.js) .window[hidden]:target {
     inset 0 1px 0 #4fa3ff,
     inset 1px 0 0 var(--xp-frame-edge),
     inset -1px 0 0 var(--xp-frame-edge);
-  cursor: default;
+  cursor: pointer;
   user-select: none;
   -webkit-user-select: none;
   touch-action: none;
@@ -429,7 +430,7 @@ html.window-dragging * {
   border-radius: 3px;
   background: radial-gradient(circle at 90% 90%, #0054e9 0%, #2263d5 55%, #4479e4 70%, #a3bbec 90%, #fff 100%);
   box-shadow: inset -1px -1px 1px rgba(0, 0, 0, 0.2);
-  cursor: default;
+  cursor: pointer;
 }
 
 .title-controls button:hover {
@@ -598,7 +599,7 @@ html.window-dragging * {
   padding: 2px 8px;
   border: 0;
   background: none;
-  cursor: default;
+  cursor: pointer;
 }
 
 .menu-btn:hover,
@@ -1025,7 +1026,7 @@ html.window-dragging * {
     inset -2px -1px 3px rgba(0, 0, 0, 0.3),
     inset 1px 1px 2px rgba(255, 255, 255, 0.35),
     2px 0 4px rgba(0, 0, 0, 0.35);
-  cursor: default;
+  cursor: pointer;
 }
 
 /* Circuit-board mark in the logo slot, sized up from XP's ~17px flag so its detail reads. */
@@ -1076,7 +1077,7 @@ html.window-dragging * {
   box-shadow:
     inset -1px -1px 0 rgba(0, 0, 0, 0.3),
     inset 1px 1px 1px rgba(255, 255, 255, 0.25);
-  cursor: default;
+  cursor: pointer;
 }
 
 .task:hover {
