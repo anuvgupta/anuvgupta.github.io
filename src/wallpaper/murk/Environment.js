@@ -624,15 +624,21 @@ function createStars(moonAt) {
     shader.uniforms.cloudDrift = { value: new THREE.Vector2() };
     m.userData.shader = shader;
     shader.vertexShader = shader.vertexShader
-      .replace('#include <common>', '#include <common>\nattribute vec3 aStar;\nuniform float uTime;\nvarying float vElev;\nvarying float vTwinkle;\nvarying float vFlick;\nvarying float vOut;\nvarying float vCloud;\n' + CLOUD_BANKS_GLSL)
+      .replace('#include <common>', '#include <common>\nattribute vec3 aStar;\nuniform float uTime;\nvarying float vElev;\nvarying float vTwinkle;\nvarying float vFlick;\nvarying float vOut;\nvarying float vCloud;\nvarying float vStar;\nvarying float vSprite;\n' + CLOUD_BANKS_GLSL)
       .replace('#include <project_vertex>', '#include <project_vertex>\nvCloud = cloudBanks( normalize( ( modelMatrix * vec4( position, 1.0 ) ).xyz - cameraPosition ) );\nvElev = normalize( ( modelMatrix * vec4( position, 0.0 ) ).xyz ).y;\nvTwinkle = smoothstep( 0.8, 1.0, sin( uTime * aStar.z * 1.6 + aStar.y ) );\nvFlick = fract( aStar.y * 7.31 ) < 0.62 ? 0.5 + 0.3 * sin( uTime * aStar.z * 1.4 + aStar.y * 3.0 ) + 0.2 * sin( uTime * aStar.z * 2.1 + aStar.y * 8.0 ) : 1.0;\nvOut = smoothstep( 0.93, 0.99, sin( uTime * ( 0.31 + 0.2 * aStar.z ) + aStar.y * 4.0 ) * sin( uTime * ( 0.23 + 0.15 * aStar.z ) + aStar.y * 9.0 ) );')
-      .replace('gl_PointSize = size;', 'gl_PointSize = aStar.x * ( 1.0 + 0.2 * vTwinkle );');
+      // The sprite is the star plus a pixel's margin all round, fixed in
+      // size; the star's own disc (which twinkles larger) is drawn inside it.
+      // (A sprite just the star's size, a pixel or so, lit pixels whose
+      // centres fell outside it on some GPUs, shaded there at nearly nothing:
+      // as the twinkle resized it, stars popped fully on and off.)
+      .replace('gl_PointSize = size;', 'vStar = aStar.x * ( 1.0 + 0.2 * vTwinkle );\nvSprite = aStar.x + 2.0;\ngl_PointSize = vSprite;');
     shader.fragmentShader = shader.fragmentShader
-      .replace('#include <common>', '#include <common>\nvarying float vElev;\nvarying float vTwinkle;\nvarying float vFlick;\nvarying float vOut;\nvarying float vCloud;')
+      .replace('#include <common>', '#include <common>\nvarying float vElev;\nvarying float vTwinkle;\nvarying float vFlick;\nvarying float vOut;\nvarying float vCloud;\nvarying float vStar;\nvarying float vSprite;')
       .replace(
         '#include <opaque_fragment>',
         `{
-          float rr = length( gl_PointCoord - 0.5 ) * 2.0;
+          // Distance from the centre in units of the star's radius.
+          float rr = length( gl_PointCoord - 0.5 ) * vSprite / ( vStar * 0.5 );
           diffuseColor.a *= exp( -rr * rr * 3.2 ) * smoothstep( 0.02, 0.35, vElev ) * ( 0.85 + 0.3 * vTwinkle ) * mix( 0.85, 1.0, vFlick ) * ( 1.0 - 0.9 * vOut ) * ( 1.0 - min( 1.0, vCloud * 1.35 ) );
         }
         #include <opaque_fragment>`
