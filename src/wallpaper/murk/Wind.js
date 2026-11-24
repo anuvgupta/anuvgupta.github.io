@@ -36,11 +36,11 @@ const rand = (a, b) => a + Math.random() * (b - a);
 // viewer, laying the grass over as it passes. It follows the wind's
 // direction when it starts, along a path measured from the viewpoint.
 const GUST = {
-  first: [20, 40], // seconds before the first one
-  every: [45, 120], // seconds between them
+  first: [10, 20], // seconds before the first one
+  every: [25, 60], // seconds between them
   from: -260, // metres along the wind from the viewer where it starts...
   to: 40, // ...and where it ends, past the viewer
-  speed: [9, 13], // metres a second
+  speed: [14, 19], // metres a second
   strength: [0.6, 1.0],
   halfWidth: [90, 140], // metres across the wind
 };
