@@ -456,6 +456,7 @@ html.ui-98 {
   letter-spacing: 0;
   text-shadow: none;
   text-transform: capitalize;
+  -webkit-text-stroke: 0.6px currentColor; /* heavier than plain bold */
   background: var(--xp-face);
   box-shadow: var(--raised);
 }
@@ -518,7 +519,8 @@ html.ui-98 {
 }
 
 .ui-98 .clock {
-  -webkit-text-stroke: 0;
+  font-weight: bold;
+  -webkit-text-stroke: 0.5px currentColor;
 }
 
 .ui-98 .balloon {
