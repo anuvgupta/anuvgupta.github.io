@@ -541,13 +541,13 @@ html.ui-98,
 }
 
 /* On/off switches: a square sunken well with a raised grey knob, a dark grey gradient when off and a
-   subtle blue-to-navy one when on (lighter on the left, darker on the right). */
+   navy-to-blue one when on (darker on the left, brighter on the right). */
 .ui-98 .xp-switch {
   width: 40px;
   height: 20px;
   border: 0;
   border-radius: 0;
-  background: linear-gradient(90deg, #b4b4b4, #858585);
+  background: linear-gradient(90deg, #858585, #b4b4b4);
   box-shadow: var(--sunken);
 }
 
@@ -564,7 +564,7 @@ html.ui-98,
 }
 
 .ui-98 .xp-switch:checked {
-  background: linear-gradient(90deg, #3358c4, #000080);
+  background: linear-gradient(90deg, #000080, #3358c4);
 }
 
 .ui-98 .xp-switch:checked::before {
