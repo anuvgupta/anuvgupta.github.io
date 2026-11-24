@@ -53,7 +53,7 @@
     },
     {
       "name": "turnstile-solver",
-      "description": "A fork of a Cloudflare Turnstile solver for scraping pages on sites with stricter protection:\n\n* The original solves the widget on a fake local page and hands back only a token.\n* Strict sites only unlock their content when the token is ***both*** solved and redeemed on their own page.\n* This fork solves on the real page with a hardened browser fingerprint, lets the page unlock itself, and returns the content behind the challenge rather than a token.",
+      "description": "A fork of a Cloudflare Turnstile solver for scraping pages on stricter sites:\n\n* Original solved the widget on a fake local page & returned only the token.\n* Strict sites only unlock their content when the token is ***both*** solved and redeemed on their own page.\n* This fork solves on the real page with a hardened browser fingerprint, lets the page unlock itself, and returns the content behind the challenge rather than a token.",
       "github": ["https://github.com/anuvgupta/Turnstile-Solver"]
     },
     {
