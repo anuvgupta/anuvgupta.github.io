@@ -1041,136 +1041,123 @@ html.window-dragging * {
   flex: none;
 }
 
-/* About: the Frutiger Aero look of the pilo dashboard (sky with bubbles, a glass card, glossy aqua title,
-   white glossy pill buttons), using its colours and font. */
+/* About: a classic Windows 98 dialog (grey bevelled panel, navy gradient title bar, sunken picture,
+   etched rule, square 3D buttons) on the old teal desktop. */
 
 .about {
-  --aero-sky-top: #6ec6f5;
-  --aero-sky-mid: #bfe6fb;
-  --aero-sky-low: #e9f8ff;
-  --aero-meadow: #c9efb4;
-  --aero-glass: rgba(255, 255, 255, 0.58);
-  --aero-glass-edge: rgba(255, 255, 255, 0.9);
-  --aero-shadow: rgba(0, 72, 128, 0.18);
-  --aero-text: #12395a;
-  --aero-muted: #4f7491;
-  --aero-heading: #0b5d96;
+  --w98-face: #c0c0c0;
+  --w98-light: #fff;
+  --w98-hilite: #dfdfdf;
+  --w98-shadow: #808080;
+  --w98-dark: #0a0a0a;
+  /* Raised and sunken 3D edges, drawn as two-pixel bevels. */
+  --w98-raised: inset -1px -1px var(--w98-dark), inset 1px 1px var(--w98-light), inset -2px -2px var(--w98-shadow),
+    inset 2px 2px var(--w98-hilite);
+  --w98-sunken: inset -1px -1px var(--w98-light), inset 1px 1px var(--w98-shadow), inset -2px -2px var(--w98-hilite),
+    inset 2px 2px var(--w98-dark);
   min-height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 40px 20px;
-  text-align: center;
-  color: var(--aero-text);
-  font-family: "Segoe UI", "Open Sans", Frutiger, "Myriad Pro", sans-serif;
-  background:
-    radial-gradient(circle at 12% 18%, rgba(255, 255, 255, 0.55) 0 38px, rgba(255, 255, 255, 0) 40px),
-    radial-gradient(circle at 86% 12%, rgba(255, 255, 255, 0.45) 0 22px, rgba(255, 255, 255, 0) 24px),
-    radial-gradient(circle at 74% 64%, rgba(255, 255, 255, 0.35) 0 54px, rgba(255, 255, 255, 0) 57px),
-    radial-gradient(circle at 24% 82%, rgba(255, 255, 255, 0.4) 0 16px, rgba(255, 255, 255, 0) 18px),
-    radial-gradient(ellipse at 50% 115%, var(--aero-meadow) 0%, rgba(201, 239, 180, 0) 55%),
-    linear-gradient(180deg, var(--aero-sky-top) 0%, var(--aero-sky-mid) 38%, var(--aero-sky-low) 100%);
+  color: #000;
+  font: 12px "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Geneva, sans-serif;
+  background: #008080;
 }
 
-/* Glass panel with a glossy top highlight. Its text is all lowercase, links included. */
 .about-card {
-  position: relative;
-  text-transform: lowercase;
-  overflow: hidden;
+  width: min(100%, 380px);
+  padding: 3px;
+  background: var(--w98-face);
+  box-shadow: var(--w98-raised), 2px 2px 0 rgba(0, 0, 0, 0.35);
+}
+
+.about-titlebar {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  max-width: 100%;
-  padding: 28px 40px 26px;
-  border: 1px solid var(--aero-glass-edge);
-  border-radius: 16px;
-  background: var(--aero-glass);
-  -webkit-backdrop-filter: blur(14px) saturate(140%);
-  backdrop-filter: blur(14px) saturate(140%);
-  box-shadow:
-    0 8px 26px var(--aero-shadow),
-    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  gap: 4px;
+  height: 18px;
+  padding: 0 3px;
+  font-weight: bold;
+  color: #fff;
+  background: linear-gradient(90deg, #000080, #1084d0);
 }
 
-.about-card::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  height: 46%;
-  border-radius: 16px 16px 40% 40% / 16px 16px 18px 18px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0));
-  pointer-events: none;
+.about-body {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 16px 14px 0;
+  padding-bottom: 14px;
+  /* Etched rule: a dark line over a light one. */
+  border-bottom: 1px solid var(--w98-shadow);
+  box-shadow: 0 1px var(--w98-light);
 }
 
-.about-card > * {
-  position: relative;
-}
-
+/* Sunken square frame instead of the rounded white one. */
 .about .user-tile {
-  box-shadow:
-    0 0 0 1px rgba(30, 120, 180, 0.22),
-    0 4px 14px var(--aero-shadow);
+  border: 2px solid;
+  border-color: var(--w98-shadow) var(--w98-light) var(--w98-light) var(--w98-shadow);
+  border-radius: 0;
+  box-shadow: none;
+  outline: 1px solid var(--w98-dark);
+  outline-offset: -3px;
 }
 
-/* Glossy aqua text. */
+.about-text {
+  min-width: 0;
+}
+
 .about h1 {
-  margin: 16px 0 4px;
-  font-size: 26px;
-  font-weight: 600;
-  letter-spacing: 0.2px;
-  background: linear-gradient(180deg, #2bb3f5 0%, #0a72b8 60%, #075a92 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.9));
+  margin: 0 0 6px;
+  font-size: 16px;
+  font-weight: bold;
 }
 
 /* A line break in the tagline is kept. */
 .tagline {
-  margin: 0 0 18px;
+  margin: 0;
   white-space: pre-line;
-  font-size: 14px;
-  color: var(--aero-muted);
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
 }
 
 .about-links {
-  justify-content: center;
-  gap: 8px;
+  justify-content: flex-end;
+  gap: 6px;
+  padding: 12px 14px 11px;
 }
 
-/* Glossy pill buttons. */
 .about .xp-btn {
-  padding: 6px 16px 6px 12px;
-  font-size: 12px;
-  color: var(--aero-heading);
-  border: 1px solid rgba(30, 120, 180, 0.35);
-  border-radius: 999px;
-  background: linear-gradient(180deg, #fff 0%, #eef8ff 48%, #dcefff 50%, #f2faff 100%);
-  box-shadow:
-    inset 0 1px 0 #fff,
-    0 1px 3px rgba(0, 72, 128, 0.15);
+  min-width: 75px;
+  justify-content: center;
+  padding: 4px 12px;
+  color: #000;
+  border: 0;
+  border-radius: 0;
+  background: var(--w98-face);
+  box-shadow: var(--w98-raised);
 }
 
 .about .xp-btn:hover {
-  filter: brightness(1.04);
-  box-shadow:
-    inset 0 1px 0 #fff,
-    0 1px 3px rgba(0, 72, 128, 0.15);
+  box-shadow: var(--w98-raised);
 }
 
 .about .xp-btn:active {
-  filter: brightness(0.97);
-  box-shadow: inset 0 1px 3px rgba(0, 72, 128, 0.2);
+  padding: 5px 11px 3px 13px;
+  background: var(--w98-face);
+  box-shadow: var(--w98-sunken);
 }
 
 .about .xp-btn:focus-visible {
-  outline: none;
-  box-shadow:
-    0 0 0 3px rgba(30, 155, 224, 0.25),
-    inset 0 1px 0 #fff;
+  outline: 1px dotted #000;
+  outline-offset: -5px;
+  box-shadow: var(--w98-raised);
+}
+
+@media (max-width: 420px) {
+  .about-body {
+    flex-direction: column;
+    text-align: center;
+  }
 }
 
 /* User picture tile (Start menu + About) */

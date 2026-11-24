@@ -11,9 +11,14 @@ const { site } = Astro.props;
 
 <div class="page about">
   <div class="about-card">
-    <span class="user-tile user-tile-lg"><img src={USER_PICTURE} alt="" /></span>
-    <h1>{site.title}</h1>
-    {site.tagline && <p class="tagline">{site.tagline}</p>}
+    <div class="about-titlebar"><img src={USER_PICTURE} alt="" width="16" height="16" />{site.name}</div>
+    <div class="about-body">
+      <span class="user-tile user-tile-lg"><img src={USER_PICTURE} alt="" /></span>
+      <div class="about-text">
+        <h1>{site.title}</h1>
+        {site.tagline && <p class="tagline">{site.tagline}</p>}
+      </div>
+    </div>
     {
       site.links.length > 0 && (
         <div class="about-links">
