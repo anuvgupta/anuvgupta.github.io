@@ -33,7 +33,10 @@
     },
     {
       "name": "Self-Hosted Voice Assistant",
-      "description": "A voice assistant on a Raspberry Pi 5 with a four-mic array, integrated with Claude and a custom Claude harness that has full Home Assistant (IoT) and Jellyfin (media server) integration. Whisper, Laya and openWakeWord handle smart wake, Deepgram does speech-to-text, Claude or the harness writes replies and calls tools, and Piper speaks them."
+      "description": "A voice assistant on a Raspberry Pi 5 with a four-mic array, integrated with Claude and a custom Claude harness that has full Home Assistant (IoT) and Jellyfin (media server) integration. Whisper, Laya and openWakeWord handle smart wake, Deepgram does speech-to-text, Claude or the harness writes replies and calls tools, and Piper speaks them.",
+      "screenshots": [
+        { "src": "content/projects/voice-assistant.mp4", "alt": "The voice assistant's screen moving between resting, listening, speaking and smart wake states" }
+      ]
     },
     {
       "name": "apple-notes-sync",
@@ -64,7 +67,7 @@
     },
     {
       "name": "Presence-Based LED Light Strips",
-      "description": "Hallway LED strips that follow you as you walk: LD2450 mmWave radar sensors publish targets over MQTT, a fusion service tracks each person along the hallway, and WLED strips light up where they are. Occupancy shows up in Home Assistant."
+      "description": "Hallway LED strips that follow you as you walk: LD2450 mmWave radar sensors publish targets over MQTT, a fusion service tracks each person along the hallway, and WLED strips light up where they are. Ambient light controls and occupancy show up in Home Assistant."
     },
     {
       "name": "Sound Design AI: Talk to Your Synthesizer",
