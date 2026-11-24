@@ -354,7 +354,11 @@ export class Grass {
           vec3 tangent = up * ( 1.0 - 3.0 * curl * hy0 * hy0 ) + bend3 * ( 2.0 * hy0 );
           vec3 side3 = vec3( across.x, 0.0, across.y );
           vec3 bladeN = normalize( cross( side3, tangent ) );
-          if ( dot( bladeN, up ) < 0.0 ) bladeN = -bladeN;
+          // Keep the face normal pointing up, but turn it over smoothly: a hard
+          // flip as a blade swayed through upright switched it between lit and
+          // shaded in one frame, so single blades twinkled dark and light.
+          // Near upright it fades out, leaving the ground's normal to shade it.
+          bladeN *= clamp( dot( bladeN, up ) * 5.0, -1.0, 1.0 );
           // The field shades like a soft carpet: mostly the ground's own normal,
           // a little blade shape, and a curl across the blade so it isn't a flat strip.
           vec3 objectNormal = normalize( mix( bladeN, groundN, 0.62 ) + side3 * ( position.x * 0.35 ) );
