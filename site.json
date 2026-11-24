@@ -33,7 +33,7 @@
     },
     {
       "name": "Self-Hosted Voice Assistant",
-      "description": "A local-first voice assistant on a Raspberry Pi 5 with a four-mic array: say the wake word, ask a question, and it answers out loud. Speech-to-text, the LLM and text-to-speech can each run on the Pi, a stronger machine on the LAN, or in the cloud."
+      "description": "A voice assistant on a Raspberry Pi 5 with a four-mic array, integrated with Claude and a custom Claude harness that has full Home Assistant (IoT) and Jellyfin (media server) integration. Whisper, Laya and openWakeWord handle smart wake, Deepgram does speech-to-text, Claude or the harness writes replies and calls tools, and Piper speaks them."
     },
     {
       "name": "apple-notes-sync",
