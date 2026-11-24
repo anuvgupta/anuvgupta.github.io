@@ -45,7 +45,7 @@
     },
     {
       "name": "PiWii",
-      "description": "A Raspberry Pi that powers a 1 TB SSD and passes the whole drive through to a softmodded Wii as its USB drive, so the Wii's loader sees one huge game library. A Wii Menu-style web app converts and uploads games over the network, and the Pi copies them onto the SSD whenever the Wii goes idle.",
+      "description": "Install games onto your Wii over WiFi. Raspberry Pi powers and passes through a 1 TB drive to a modded Wii over USB, letting you access a massive game library directly on the Wii. Self-hosted website takes requests and manages converting+uploading games to the Pi's NFS over LAN.",
       "screenshots": [
         { "src": "content/projects/piwii.png", "alt": "piwii's Wii Menu-style library page" }
       ],
