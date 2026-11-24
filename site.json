@@ -71,7 +71,7 @@
     },
     {
       "name": "Sound Design AI: Talk to Your Synthesizer",
-      "description": "A fork of the open-source Vital wavetable synth that adds an AI agent side panel inside the synth, backed by its own cloud infrastructure.",
+      "description": "Added agentic chat with voice mode to the open-source Vital wavetable synthesizer.\n\n* Describe what you want instead of hunting through menus for knobs.\n* Shape sounds hands-free, while you play keys.\n* Iterate through synth patches faster.\n\nNever touch your synth again.",
       "github": ["https://github.com/anuvgupta/vital"],
       "links": [
         { "label": "Beta demo", "url": "https://www.youtube.com/watch?v=1ruJ_QGSfxU" },
