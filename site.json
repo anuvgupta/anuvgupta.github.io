@@ -18,6 +18,9 @@
       "name": "SkyTube: Watch YouTube In Skyrim",
       "year": 2026,
       "description": "Video player mod for Skyrim. Watch YouTube, streams, or videos while you play. Auto-pauses during dialogue. Picture-in-picture with resize, drag, fade. Resumes last video when you load in. SKSE plugin, no ESP, nothing in saves.",
+      "screenshots": [
+        { "src": "content/projects/skytube.webp", "alt": "A YouTube video playing in a picture-in-picture window over a Skyrim sunset" }
+      ],
       "github": ["https://github.com/anuvgupta/skytube"],
       "links": [
         { "label": "Download", "url": "https://github.com/anuvgupta/skytube/releases/latest" }
