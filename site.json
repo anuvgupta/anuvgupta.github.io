@@ -133,8 +133,8 @@
         "PiWii",
         "turnstile-solver",
         "git-autosync",
-        "Projector Screen Controller",
-        "Presence-Based LED Light Strips"
+        "Presence-Based LED Light Strips",
+        "Projector Screen Controller"
       ]
     },
     {
@@ -147,8 +147,8 @@
       "title": "Home Automation",
       "projects": [
         "Self-Hosted Voice Assistant",
-        "Projector Screen Controller",
-        "Presence-Based LED Light Strips"
+        "Presence-Based LED Light Strips",
+        "Projector Screen Controller"
       ]
     },
     {
