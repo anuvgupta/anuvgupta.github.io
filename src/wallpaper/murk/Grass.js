@@ -270,7 +270,9 @@ export class Grass {
           float kk = uFullRadius / max( dist, uFullRadius );
           float keep = max( ${this.keepFloor.toFixed(3)}, kk * kk * sqrt( kk ) );
           float thin = clamp( ( keep - aBlade.z ) / ( 0.3 * keep ), 0.0, 1.0 );
-          float fade = 1.0 - smoothstep( uRadius * 0.85, uRadius, dist );
+          // Blades shrink into the far grass carpet (carpet.js) over the last
+          // half of their reach, so the field runs on without an edge.
+          float fade = 1.0 - smoothstep( uRadius * 0.45, uRadius, dist );
           // (Up to six and a half times as wide where they're thinnest, so
           // the middle distance stays covered without drawing more blades.)
           float widen = clamp( inversesqrt( keep ), 1.0, 6.5 );
@@ -330,11 +332,7 @@ export class Grass {
           float leanAmt = 0.12 + 0.22 * br2 * br2;
 
           // Wind: lean downwind under gust fronts, plus waves rolling across the field.
-          // A little livelier than the bare wind (sheltered meadows were
-          // almost still), but nowhere near the old everywhere-gale. (Raised
-          // from 1.4 when the wallpaper's breeze was made lighter, so the
-          // grass still leans and sways as much, only more slowly.)
-          float w = windAt( root ) * 2.2 + 0.05;
+          float w = grassWind( root );
           // Waves roll across the field quickly where it's exposed, slowly
           // in shelter (two waves blended, so neither ever shears).
           float we = windExposure( root );
@@ -419,6 +417,9 @@ export class Grass {
           vColor.rgb = col * ( 0.96 + 0.08 * br ) * realmGrassTint( root );
           // Olive rather than lime: ease the saturation toward a warm grey.
           { float gl = dot( vColor.rgb, vec3( 0.3, 0.59, 0.11 ) ); vColor.rgb = mix( vColor.rgb, vec3( gl ) * vec3( 1.06, 1.0, 0.8 ), 0.15 ); }
+          // Far off, the same light and dark wind sweeps as the carpet the
+          // blades hand over to, so they roll on across the seam.
+          vColor.rgb *= mix( 1.0, windTone( root ), farMix );
 `
         );
 

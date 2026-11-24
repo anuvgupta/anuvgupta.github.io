@@ -266,4 +266,29 @@ export const WIND_GLSL = /* glsl */ `
     float strength = mix( uWindSlow, uWindStrength, e );
     return strength * ( 0.35 + local * 1.2 ) * ( 0.35 + 0.65 * e );
   }
+
+  // The wind the grass answers to: a little livelier than the bare wind
+  // (sheltered meadows were almost still), but nowhere near the game's
+  // everywhere-gale. (Raised from 1.4 when the wallpaper's breeze was made
+  // lighter, so the grass still leans and sways as much, only more slowly.)
+  float grassWind( vec2 p ) { return windAt( p ) * 2.2 + 0.05; }
+
+  // How far the grass leans here at the scale of the field: the blades'
+  // lean and rolling waves without each blade's own phase and flutter
+  // (Grass.js adds those). Waves roll quickly where it's exposed, slowly in
+  // shelter, two blended so neither ever shears.
+  float windBend( vec2 p ) {
+    float we = windExposure( p );
+    float waveF = sin( dot( p, uWindDir ) * 0.22 - uWindTravel * 0.9 );
+    float waveS = sin( dot( p, uWindDir ) * 0.16 - uWindTravelSlow * 0.7 );
+    float wave = mix( waveS, waveF, we ) * 0.5 + 0.5;
+    return grassWind( p ) * ( 0.25 + 0.55 * wave );
+  }
+
+  // Far off you can't see a blade sway, only a field go lighter where the
+  // wind lays it over and darker where it stands up again: the brightness
+  // of distant grass under the same waves as the blades.
+  // (Centred on the usual breeze's lean, so on average the field keeps its
+  // own colour: lighter in a gust, darker in a lull.)
+  float windTone( vec2 p ) { return clamp( 1.0 + 0.38 * ( windBend( p ) - 0.27 ), 0.75, 1.32 ); }
 `;
