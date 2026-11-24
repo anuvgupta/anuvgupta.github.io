@@ -83,7 +83,7 @@
     },
     {
       "name": "CityScape",
-      "description": "A procedurally generated 3D city in a single HTML file with Three.js: instanced buildings, sunlight and shadows, and wind-blown grass, tuned to run smoothly in iPad Safari.",
+      "description": "A procedurally generated 3D city in a single HTML file with Three.js: skyscrapers clustered into downtowns, buildings of varied footprints and heights with shader-drawn lit windows, sliders to reshape the skyline, and touch controls tuned for iPad Safari.",
       "github": ["https://github.com/anuvgupta/cityscape"],
       "links": [
         { "label": "Live demo", "url": "https://github.anuv.me/cityscape/" }
