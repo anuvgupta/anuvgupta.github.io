@@ -411,7 +411,7 @@ html.ui-98,
 /* Glass: a faint purple tint, a fine dither for texture, light top-left and dark bottom-right edges. */
 .projects-page .project-tab,
 .projects-page .project-panel[role="tabpanel"] {
-  background-color: rgba(150, 110, 235, 0.14);
+  background-color: rgba(150, 110, 235, 0.22);
   background-image: repeating-conic-gradient(rgba(255, 255, 255, 0.04) 0 25%, transparent 0 50%);
   background-size: 4px 4px;
 }
@@ -424,12 +424,12 @@ html.ui-98,
 }
 
 .projects-page .project-tab:hover {
-  background-color: rgba(170, 130, 255, 0.22);
+  background-color: rgba(170, 130, 255, 0.3);
 }
 
 .projects-page .project-tab[aria-selected="true"] {
   color: #fff;
-  background-color: rgba(170, 130, 255, 0.2);
+  background-color: rgba(170, 130, 255, 0.28);
 }
 
 .projects-page .project-tab:focus-visible {
