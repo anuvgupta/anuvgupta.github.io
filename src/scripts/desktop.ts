@@ -175,6 +175,8 @@ function openPage(id: string) {
     win.el.hidden = false;
     win.geom = defaultGeom(win);
     applyGeom(win);
+    // On a portrait (phone-shaped) screen, windows open maximized; ones that can't maximize stay as they are.
+    if (innerHeight > innerWidth) setMaximized(win, true);
     win.task.hidden = false;
     win.task.style.order = String(++taskOrder);
     win.body.scrollTop = 0;
