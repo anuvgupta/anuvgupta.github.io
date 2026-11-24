@@ -67,7 +67,7 @@
       "description": "Hallway LED strips that follow you as you walk: LD2450 mmWave radar sensors publish targets over MQTT, a fusion service tracks each person along the hallway, and WLED strips light up where they are. Occupancy shows up in Home Assistant."
     },
     {
-      "name": "Vital AI: Synth Sound Design Agent",
+      "name": "Sound Design AI: Talk to Your Synthesizer",
       "description": "A fork of the open-source Vital wavetable synth that adds an AI agent side panel inside the synth, backed by its own cloud infrastructure.",
       "github": ["https://github.com/anuvgupta/vital", "https://github.com/anuvgupta/synth-agent-infra"],
       "links": [
@@ -136,7 +136,7 @@
     {
       "title": "Music",
       "projects": [
-        "Vital AI: Synth Sound Design Agent"
+        "Sound Design AI: Talk to Your Synthesizer"
       ]
     },
     {
