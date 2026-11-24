@@ -1083,7 +1083,9 @@ html.window-dragging * {
   background: var(--w98-face);
 }
 
+/* The dialog's width, which the window fits around. */
 .about-card {
+  width: 380px;
   max-width: 100%;
 }
 
