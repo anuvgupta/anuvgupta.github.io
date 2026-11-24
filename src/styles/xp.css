@@ -1060,11 +1060,22 @@ html.window-dragging * {
 }
 
 .project-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
   margin: 0;
   padding: 6px 12px;
   font: 12px var(--title-font);
   color: var(--xp-link);
   background: linear-gradient(90deg, #fff, #c6d3f7);
+}
+
+/* The start year, at the title bar's right end in plain (not bold) text. */
+.project-year {
+  flex: none;
+  text-shadow: none;
+  opacity: 0.85;
 }
 
 .project-content {

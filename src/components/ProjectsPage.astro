@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import type { Page, Project, Section } from '../site';
-import { LINK_ICONS, repoName } from '../theme';
+import { CLAUDE_ERA_START, LINK_ICONS, repoName } from '../theme';
 import Inline from './Inline.astro';
 import LinkButton from './LinkButton.astro';
 
@@ -31,6 +31,8 @@ const paragraphs = (text: string) =>
         ? { items: lines.map((l) => l.slice(2)) }
         : { text: lines.join(' ') };
     });
+
+const beforeClaude = (p: Project) => p.year !== undefined && p.year < CLAUDE_ERA_START;
 
 // Inline emphasis: ***bold italic***, **bold**, *italic*; everything else is plain text.
 const inline = (text: string) =>
@@ -85,11 +87,14 @@ const panelId = (i: number) => `${page.id}-panel-${i}`;
         <div class="project-grid">
           {g.projects.map((p) => (
             <article class="project">
-              <h2 class="project-title">{p.name}</h2>
+              <h2 class="project-title">
+                <span>{p.name}</span>
+                {p.year && <span class="project-year">{p.year}</span>}
+              </h2>
               <div class="project-content">
-                {p.description && (
+                {(p.description || beforeClaude(p)) && (
                   <div class="project-desc">
-                    {paragraphs(p.description).map((b) =>
+                    {p.description && paragraphs(p.description).map((b) =>
                       'items' in b ? (
                         <ul>
                           {b.items.map((item) => (
@@ -103,6 +108,11 @@ const panelId = (i: number) => `${page.id}-panel-${i}`;
                           <Inline parts={inline(b.text)} />
                         </p>
                       )
+                    )}
+                    {beforeClaude(p) && (
+                      <p>
+                        <em>Made in B.C. (Before Claude) so, use at your own risk!</em>
+                      </p>
                     )}
                   </div>
                 )}

@@ -85,6 +85,8 @@ const project = z.strictObject({
   // Blank lines separate paragraphs; a paragraph whose lines all start with "* " is a bullet list.
   // Inline, *word* is italic, **word** bold, and ***word*** both.
   description: z.string().optional(),
+  // The year the project was started; shown on its card, which also notes when it predates Claude.
+  year: z.number().int().min(1990).max(2100).optional(),
   screenshots: z.array(screenshot).max(3, 'At most 3 screenshots per project').default([]),
   github: z.array(repo).default([]),
   links: z.array(link.omit({ icon: true })).default([]),

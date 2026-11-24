@@ -19,6 +19,9 @@ export const LINK_ICONS = {
 export const UI_DAY_START = 6;
 export const UI_DAY_END = 19;
 
+/** Projects started before this year were made "B.C. (Before Claude)", and their cards say so. */
+export const CLAUDE_ERA_START = 2024;
+
 /** The user picture in the Start menu header and on the About page. */
 export const USER_PICTURE = '/img/icons/circuit.svg';
 
