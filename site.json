@@ -179,10 +179,16 @@
       ]
     },
     {
+      "title": "Art",
+      "projects": [
+        "CityScape",
+        "Murk3D",
+        "Project Portfolio"
+      ]
+    },
+    {
       "title": "Gaming",
       "projects": [
-        "Murk3D",
-        "CityScape",
         "PiWii",
         "SkyTube: Watch YouTube In Skyrim",
         "Rubbr.io"
