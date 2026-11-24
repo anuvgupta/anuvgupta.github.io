@@ -303,13 +303,15 @@ class Widget {
     // (autocomplete="off" stops most), which would apply a stale hand-set time after first paint.
     this.live.checked = this.live.defaultChecked;
     this.slider.value = this.slider.defaultValue;
-    // The UI's day and night themes follow the wallpaper's time of day too.
     this.slider.addEventListener('input', () => {
       this.live.checked = false;
       this.api?.setTime(Number(this.slider.value));
-      setUiHour(Number(this.slider.value));
       this.show();
     });
+    // The UI's day and night themes follow the wallpaper's time of day too, but only once the slider
+    // is let go: switching theme resizes this widget, which would move the slider under the pointer
+    // mid-drag, jump its value back across the line, and flip the theme again and again.
+    this.slider.addEventListener('change', () => setUiHour(Number(this.slider.value)));
     this.live.addEventListener('change', () => {
       // Turning it off holds the time shown now. (The slider's own value snaps to 5 minutes and
       // only refreshes every 15 seconds, so it would jump back.)
