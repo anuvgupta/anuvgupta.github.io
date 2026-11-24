@@ -101,7 +101,8 @@ html:not(.js) .window[hidden]:target {
   top: 10px;
   right: 10px;
   z-index: 5;
-  width: min(250px, calc(100% - 112px));
+  --wp-w: min(250px, calc(100% - 112px));
+  width: var(--wp-w);
   border-radius: 6px 6px 3px 3px;
   overflow: hidden;
   font-size: 11px;
@@ -111,8 +112,10 @@ html:not(.js) .window[hidden]:target {
     2px 3px 10px rgba(0, 0, 0, 0.35);
 }
 
+/* Collapsed to its title bar, at half its width. */
 .wp-widget.collapsed {
-  width: auto;
+  width: calc(var(--wp-w) / 2);
+  min-width: max-content; /* never narrower than its title */
 }
 
 .wp-title {

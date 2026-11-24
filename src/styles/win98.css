@@ -376,7 +376,7 @@ html.ui-98 {
 
 .ui-98 .wp-widget {
   /* Wider than XP's, so the pixel font's tick labels (Night, Sunrise) don't run together. */
-  width: min(300px, calc(100% - 112px));
+  --wp-w: min(300px, calc(100% - 112px));
   padding: 3px;
   border-radius: 0;
   background: var(--xp-face);
