@@ -55,7 +55,7 @@ const canonical = Astro.site?.href;
       {
         site.pages.map((p) => (
           <Window page={p} open={p.id === site.openOnLoad}>
-            {p.type === 'projects' && <ProjectsPage page={p} projects={site.projects} />}
+            {p.type === 'projects' && <ProjectsPage page={p} projects={site.projects} sections={site.sections} />}
             {p.type === 'resume' && <ResumePage />}
             {p.type === 'about' && <AboutPage site={site} />}
           </Window>

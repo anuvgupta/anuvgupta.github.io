@@ -61,13 +61,17 @@ const screenshot = z.preprocess(
 const repo = z.preprocess(shorthand('url'), z.strictObject({ url, label: z.string().min(1).optional() }));
 
 const project = z.strictObject({
-  // Consecutive projects with the same section are listed under one heading.
-  section: z.string().min(1).optional(),
   name: z.string().min(1),
   description: z.string().optional(),
   screenshots: z.array(screenshot).max(3, 'At most 3 screenshots per project').default([]),
   github: z.array(repo).default([]),
   links: z.array(link.omit({ icon: true })).default([]),
+});
+
+// A tab on the Projects page, listing projects by name in the order shown. A project can sit in several tabs.
+const section = z.strictObject({
+  title: z.string().min(1),
+  projects: z.array(z.string()).default([]),
 });
 
 const pageType = z.enum(Object.keys(PAGE_TYPES) as [keyof typeof PAGE_TYPES, ...(keyof typeof PAGE_TYPES)[]]);
@@ -90,12 +94,29 @@ const siteSchema = z
     openOnLoad: z.string().nullable().optional(),
     pages: z.array(page).min(1, 'Add at least one page'),
     projects: z.array(project).default([]),
+    // Optional tabs for the Projects page; without them it lists every project.
+    sections: z.array(section).optional(),
   })
   .superRefine((s, ctx) => {
     const ids = s.pages.map((p) => p.id);
     ids.forEach((id, i) => {
       if (ids.indexOf(id) !== i) ctx.addIssue({ code: 'custom', path: ['pages', i, 'id'], message: `Duplicate page id "${id}"` });
     });
+    if (s.sections) {
+      const names = s.projects.map((p) => p.name);
+      names.forEach((name, i) => {
+        if (names.indexOf(name) !== i) ctx.addIssue({ code: 'custom', path: ['projects', i, 'name'], message: `Duplicate project name "${name}"` });
+      });
+      const listed = new Set(s.sections.flatMap((t) => t.projects));
+      s.sections.forEach((t, i) =>
+        t.projects.forEach((name, j) => {
+          if (!names.includes(name)) ctx.addIssue({ code: 'custom', path: ['sections', i, 'projects', j], message: `No project named "${name}"` });
+        })
+      );
+      names.forEach((name, i) => {
+        if (!listed.has(name)) ctx.addIssue({ code: 'custom', path: ['projects', i, 'name'], message: `"${name}" isn't in any section, so it would never show` });
+      });
+    }
     if (s.openOnLoad && !ids.includes(s.openOnLoad)) {
       ctx.addIssue({ code: 'custom', path: ['openOnLoad'], message: `"${s.openOnLoad}" is not a page id (${ids.join(', ')})` });
     }
@@ -110,3 +131,4 @@ export const site = { ...result.data, title: result.data.title ?? result.data.na
 export type Site = typeof site;
 export type Page = Site['pages'][number];
 export type Project = Site['projects'][number];
+export type Section = NonNullable<Site['sections']>[number];

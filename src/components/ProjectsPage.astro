@@ -1,23 +1,23 @@
 ---
 import { Image } from 'astro:assets';
-import type { Page, Project } from '../site';
+import type { Page, Project, Section } from '../site';
 import { LINK_ICONS, repoName } from '../theme';
 import LinkButton from './LinkButton.astro';
 
 interface Props {
   page: Page;
   projects: Project[];
+  sections?: Section[];
 }
-const { page, projects } = Astro.props;
+const { page, projects, sections } = Astro.props;
 
-const groups: { title?: string; projects: Project[] }[] = [];
-for (const p of projects) {
-  const last = groups.at(-1);
-  if (last && last.title === p.section) last.projects.push(p);
-  else groups.push({ title: p.section, projects: [p] });
-}
-// Sections become tabs, the first one open.
-const tabbed = groups.some((g) => g.title);
+// Sections become tabs (the first one with projects opens first); without them, one list of everything.
+const byName = new Map(projects.map((p) => [p.name, p]));
+const groups: { title?: string; projects: Project[] }[] = sections
+  ? sections.map((s) => ({ title: s.title, projects: s.projects.map((n) => byName.get(n)!) }))
+  : [{ projects }];
+const tabbed = !!sections;
+const openIndex = Math.max(0, groups.findIndex((g) => g.projects.length > 0));
 const tabId = (i: number) => `${page.id}-tab-${i}`;
 const panelId = (i: number) => `${page.id}-panel-${i}`;
 ---
@@ -38,8 +38,8 @@ const panelId = (i: number) => `${page.id}-panel-${i}`;
             role="tab"
             id={tabId(i)}
             aria-controls={panelId(i)}
-            aria-selected={i === 0 ? 'true' : 'false'}
-            tabindex={i === 0 ? 0 : -1}
+            aria-selected={i === openIndex ? 'true' : 'false'}
+            tabindex={i === openIndex ? 0 : -1}
           >
             {g.title ?? 'Other'}
           </button>
@@ -54,8 +54,9 @@ const panelId = (i: number) => `${page.id}-panel-${i}`;
         id={panelId(i)}
         role={tabbed ? 'tabpanel' : undefined}
         aria-labelledby={tabbed ? tabId(i) : undefined}
-        hidden={i > 0}
+        hidden={i !== openIndex}
       >
+        {g.projects.length === 0 && <p class="notice">Nothing here yet.</p>}
         <div class="project-grid">
           {g.projects.map((p) => (
             <article class="project">

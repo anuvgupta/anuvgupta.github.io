@@ -328,6 +328,7 @@ html.ui-98,
 
 .project-tabs {
   display: flex;
+  flex-wrap: wrap;
   align-items: flex-end;
   margin-top: 16px;
   padding-left: 2px;
@@ -364,6 +365,10 @@ html.ui-98,
 
 .project-panel[role="tabpanel"] .project-grid {
   margin-top: 0;
+}
+
+.project-panel .notice {
+  padding: 4px 2px;
 }
 
 :is(.ui-98, .projects-page) .project {
@@ -433,7 +438,7 @@ html.ui-98,
   border-image: linear-gradient(90deg, #6f8fe6, rgba(111, 143, 230, 0)) 1;
 }
 
-.ui-98 .projects-page .page-header p {
+.ui-98 .projects-page :is(.page-header p, .notice) {
   color: #a0a0a0;
 }
 
