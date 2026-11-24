@@ -317,7 +317,7 @@ html.ui-98,
 
 .project-panel[role="tabpanel"] {
   padding: 12px;
-  background: #6e6e6e;
+  background: #b4b0a8;
   box-shadow: var(--raised);
 }
 
@@ -382,23 +382,10 @@ html.ui-98,
   box-shadow: var(--sunken);
 }
 
-/* The projects page sits on Windows 98's dark workspace grey, day and night, with the tab frame a shade darker;
-   its headings are light to read on it. */
+/* The projects page sits on the light window grey, day and night; only the tab frame is a shade darker. */
 
 .window-body:has(> .projects-page) {
-  background: #808080;
-}
-
-.projects-page .page-header h1 {
-  color: #fff;
-}
-
-.projects-page .page-header {
-  border-image: linear-gradient(90deg, #fff, rgba(255, 255, 255, 0)) 1;
-}
-
-.projects-page :is(.page-header p, .notice) {
-  color: #e0e0e0;
+  background: #d4d0c8;
 }
 
 /* ------------------------------------------------------------------ Desktop */
