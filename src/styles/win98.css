@@ -1,7 +1,9 @@
 /* Windows 98 skin, shown at night (html.ui-98; see scripts/ui-theme.ts). It reuses xp.css's layout and
-   swaps the chrome: grey bevelled faces, square corners, navy title bars, and a grey taskbar. */
+   swaps the chrome: grey bevelled faces, square corners, navy title bars, and a grey taskbar.
+   The projects page wears it day and night; only its background changes at night. */
 
-html.ui-98 {
+html.ui-98,
+.projects-page {
   /* W95FA redraws MS Sans Serif's bitmap on a 12-unit em, so it's pixel-exact at 12px (and 18px, 24px). */
   --ui-font: "W95FA", "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Geneva, sans-serif;
   --title-font: var(--ui-font);
@@ -27,22 +29,30 @@ html.ui-98 {
 }
 
 /* Bitmap-style text: no smoothing, and every size a whole multiple of the font's pixel. */
-.ui-98 body {
+.ui-98 body,
+.projects-page {
   -webkit-font-smoothing: none;
   font-smooth: never;
 }
 
 /* The font's own spacing is tight; one font pixel more between letters, at every size (on every
    element, since form controls don't inherit it). */
-.ui-98 * {
+.ui-98 *,
+.projects-page * {
   letter-spacing: 0.0834em;
 }
 
+.projects-page {
+  font-family: var(--ui-font);
+}
+
+.projects-page,
 .ui-98 :is(.page, .address-bar, .address-input, .wp-widget, .wp-ticks, .sm-item-text small) {
   font-size: 12px;
 }
 
 /* The font has no bold; Windows drew bold bitmap text by overstriking it one pixel to the right. */
+.projects-page :is(b, strong, h1, h2, h3),
 .ui-98 :is(b, strong, h1, h2, h3, .title-text, .start-button, .task.active, .wp-title, .sm-user) {
   font-weight: normal;
   text-shadow: 0.0834em 0 currentColor; /* one font pixel at any size */
@@ -287,58 +297,58 @@ html.ui-98 {
 
 /* ------------------------------------------------------------------ Pages */
 
-.ui-98 .page-header h1,
-.ui-98 .project-section {
+:is(.ui-98, .projects-page) .page-header h1,
+:is(.ui-98, .projects-page) .project-section {
   color: #000080;
 }
 
-.ui-98 .page-header h1 {
+:is(.ui-98, .projects-page) .page-header h1 {
   font-size: 24px;
 }
 
-.ui-98 .project-section,
+:is(.ui-98, .projects-page) .project-section,
 .ui-98 .dialog h1 {
   font-size: 18px;
 }
 
-.ui-98 .project-title {
+:is(.ui-98, .projects-page) .project-title {
   font-size: 12px;
 }
 
-.ui-98 .page-header p {
+:is(.ui-98, .projects-page) .page-header p {
   color: #404040;
 }
 
-.ui-98 .project {
+:is(.ui-98, .projects-page) .project {
   border-radius: 0;
   box-shadow: var(--raised);
   padding: 2px;
   background: var(--xp-face);
 }
 
-.ui-98 .project-title {
+:is(.ui-98, .projects-page) .project-title {
   color: #fff;
   background: var(--navy-bar);
 }
 
-.ui-98 .project-content {
+:is(.ui-98, .projects-page) .project-content {
   background: var(--xp-face);
 }
 
-.ui-98 .project-shots a {
+:is(.ui-98, .projects-page) .project-shots a {
   padding: 2px;
   border: 0;
   background: #fff;
   box-shadow: var(--sunken);
 }
 
-.ui-98 .project-shots a:hover,
-.ui-98 .project-shots a:focus-visible {
+:is(.ui-98, .projects-page) .project-shots a:hover,
+:is(.ui-98, .projects-page) .project-shots a:focus-visible {
   outline: 1px dotted #000;
   outline-offset: 1px;
 }
 
-.ui-98 .xp-btn {
+:is(.ui-98, .projects-page) .xp-btn {
   padding: 4px 12px 4px 9px;
   border: 0;
   border-radius: 0;
@@ -346,68 +356,42 @@ html.ui-98 {
   box-shadow: var(--raised);
 }
 
-.ui-98 .xp-btn:hover {
+:is(.ui-98, .projects-page) .xp-btn:hover {
   box-shadow: var(--raised);
 }
 
-.ui-98 .xp-btn:focus-visible {
+:is(.ui-98, .projects-page) .xp-btn:focus-visible {
   outline: 1px dotted #000;
   outline-offset: -5px;
   box-shadow: var(--raised);
 }
 
-.ui-98 .xp-btn:active {
+:is(.ui-98, .projects-page) .xp-btn:active {
   padding: 5px 11px 3px 10px;
   background: var(--xp-face);
   box-shadow: var(--sunken);
 }
 
-/* Projects at night: a dark well with dark bevelled cards, keeping the light grey window chrome. Redefining the
-   face colours here re-derives every bevel, button and scrollbar inside it. */
+/* At night only the projects page's background changes, to a dim grey; its headings turn light to stay readable. */
 
 .ui-98 .window-body:has(> .projects-page) {
-  --xp-face: #3a3a3a;
-  --face-light: #686868;
-  --face-hilite: #4c4c4c;
-  --face-shadow: #222;
-  --face-dark: #000;
-  --raised: inset -1px -1px var(--face-dark), inset 1px 1px var(--face-hilite), inset -2px -2px var(--face-shadow),
-    inset 2px 2px var(--face-light);
-  --sunken: inset -1px -1px var(--face-light), inset 1px 1px var(--face-shadow), inset -2px -2px var(--face-hilite),
-    inset 2px 2px var(--face-dark);
-  --dither: repeating-conic-gradient(var(--face-hilite) 0 25%, var(--xp-face) 0 50%) 0 0 / 2px 2px;
-  /* The well's own edge belongs to the chrome, so it keeps the light bevel. */
-  border-color: #808080 #fff #fff #808080;
-  color: #dcdcdc;
-  background: #1a1a1a;
+  background: #4a4a4a;
 }
 
 .ui-98 .projects-page :is(.page-header h1, .project-section) {
-  color: #9db9ff;
+  color: #c4d4ff;
 }
 
 .ui-98 .projects-page .page-header {
-  border-image: linear-gradient(90deg, #6f8fe6, rgba(111, 143, 230, 0)) 1;
+  border-image: linear-gradient(90deg, #a9bdf5, rgba(169, 189, 245, 0)) 1;
 }
 
 .ui-98 .projects-page .project-section {
-  border-image: linear-gradient(90deg, #4f6bb8, transparent) 1;
+  border-image: linear-gradient(90deg, #8ea4e0, transparent) 1;
 }
 
 .ui-98 .projects-page .page-header p {
-  color: #a0a0a0;
-}
-
-.ui-98 .projects-page .project-shots a {
-  background: #000;
-}
-
-.ui-98 .projects-page .xp-btn {
-  color: #dcdcdc;
-}
-
-.ui-98 .projects-page :is(.project-shots a, .xp-btn):focus-visible {
-  outline-color: #fff;
+  color: #d4d4d4;
 }
 
 /* ------------------------------------------------------------------ Desktop */
