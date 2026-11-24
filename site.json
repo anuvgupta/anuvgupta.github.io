@@ -80,7 +80,8 @@
       "year": 2026,
       "description": "An ESPHome controller for a motorized projector screen. A Home Assistant automation lowers it whenever the NVIDIA Shield is on or the projector's smart plug shows it drawing power, and raises it once both are off.",
       "screenshots": [
-        { "src": "content/projects/projector-screen.jpg", "alt": "The controller board: an ESP32 on perfboard with a transistor, resistors and a screw terminal for the screen's wires" }
+        { "src": "content/projects/projector-screen.jpg", "alt": "The controller board: an ESP32 on perfboard with a transistor, resistors and a screw terminal for the screen's wires" },
+        { "src": "content/projects/projector-screen-mounted.jpg", "alt": "The controller in its black case, mounted on the end of the projector screen housing" }
       ]
     },
     {
