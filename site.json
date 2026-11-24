@@ -71,7 +71,8 @@
       "description": "A fork of the open-source Vital wavetable synth that adds an AI agent side panel inside the synth, backed by its own cloud infrastructure.",
       "github": ["https://github.com/anuvgupta/vital"],
       "links": [
-        { "label": "Demo video", "url": "https://www.youtube.com/watch?v=GkKuZN7fDMQ" }
+        { "label": "Beta demo", "url": "https://www.youtube.com/watch?v=1ruJ_QGSfxU" },
+        { "label": "Alpha demo", "url": "https://www.youtube.com/watch?v=GkKuZN7fDMQ" }
       ]
     },
     {
