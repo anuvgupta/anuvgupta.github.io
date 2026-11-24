@@ -262,6 +262,11 @@ export class Grass {
           float hU = terrainHeight( root + vec2( 0.0, 0.6 ) );
           vec3 groundN = onDisc > 0.5 ? vec3( 0.0, 1.0, 0.0 ) : normalize( vec3( hL - hR, 1.2, hD - hU ) );
           float dist = distance( vec3( root.x, ground, root.y ), cameraPosition );
+          // Far off a blade is narrower than a pixel, so its dark root, bright
+          // tip and own shade landed on pixels at random: a grainy speckle on
+          // the hill that no MSAA (4x is the browser's most) could smooth out.
+          // With distance the blades even out toward one turf tone instead.
+          float farMix = smoothstep( 15.0, 70.0, dist );
           float kk = uFullRadius / max( dist, uFullRadius );
           float keep = max( ${this.keepFloor.toFixed(3)}, kk * kk * sqrt( kk ) );
           float thin = clamp( ( keep - aBlade.z ) / ( 0.3 * keep ), 0.0, 1.0 );
@@ -359,7 +364,7 @@ export class Grass {
           bladeN *= clamp( dot( bladeN, up ) * 5.0, -1.0, 1.0 );
           // The field shades like a soft carpet: mostly the ground's own normal,
           // a little blade shape, and a curl across the blade so it isn't a flat strip.
-          vec3 objectNormal = normalize( mix( bladeN, groundN, 0.62 ) + side3 * ( position.x * 0.35 ) );
+          vec3 objectNormal = normalize( mix( bladeN, groundN, mix( 0.62, 0.9, farMix ) ) + side3 * ( position.x * 0.35 * ( 1.0 - farMix ) ) );
           #ifdef USE_TANGENT
             vec3 objectTangent = vec3( tangent.xyz );
           #endif`
@@ -394,15 +399,15 @@ export class Grass {
           vTrans = pow( max( dot( viewDir, uSunDir ), 0.0 ), 6.0 ) * hy * hy;
           vec3 halfV = normalize( uSunDir - viewDir );
           vec3 wn = normalize( mix( bladeN, groundN, 0.5 ) );
-          vSheen = pow( max( dot( wn, halfV ), 0.0 ), 30.0 ) * hy * hy;
+          vSheen = pow( max( dot( wn, halfV ), 0.0 ), 30.0 ) * hy * hy * ( 1.0 - farMix );
 
           // Colour: dark occluded base to a pale, slightly yellow tip; some straw.
           vec3 base = meadowColor( root, gn );
           float dry = step( 0.985 - dryPatch * 0.25, br ) * density;
           vec3 tip = mix( base * vec3( 1.08, 1.1, 0.92 ), vec3( 0.62, 0.72, 0.4 ), 0.18 + 0.16 * br2 );
           // Each tuft a little lighter or darker; roots in shadow.
-          float tuftTone = 0.78 + 0.3 * tr;
-          vec3 rootCol = base * 0.38;
+          float tuftTone = mix( 0.78 + 0.3 * tr, 0.93, farMix * 0.8 );
+          vec3 rootCol = base * mix( 0.38, 0.8, farMix );
           vec3 col = mix( rootCol, tip * tuftTone, smoothstep( 0.0, 0.9, hy ) );
           col = mix( col, mix( vec3( 0.25, 0.2, 0.08 ), vec3( 0.62, 0.52, 0.28 ), hy ), dry );
           {
