@@ -20,6 +20,8 @@ const MOON_LOW = -0.14; // radians; well under the hills' skyline, so it rises a
 const MOON_HIGH = 0.2; // radians; its highest, about a quarter down from the top of the frame
 const MOON_YAW_RISE = 0.38; // radians right of straight ahead
 const MOON_YAW_SET = 0.2;
+// Cloud cover by day: scattered banks with plenty of open sky.
+const DAY_CLOUDS = 0.36;
 
 // The sky's final output: soft-clip the in-scatter so a low sun grades into
 // a glow rather than a white-out, and cap it so bloom never runs away. Goes
@@ -158,7 +160,7 @@ export class Environment {
     u.mieDirectionalG.value = 0.8;
     if (u.showSunDisc) u.showSunDisc.value = 0;
     if (u.cloudCoverage) {
-      u.cloudCoverage.value = 0.45;
+      u.cloudCoverage.value = DAY_CLOUDS;
       u.cloudDensity.value = 0.5;
       u.cloudScale.value = 0.00028;
     }
@@ -279,7 +281,8 @@ export class Environment {
     const golden = (1 - smoothstep(0.02, 0.45, elev)) * smoothstep(-0.14, 0.0, elev);
     this.nightFactor = 1 - smoothstep(-0.2, 0.02, elev);
 
-    // Some nights are clouded over in banks, some clear (each night's own
+    // Some nights are clouded in scattered banks with clear sky between
+    // (they used to cover nearly all of it), some clear (each night's own
     // throw, noon to noon); the moon lights the clouds blue- or violet-grey.
     {
       const night = Math.floor((this.dayCount * 24 + this.timeOfDay - 12) / 24);
@@ -289,7 +292,7 @@ export class Environment {
       };
       const cloudy = this.nightClouds !== undefined ? this.nightClouds : hash(1) < 0.5 ? 1 : 0;
       const su = this.sky.material.uniforms;
-      if (su.cloudCoverage) su.cloudCoverage.value = THREE.MathUtils.lerp(0.45, cloudy ? 0.75 : 0.05, this.nightFactor);
+      if (su.cloudCoverage) su.cloudCoverage.value = THREE.MathUtils.lerp(DAY_CLOUDS, cloudy ? 0.42 : 0.05, this.nightFactor);
       const moon = this.viewMoonDirection(sunTime, this._cloudMoon || (this._cloudMoon = new THREE.Vector3()));
       su.cloudMoonDir.value.copy(moon);
       const lit = 0.35 + 0.65 * smoothstep(-0.05, 0.25, moon.y);
