@@ -417,6 +417,11 @@ export class Grass {
           float wave = mix( waveS, waveF, we ) * 0.5 + 0.5;
           // How far the field leans here, for the far blades' group shading.
           float sweep = w * ( 0.25 + 0.55 * wave );
+          // And broad sweeps for the distant hill: long bands (~85 m apart),
+          // bent by soft noise into gust-shaped patches, rolling the way the
+          // wind blows at its speed, stronger where and when it blows harder.
+          float bigPhase = ( dot( root, uWindDir ) - uWindTravel ) * 0.074 + texture( uNoise, root * 0.0045 + 0.37 ).g * 4.0;
+          float big = sin( bigPhase ) * clamp( w * 1.3, 0.35, 1.0 );
           // (Each blade's own flutter, a slow sway every 4-7 s: the game's
           // 2-3 s flicker read as frantic on a still view.)
           float flutter = sin( uTime * ( 0.9 + br * 0.6 ) + br * 6.28 + dot( root, uWindDir ) * 0.6 ) * 0.5 * ( 1.0 - calm );
@@ -499,7 +504,7 @@ export class Grass {
           // where a wave lays it over and darker where it stands back up: the
           // same waves, as group light and dark sweeps rolling over the hill.
           // (Centred on the usual breeze, so on average the colour holds.)
-          vColor.rgb *= mix( 1.0, clamp( 1.0 + 0.45 * ( sweep - 0.27 ), 0.72, 1.35 ), calm );
+          vColor.rgb *= mix( 1.0, clamp( 1.0 + 0.45 * ( sweep - 0.27 ) + 0.55 * big, 0.55, 1.5 ), calm );
 `
         );
 
