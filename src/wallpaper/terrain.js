@@ -42,7 +42,7 @@ const MAIN = { f: 140, r: -22, h: 21, left: 40, right: 85, front: 85, back: 80 }
 // The far mountains, low on the horizon: [distance, offset right, height,
 // spread] in metres. Each is a wide cone with concave slopes and a definite
 // peak; only their tops clear the main hill.
-const PEAKS = [
+export const PEAKS = [
   [2650, 940, 128, 380],
   [2900, 1380, 145, 420],
   [2450, 620, 80, 300],
