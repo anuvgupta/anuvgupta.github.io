@@ -395,12 +395,12 @@ html.ui-98,
    pane of translucent purple glass, and the Windows 98 cards drifting just above the glass. */
 
 .projects-page .page-header h1 {
-  color: #fff3cf;
-  text-shadow: 0.0834em 0 currentColor, 0 0 6px rgba(255, 226, 150, 0.35); /* overstruck bold, then the glow */
+  color: #f8f8ff;
+  text-shadow: 0.0834em 0 currentColor, 0 0 6px rgba(235, 235, 255, 0.35); /* overstruck bold, then the glow */
 }
 
 .projects-page .page-header {
-  border-image: linear-gradient(90deg, rgba(255, 236, 190, 0.75), rgba(255, 236, 190, 0)) 1;
+  border-image: linear-gradient(90deg, rgba(245, 245, 255, 0.75), rgba(245, 245, 255, 0)) 1;
 }
 
 .projects-page :is(.page-header p, .notice) {
@@ -468,33 +468,74 @@ html.ui-98,
   }
 }
 
-/* The cards drift a pixel at a time (whole pixels keep the pixel font crisp), each on its own slow rhythm. */
+/* The cards drift very slowly and slightly, each along its own wandering path and at its own pace, so the
+   motion never lines up into a pattern. */
 .projects-page .project {
   box-shadow: var(--raised), 0 6px 14px rgba(0, 0, 0, 0.5);
-  animation: card-float 8s step-end infinite;
+  animation: card-drift-a 19s ease-in-out infinite;
 }
 
 .projects-page .project:nth-child(3n + 2) {
-  animation-duration: 9.5s;
-  animation-delay: -3s;
+  animation-name: card-drift-b;
+  animation-duration: 23s;
+  animation-delay: -7s;
 }
 
 .projects-page .project:nth-child(3n) {
-  animation-duration: 7s;
-  animation-delay: -5s;
+  animation-name: card-drift-c;
+  animation-duration: 17s;
+  animation-delay: -12s;
 }
 
-@keyframes card-float {
+.projects-page .project:nth-child(4n + 1) {
+  animation-delay: -4s;
+}
+
+@keyframes card-drift-a {
   0%,
   100% {
-    transform: translateY(0);
+    translate: 0 0;
   }
-  25%,
-  75% {
-    transform: translateY(-1px);
+  25% {
+    translate: 1px -1.5px;
   }
   50% {
-    transform: translateY(-2px);
+    translate: -0.5px -2px;
+  }
+  75% {
+    translate: -1px -0.5px;
+  }
+}
+
+@keyframes card-drift-b {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  30% {
+    translate: -1px -1px;
+  }
+  60% {
+    translate: 0.5px -2px;
+  }
+  85% {
+    translate: 1px -0.5px;
+  }
+}
+
+@keyframes card-drift-c {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  20% {
+    translate: 0.5px -1.5px;
+  }
+  55% {
+    translate: 1.2px -0.5px;
+  }
+  80% {
+    translate: -0.8px -1.5px;
   }
 }
 
