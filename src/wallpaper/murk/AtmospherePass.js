@@ -145,6 +145,57 @@ const compositeShader = {
       return ( uCameraWorld * view ).xyz;
     }
 
+    // Aerial perspective at one depth: the haze colour (rgb) and how much
+    // of it lies over the land there (a). None over the sky.
+    vec4 haze( vec2 uv, float depth ) {
+      if ( depth >= 0.9999995 ) return vec4( 0.0 );
+      vec3 wp = worldPosition( uv, depth );
+      vec3 ray = wp - uCameraPos;
+      float dist = length( ray );
+      vec3 dir = ray / max( dist, 1e-4 );
+      // Height fog: denser below uFogHeight, integrated along the ray.
+      float f = uFogFalloff;
+      float h0 = uCameraPos.y - uFogHeight;
+      float h1 = wp.y - uFogHeight;
+      float dy = h1 - h0;
+      float integral = abs( dy ) > 0.01
+        ? ( exp( -f * h0 ) - exp( -f * h1 ) ) / ( f * dy )
+        : exp( -f * h0 );
+      // Mostly distance haze, a little thicker in the low ground: high
+      // peaks must not come out crisp while the slopes beneath them vanish.
+      float density = uFogDensity * ( 0.7 + 0.3 * clamp( integral, 0.0, 3.0 ) );
+      float fog = 1.0 - exp( -density * dist );
+      fog = min( fog, 0.82 );
+      // Low-lying mist pools in hollows and drifts downwind as banks and
+      // wisps: sampled at a few points along the ray so it has shape.
+      float mist = 0.0;
+      if ( uGroundMist > 0.001 ) {
+        float mistTop = uFogHeight + 9.0;
+        for ( int i = 1; i <= 6; i++ ) {
+          float t = float( i ) / 6.0;
+          vec3 sp = uCameraPos + ray * ( t * t );
+          float hgt = 1.0 - smoothstep( uFogHeight - 4.0, mistTop, sp.y );
+          vec2 q = sp.xz - uWindOffset * 2.2; // banks drift with the wind, they don't race
+          float bank = texture2D( uNoise, q * 0.004 + vec2( 0.0, uTime * 0.0045 ) ).r;
+          float wisp = texture2D( uNoise, q * 0.02 + vec2( uTime * 0.022, 0.0 ) ).g;
+          // (Banks with edges: clear air between them, so they read as
+          // mist lying in the hollows, not an even haze.)
+          float dens = max( smoothstep( 0.42, 0.68, bank * 0.7 + wisp * 0.45 ), uMistFill * ( 0.7 + 0.3 * bank ) ) * hgt;
+          mist += dens * ( 1.0 - exp( -dist * 0.5 * t * 0.02 ) );
+        }
+        mist = uGroundMist * clamp( mist / 3.0, 0.0, 1.0 );
+      }
+      fog = clamp( fog + mist, 0.0, 0.97 );
+      // Haze takes the sun's colour when looking toward it.
+      float toward = pow( max( dot( dir, uSunDir ), 0.0 ), 6.0 );
+      vec3 fogCol = mix( uFogColor, uFogSunColor, toward * 0.85 );
+      // The mist has a colour of its own when the sun isn't low (the haze's
+      // is nearly the colour of the view behind it, by day and by night,
+      // so mist drawn in it can't be seen): pale by day, moonlit at night.
+      fogCol = mix( fogCol, uMistColor, uMistOwn * mist / max( fog, 0.001 ) );
+      return vec4( fogCol, fog );
+    }
+
     void main() {
       vec4 src = texture2D( tDiffuse, vUv );
       vec3 color = src.rgb;
@@ -152,53 +203,47 @@ const compositeShader = {
       bool isSky = depth >= 0.9999995;
 
       // ---- Aerial perspective.
-      vec3 wp = worldPosition( vUv, min( depth, 0.9999995 ) );
-      vec3 ray = wp - uCameraPos;
-      float dist = length( ray );
-      vec3 dir = ray / max( dist, 1e-4 );
-      if ( !isSky ) {
-        // Height fog: denser below uFogHeight, integrated along the ray.
-        float f = uFogFalloff;
-        float h0 = uCameraPos.y - uFogHeight;
-        float h1 = wp.y - uFogHeight;
-        float dy = h1 - h0;
-        float integral = abs( dy ) > 0.01
-          ? ( exp( -f * h0 ) - exp( -f * h1 ) ) / ( f * dy )
-          : exp( -f * h0 );
-        // Mostly distance haze, a little thicker in the low ground: high
-        // peaks must not come out crisp while the slopes beneath them vanish.
-        float density = uFogDensity * ( 0.7 + 0.3 * clamp( integral, 0.0, 3.0 ) );
-        float fog = 1.0 - exp( -density * dist );
-        fog = min( fog, 0.82 );
-        // Low-lying mist pools in hollows and drifts downwind as banks and
-        // wisps: sampled at a few points along the ray so it has shape.
-        float mist = 0.0;
-        if ( uGroundMist > 0.001 ) {
-          float mistTop = uFogHeight + 9.0;
-          for ( int i = 1; i <= 6; i++ ) {
-            float t = float( i ) / 6.0;
-            vec3 sp = uCameraPos + ray * ( t * t );
-            float hgt = 1.0 - smoothstep( uFogHeight - 4.0, mistTop, sp.y );
-            vec2 q = sp.xz - uWindOffset * 2.2; // banks drift with the wind, they don't race
-            float bank = texture2D( uNoise, q * 0.004 + vec2( 0.0, uTime * 0.0045 ) ).r;
-            float wisp = texture2D( uNoise, q * 0.02 + vec2( uTime * 0.022, 0.0 ) ).g;
-            // (Banks with edges: clear air between them, so they read as
-            // mist lying in the hollows, not an even haze.)
-            float dens = max( smoothstep( 0.42, 0.68, bank * 0.7 + wisp * 0.45 ), uMistFill * ( 0.7 + 0.3 * bank ) ) * hgt;
-            mist += dens * ( 1.0 - exp( -dist * 0.5 * t * 0.02 ) );
-          }
-          mist = uGroundMist * clamp( mist / 3.0, 0.0, 1.0 );
-        }
-        fog = clamp( fog + mist, 0.0, 0.97 );
-        // Haze takes the sun's colour when looking toward it.
-        float toward = pow( max( dot( dir, uSunDir ), 0.0 ), 6.0 );
-        vec3 fogCol = mix( uFogColor, uFogSunColor, toward * 0.85 );
-        // The mist has a colour of its own when the sun isn't low (the haze's
-        // is nearly the colour of the view behind it, by day and by night,
-        // so mist drawn in it can't be seen): pale by day, moonlit at night.
-        fogCol = mix( fogCol, uMistColor, uMistOwn * mist / max( fog, 0.001 ) );
-        color = mix( color, fogCol, fog );
+      // Along a silhouette the colour is multisampled, part near and part
+      // far (or sky), but the depth is one sample, so hazing the whole pixel
+      // for that one depth stair-steps the edge: un-hazed bits of a far
+      // range beside the sky, dark specks of it between the grass tips.
+      // Where the pixel and its neighbours lie at very different depths,
+      // split it into its near and far parts, judged by the neighbours'
+      // colours, and haze each for its own distance.
+      vec2 tx = 1.0 / vec2( textureSize( tDepth, 0 ) );
+      float nearD = depth;
+      float farD = depth;
+      vec2 nearUv = vUv;
+      vec2 farUv = vUv;
+      for ( int i = 0; i < 4; i++ ) {
+        vec2 o = vec2( i == 0 ? tx.x : i == 1 ? -tx.x : 0.0, i == 2 ? tx.y : i == 3 ? -tx.y : 0.0 );
+        float d = texture2D( tDepth, vUv + o ).r;
+        if ( d < nearD ) { nearD = d; nearUv = vUv + o; }
+        if ( d > farD ) { farD = d; farUv = vUv + o; }
       }
+      vec4 hz = haze( vUv, depth );
+      // How much of the pixel is sky, for the sun's glow below.
+      float skyCover = float( isSky );
+      if ( nearD < farD ) {
+        vec3 cn = texture2D( tDiffuse, nearUv ).rgb;
+        vec3 cf = texture2D( tDiffuse, farUv ).rgb;
+        vec3 span = cn - cf;
+        float l2 = dot( span, span );
+        float a = l2 > 1e-6 ? clamp( dot( color - cf, span ) / l2, 0.0, 1.0 ) : float( depth < farD );
+        if ( farD >= 0.9999995 ) skyCover = 1.0 - a;
+        vec4 hn = haze( vUv, nearD );
+        vec4 hf = haze( vUv, farD );
+        if ( abs( hn.a - hf.a ) > 0.05 ) {
+          // This pixel's own near and far parts, by the same proportion.
+          vec3 pn = color + ( 1.0 - a ) * span;
+          vec3 pf = color - a * span;
+          pn = mix( pn, hn.rgb, hn.a );
+          pf = mix( pf, hf.rgb, hf.a );
+          color = mix( pf, pn, a );
+          hz = vec4( 0.0 );
+        }
+      }
+      color = mix( color, hz.rgb, hz.a );
       // ---- The sun: disc, corona and light shafts.
       if ( uSunVisible > 0.0 ) {
         // Never quite still: its light breathes on a few slow, unrelated
@@ -238,7 +283,7 @@ const compositeShader = {
         // Disc: white-hot core with a soft limb, only where the sky shows;
         // the limb shimmers a little, as through warm air.
         float limbW = 1.0 + ( 0.012 * sin( sAng * 7.0 + st * 2.4 ) + 0.008 * sin( sAng * 13.0 - st * 3.1 ) ) * ( 1.0 - uMoon );
-        float disc = smoothstep( uSunRadius * 1.15, uSunRadius * 0.75, r / limbW ) * float( isSky );
+        float disc = smoothstep( uSunRadius * 1.15, uSunRadius * 0.75, r / limbW ) * skyCover;
         float sunFace = 0.0;
         float sunSpot = 0.0;
         if ( uMoon > 0.5 ) {
@@ -260,7 +305,7 @@ const compositeShader = {
           float terminator = smoothstep( -0.25, 0.2, dot( m, vec2( 0.86, 0.5 ) ) + 0.72 );
           float shade = ( 1.0 - 0.38 * maria ) * ( 1.0 - 0.35 * crater ) * ( 1.0 + 0.25 * rim );
           shade *= mix( 0.08, 1.0, terminator ) * ( 0.85 + 0.15 * ( 1.0 - length( m ) ) );
-          disc = limb * shade * float( isSky );
+          disc = limb * shade * skyCover;
         }
         else {
           // The sun's face: white-gold, darkening and warming toward the limb,
@@ -321,7 +366,7 @@ const compositeShader = {
         // so a sun behind the hill leaves no pale column down its face.
         // (Steep: a sun mostly hidden leaves the hill nearly dark, while a
         // sun in full view lights it exactly as before.)
-        float onLand = isSky ? 1.0 : open * open * open;
+        float onLand = mix( open * open * open, 1.0, skyCover );
         color += uSunColor * disc * uDiscStrength;
         color += uSunColor * corona * uGlowStrength * coronaK * onLand * ( 0.7 + 0.3 * headroom );
         color += uSunColor * shaft * uShaftStrength * onLand * ( 0.7 + 0.3 * headroom );
