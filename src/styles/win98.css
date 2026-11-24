@@ -184,10 +184,6 @@ html.ui-98,
   border-bottom: 1px solid var(--face-light);
 }
 
-.ui-98 .address-label {
-  color: #000;
-}
-
 .ui-98 .address-field {
   padding: 2px 2px 2px 4px;
   border: 0;

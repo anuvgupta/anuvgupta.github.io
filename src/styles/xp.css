@@ -790,12 +790,6 @@ html.window-dragging * {
   box-shadow: 0 1px 0 #fff;
 }
 
-.address-label {
-  color: #444;
-  user-select: none;
-  -webkit-user-select: none;
-}
-
 .address-field {
   flex: 1;
   min-width: 0;
@@ -1702,10 +1696,6 @@ html.window-dragging * {
 }
 
 @media (max-width: 699px) {
-  .address-label {
-    display: none;
-  }
-
   .window {
     --win-w: calc(100% - 12px);
     top: 6px;
