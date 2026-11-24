@@ -32,7 +32,7 @@
       "description": "A browser-based high-fantasy open-world RPG built with Three.js: first-person exploration of hills ringed by mountains, with a full day-night cycle."
     },
     {
-      "name": "Pilo Voice Assistant",
+      "name": "Self-Hosted Voice Assistant",
       "description": "A local-first voice assistant on a Raspberry Pi 5 with a four-mic array: say the wake word, ask a question, and it answers out loud. Speech-to-text, the LLM and text-to-speech can each run on the Pi, a stronger machine on the LAN, or in the cloud."
     },
     {
@@ -125,7 +125,7 @@
         "SkyTube: Watch videos while playing Skyrim",
         "Anuv's Projects",
         "Murk3D",
-        "Pilo Voice Assistant",
+        "Self-Hosted Voice Assistant",
         "apple-notes-sync",
         "PiWii",
         "turnstile-solver",
@@ -143,7 +143,7 @@
     {
       "title": "Home Automation",
       "projects": [
-        "Pilo Voice Assistant",
+        "Self-Hosted Voice Assistant",
         "Projector Screen Controller",
         "Presence-Based LED Light Strips"
       ]
