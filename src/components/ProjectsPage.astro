@@ -18,6 +18,18 @@ const groups: { title?: string; projects: Project[] }[] = sections
   : [{ projects }];
 const tabbed = !!sections;
 const openIndex = Math.max(0, groups.findIndex((g) => g.projects.length > 0));
+
+// A description's paragraphs, each either text or a bullet list (every line starting with "* ").
+const paragraphs = (text: string) =>
+  text
+    .trim()
+    .split(/\n\s*\n/)
+    .map((block) => {
+      const lines = block.split('\n').map((l) => l.trim());
+      return lines.every((l) => l.startsWith('* '))
+        ? { items: lines.map((l) => l.slice(2)) }
+        : { text: lines.join(' ') };
+    });
 const tabId = (i: number) => `${page.id}-tab-${i}`;
 const panelId = (i: number) => `${page.id}-panel-${i}`;
 ---
@@ -62,7 +74,21 @@ const panelId = (i: number) => `${page.id}-panel-${i}`;
             <article class="project">
               <h2 class="project-title">{p.name}</h2>
               <div class="project-content">
-                {p.description && <p class="project-desc">{p.description}</p>}
+                {p.description && (
+                  <div class="project-desc">
+                    {paragraphs(p.description).map((b) =>
+                      'items' in b ? (
+                        <ul>
+                          {b.items.map((item) => (
+                            <li>{item}</li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <p>{b.text}</p>
+                      )
+                    )}
+                  </div>
+                )}
                 {p.screenshots.length > 0 && (
                   <div class="project-shots">
                     {p.screenshots.map((s, i) => {

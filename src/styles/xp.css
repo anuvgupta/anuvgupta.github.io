@@ -1078,6 +1078,18 @@ html.window-dragging * {
   max-width: 72ch;
 }
 
+.project-desc > * {
+  margin: 0 0 8px;
+}
+
+.project-desc > :last-child {
+  margin-bottom: 0;
+}
+
+.project-desc ul {
+  padding-left: 18px;
+}
+
 .project-shots {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 190px), 1fr));
