@@ -1054,7 +1054,7 @@ html.window-dragging * {
 }
 
 .project-links,
-.about-links {
+.dialog-buttons {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
@@ -1103,11 +1103,11 @@ html.window-dragging * {
   flex: none;
 }
 
-/* About: a plain dialog on the window face (sunken picture, etched rule, push buttons) filling a window
-   sized to it. It takes the theme's colours: XP's by day, Windows 98's at night (win98.css).
-   (.page.about outranks the narrow-screen .page padding.) */
+/* Dialog pages (About, Resume): a plain dialog on the window face (icon or sunken picture, text, an
+   etched rule, push buttons) filling a window sized to it. It takes the theme's colours: XP's by day,
+   Windows 98's at night (win98.css). (.page.dialog outranks the narrow-screen .page padding.) */
 
-.page.about {
+.page.dialog {
   min-height: 100%;
   display: flex;
   align-items: center;
@@ -1119,12 +1119,12 @@ html.window-dragging * {
 }
 
 /* The dialog's width, which the window fits around. */
-.about-card {
+.dialog-card {
   width: 380px;
   max-width: 100%;
 }
 
-.about-body {
+.dialog-body {
   display: flex;
   align-items: center;
   gap: 16px;
@@ -1136,7 +1136,7 @@ html.window-dragging * {
 }
 
 /* Sunken square frame instead of the rounded white one. */
-.about .user-tile {
+.dialog .user-tile {
   border: 2px solid;
   border-color: var(--face-shadow) var(--face-light) var(--face-light) var(--face-shadow);
   border-radius: 0;
@@ -1145,11 +1145,11 @@ html.window-dragging * {
   outline-offset: -3px;
 }
 
-.about-text {
+.dialog-text {
   min-width: 0;
 }
 
-.about h1 {
+.dialog h1 {
   margin: 0 0 6px;
   font-size: 16px;
   font-weight: bold;
@@ -1161,19 +1161,19 @@ html.window-dragging * {
   white-space: pre-line;
 }
 
-.about-links {
+.dialog-buttons {
   justify-content: flex-end;
   gap: 6px;
   padding: 12px 16px 14px;
 }
 
-.about .xp-btn {
+.dialog .xp-btn {
   min-width: 75px;
   justify-content: center;
 }
 
 @media (max-width: 420px) {
-  .about-body {
+  .dialog-body {
     flex-direction: column;
     text-align: center;
   }
