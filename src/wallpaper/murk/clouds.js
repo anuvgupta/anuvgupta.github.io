@@ -14,6 +14,14 @@
 // takes a minute or so to roll over in a breeze) and passes its cloud plane
 // through churn(): a rotational domain warp, so the masses roll, curl and tear
 // as they drift rather than sliding across the sky as a stamp.
+//
+// The drift, on the cloud plane: features move along -DRIFT. The game's
+// (0.9, 0.35) carried them mostly along -x, which is straight away from the
+// wallpaper's westward view, so they barely seemed to move. This carries them
+// across the view to the right (-z) with a little lean away, about 2.7 times
+// as fast: a bank takes a few minutes to cross the screen. The shapes still
+// churn at the same pace.
+const DRIFT = 'vec2( 0.35, 2.6 )';
 
 export const CLOUD_STYLES = ['realistic', 'ghibli', 'painterly'];
 // Where the chosen style is kept. (Renamed when painterly became the
@@ -96,7 +104,7 @@ const STYLES = {
       vec3 skyAmb = Lin * 0.04 + vec3( 0.0, 0.0003, 0.00075 );
       float horizonFade = smoothstep( 0.0, 0.08, direction.y );
       float T = time * cloudSpeed * 600.0;
-      vec2 drift = vec2( 0.9, 0.35 );
+      vec2 drift = ${DRIFT};
       vec2 toSun = vSunDirection.xz * 0.06;
       // Two decks: broken cumulus below, a thinner higher layer above.
       for ( int layer = 0; layer < 2; layer++ ) {
@@ -150,7 +158,7 @@ const STYLES = {
       // A middling deck: the towers read as distinct masses with blue sky
       // between them, not one quilt filling the whole dome.
       vec2 uv = direction.xz / ( max( direction.y, 0.02 ) * 0.85 ) * cloudScale * 5600.0;
-      uv += vec2( 0.9, 0.35 ) * T * 1.6;
+      uv += ${DRIFT} * T * 1.6;
       // The masses churn and roll: lobes bulge, split and swallow each other.
       vec2 q = churn( uv, T * 1.3, 0.9 );
       float region = noise( q * 0.08 ) * 0.5 + 0.5;
@@ -191,7 +199,7 @@ const STYLES = {
       texColor = mix( texColor, aerial, alpha );
       // Small fast puffs scudding under the towers.
       {
-        vec2 uvLo = direction.xz / ( max( direction.y, 0.02 ) * 0.9 ) * cloudScale * 1900.0 + vec2( 0.9, 0.35 ) * T * 1.3 + 23.0;
+        vec2 uvLo = direction.xz / ( max( direction.y, 0.02 ) * 0.9 ) * cloudScale * 1900.0 + ${DRIFT} * T * 1.3 + 23.0;
         vec2 ql = churn( uvLo, T * 1.6, 0.9 );
         float puff = billow( ql * 1.8 + T * 0.5 ) * 0.6 + ( fbm( ql * 0.6, T * 0.4 ) * 0.5 + 0.5 ) * 0.5;
         float pd = smoothstep( 0.78, 0.86, puff ) * ( 1.0 - dens );
@@ -207,7 +215,7 @@ const STYLES = {
       vec3 skyAmb = Lin * 0.04 + vec3( 0.0, 0.0003, 0.00075 );
       float horizonFade = smoothstep( 0.0, 0.06, direction.y );
       float T = time * cloudSpeed * 600.0;
-      vec2 drift = vec2( 0.9, 0.35 );
+      vec2 drift = ${DRIFT};
       vec2 toSun = vSunDirection.xz * 0.06;
       // Soft banks, brushed: low-contrast masses with feathered edges that
       // curl and tear as the wind works them.
@@ -306,7 +314,7 @@ export const CLOUD_BANKS_GLSL = /* glsl */ `
   float cloudBanks( vec3 direction ) {
     if ( direction.y <= 0.0 || cloudCoverage <= 0.0 ) return 0.0;
     float T = time * cloudSpeed * 600.0;
-    vec2 uvLo = direction.xz / ( max( direction.y, 0.02 ) * 0.42 ) * cloudScale * 2500.0 + vec2( 0.9, 0.35 ) * T * 1.7;
+    vec2 uvLo = direction.xz / ( max( direction.y, 0.02 ) * 0.42 ) * cloudScale * 2500.0 + ${DRIFT} * T * 1.7;
     vec2 q = churn( uvLo, T, 0.8 );
     float region = noise( q * 0.12 ) * 0.5 + 0.5;
     float th = 1.0 - clamp( cloudCoverage * 0.8 + ( region - 0.5 ) * 1.0, 0.0, 1.0 );
