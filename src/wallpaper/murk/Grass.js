@@ -330,8 +330,10 @@ export class Grass {
 
           // Wind: lean downwind under gust fronts, plus waves rolling across the field.
           // A little livelier than the bare wind (sheltered meadows were
-          // almost still), but nowhere near the old everywhere-gale.
-          float w = windAt( root ) * 1.4 + 0.04;
+          // almost still), but nowhere near the old everywhere-gale. (Raised
+          // from 1.4 when the wallpaper's breeze was made lighter, so the
+          // grass still leans and sways as much, only more slowly.)
+          float w = windAt( root ) * 2.2 + 0.05;
           // Waves roll across the field quickly where it's exposed, slowly
           // in shelter (two waves blended, so neither ever shears).
           float we = windExposure( root );
