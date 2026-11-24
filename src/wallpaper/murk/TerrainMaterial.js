@@ -49,10 +49,26 @@ export function createTerrainMaterial({ noise, heightMap }) {
         // The far mountains' ridges: noise stretched tall and narrow across the
         // view, so it streaks down their slopes as spurs (high) and gullies (low).
         float mountainGully( vec3 p ) {
+          // Across by bearing from the viewer, not by world position: the
+          // ranges lie well off to the side, where lines of one world z run
+          // into the distance and show as stripes along the slopes.
+          float az = atan( p.z - cameraPosition.z, cameraPosition.x - p.x );
           // (Gullies tens of metres apart: finer than that, mipmapping at this
           // distance averages the noise to a flat tone.)
-          return texture( uNoise, vec2( p.z * 0.004, p.y * 0.0008 ) + 0.31 ).r * 0.6
-            + texture( uNoise, vec2( p.z * 0.006, p.y * 0.0012 ) + 0.77 ).g * 0.4;
+          return texture( uNoise, vec2( az * 10.6, p.y * 0.0008 ) + 0.31 ).r * 0.75
+            + texture( uNoise, vec2( az * 15.9, p.y * 0.0012 ) + 0.77 ).g * 0.25;
+        }
+        // The far ranges' surface normal, from the height field across ~60 m.
+        // Out there the grid's cells are tens of metres deep but only metres
+        // wide, so the mesh's own normals step from row to row and light the
+        // slopes in streaks.
+        vec3 farNormal( vec2 p ) {
+          const float S = 60.0;
+          float hL = terrainHeight( p - vec2( S, 0.0 ) );
+          float hR = terrainHeight( p + vec2( S, 0.0 ) );
+          float hD = terrainHeight( p - vec2( 0.0, S ) );
+          float hU = terrainHeight( p + vec2( 0.0, S ) );
+          return normalize( vec3( hL - hR, 2.0 * S, hD - hU ) );
         }`
       )
       .replace(
@@ -95,6 +111,19 @@ export function createTerrainMaterial({ noise, heightMap }) {
         diffuseColor.rgb *= ground;`
       )
       .replace(
+        '#include <normal_fragment_maps>',
+        `#include <normal_fragment_maps>
+        // Light the far ranges by their smoothed normal.
+        vec3 farN = normalize( vWNormal );
+        {
+          float smoothK = smoothstep( 600.0, 1200.0, length( vViewPosition ) );
+          if ( smoothK > 0.0 ) {
+            farN = normalize( mix( farN, farNormal( vWPos.xz ), smoothK ) );
+            normal = normalize( ( viewMatrix * vec4( farN, 0.0 ) ).xyz );
+          }
+        }`
+      )
+      .replace(
         '#include <opaque_fragment>',
         `{
           // Far ranges: extra haze past the meadow, more the further they lie.
@@ -103,12 +132,15 @@ export function createTerrainMaterial({ noise, heightMap }) {
           // toward their feet.
           float feet = ( 1.0 - smoothstep( 60.0, 200.0, vWPos.y ) ) * smoothstep( 1200.0, 1800.0, length( vViewPosition ) );
           far = mix( far, 1.0, feet * 0.45 );
-          // Spurs facing the sun on the left stand clear of the haze; gullies
-          // and the faces turned away sink into it.
+          // By day, spurs facing the sun on the left stand clear of the haze;
+          // gullies and the faces turned away sink into it. By night the
+          // ranges are plain silhouettes in the haze.
           float mtn = smoothstep( 1200.0, 1800.0, length( vViewPosition ) );
+          far = mix( far, max( far, 0.8 ), mtn * ( 1.0 - uLush ) );
+          mtn *= uLush;
           if ( mtn > 0.0 ) {
-            float lit = smoothstep( -0.25, 0.35, normalize( vWNormal ).z );
-            float tone = smoothstep( 0.38, 0.62, mountainGully( vWPos ) ) * 0.65 + lit * 0.35;
+            float lit = smoothstep( -0.25, 0.35, farN.z );
+            float tone = smoothstep( 0.3, 0.7, mountainGully( vWPos ) ) * 0.65 + lit * 0.35;
             far = mix( far, clamp( far * mix( 1.5, 0.35, tone ), 0.0, 1.0 ), mtn );
             outgoingLight *= mix( 1.0, mix( 0.6, 1.5, tone ), mtn );
           }
