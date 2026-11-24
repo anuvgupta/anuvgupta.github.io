@@ -35,7 +35,10 @@
     {
       "name": "Murk3D",
       "year": 2026,
-      "description": "A dreamy high fantasy open-world RPG built with Three.js. Roam a lush vale of rolling hills and forests under dazzling sunsets and vibrant mornings. Not for the faint hearted... unless you like cozy villages, legendary swords and magical artifacts, big bouncy mushrooms, and vast, ethereal landscapes."
+      "description": "A dreamy high fantasy open-world RPG built with Three.js. Roam a lush vale of rolling hills and forests under dazzling sunsets and vibrant mornings. Not for the faint hearted... unless you like cozy villages, legendary swords and magical artifacts, big bouncy mushrooms, and vast, ethereal landscapes.",
+      "screenshots": [
+        { "src": "content/projects/murk3d.webp", "alt": "Murk's title screen over a moonlit village path: \"A tale of the Vale\"" }
+      ]
     },
     {
       "name": "Self-Hosted Voice Assistant",
