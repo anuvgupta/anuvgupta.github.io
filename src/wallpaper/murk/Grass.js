@@ -71,7 +71,6 @@ export class Grass {
     this.keepFloor = Math.min(1, FAR_DENSITY / density); // least share kept
     this.radius = settings.grassDrawDistance;
     this.fullRadius = settings.grassFullDetail;
-    this.radiusScale = 1; // the adaptive stepper shrinks this on slow machines
     const tufts = Math.round((TILE * TILE * density) / BLADES_PER_TUFT);
     this.perTile = tufts * BLADES_PER_TUFT;
 
@@ -171,9 +170,6 @@ export class Grass {
     const ctx = Math.floor(cam.x / TILE);
     const ctz = Math.floor(cam.z / TILE);
     const moved = ctx !== this.centerTile.x || ctz !== this.centerTile.z;
-    // The fade follows the reach the adaptive stepper leaves, so a shortened
-    // reach still thins out instead of ending in a hard edge.
-    this.uniforms.uRadius.value = this.radius * this.radiusScale;
     this.centerTile.x = ctx;
     this.centerTile.z = ctz;
     // Each tile is culled by a box that hugs its ground and blades: the
@@ -205,7 +201,7 @@ export class Grass {
       const nx = Math.max(x0 - cam.x, 0, cam.x - (x0 + TILE));
       const nz = Math.max(z0 - cam.z, 0, cam.z - (z0 + TILE));
       const d = Math.hypot(nx, nz);
-      if (d > this.radius * this.radiusScale || !this.frustum.intersectsBox(slot.box)) {
+      if (d > this.radius || !this.frustum.intersectsBox(slot.box)) {
         mesh.visible = false;
         continue;
       }

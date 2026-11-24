@@ -43,14 +43,15 @@ export function rememberQuality(name) {
 export const settings = PRESETS[QUALITY];
 
 // The adaptive quality ladder, cheapest last: render resolution (a share of
-// the preset's), grass reach and bloom, all changeable while running.
+// the preset's) and bloom, both changeable while running. (The game's also
+// shortened the grass's reach; in this fixed view that cut the grass off the
+// hill's crest in one frame, and the far blades it saved cost little.)
 export const ADAPT_LADDER = [
-  { name: 'full', res: 1, grass: 1, bloom: true },
-  { name: 'res 85%', res: 0.85, grass: 1, bloom: true },
-  { name: 'res 85%, grass 80%', res: 0.85, grass: 0.8, bloom: true },
-  { name: 'res 72%, grass 80%', res: 0.72, grass: 0.8, bloom: true },
-  { name: 'res 72%, grass 65%, no bloom', res: 0.72, grass: 0.65, bloom: false },
-  { name: 'res 60%, grass 65%, no bloom', res: 0.6, grass: 0.65, bloom: false },
+  { name: 'full', res: 1, bloom: true },
+  { name: 'res 85%', res: 0.85, bloom: true },
+  { name: 'res 72%', res: 0.72, bloom: true },
+  { name: 'res 72%, no bloom', res: 0.72, bloom: false },
+  { name: 'res 60%, no bloom', res: 0.6, bloom: false },
 ];
 // Where the ladder settled, per preset, for the next visit.
 export function loadAdapt() {

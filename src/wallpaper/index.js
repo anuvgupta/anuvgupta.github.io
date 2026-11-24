@@ -254,7 +254,6 @@ class Wallpaper {
     this.adapt.level = level;
     this.baseRatio = Math.max(0.6, this.fullRatio * L.res);
     this.applyResolution();
-    if (this.grass) this.grass.radiusScale = L.grass;
     if (this.composer) for (const pass of this.composer.passes) if (pass.strength !== undefined) pass.enabled = settings.bloom && L.bloom;
     rememberAdapt(QUALITY, level);
   }
