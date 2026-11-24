@@ -11,7 +11,7 @@ const { site } = Astro.props;
 
 <div class="page about">
   <span class="user-tile user-tile-lg"><img src={USER_PICTURE} alt="" /></span>
-  <h1>{site.name}</h1>
+  <h1>{site.title ?? site.name}</h1>
   {site.tagline && <p class="tagline">{site.tagline}</p>}
   {
     site.links.length > 0 && (
