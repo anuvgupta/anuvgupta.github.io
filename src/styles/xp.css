@@ -989,6 +989,30 @@ html.window-dragging * {
   outline: none;
 }
 
+/* A starfield window: the sky canvas fills the area behind the scrolling body, which turns see-through. */
+.window-body-wrap {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: #05030d;
+}
+
+.window-body-wrap > .window-body {
+  position: relative;
+  background: transparent;
+}
+
+.starfield {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  pointer-events: none;
+}
+
 @supports not selector(::-webkit-scrollbar) {
   .window-body {
     scrollbar-color: #b9cdf8 #f4f3ee;

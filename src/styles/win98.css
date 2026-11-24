@@ -238,6 +238,16 @@ html.ui-98,
   border: 0;
 }
 
+/* In a starfield window the sunken edge goes around the sky, not just the scrolling part. */
+.ui-98 .window-body-wrap {
+  border: 2px solid;
+  border-color: var(--face-shadow) var(--face-light) var(--face-light) var(--face-shadow);
+}
+
+.ui-98 .window-body-wrap > .window-body {
+  border: 0;
+}
+
 @supports not selector(::-webkit-scrollbar) {
   .ui-98 .window-body {
     scrollbar-color: var(--xp-face) var(--face-hilite);
@@ -317,7 +327,6 @@ html.ui-98,
 
 .project-panel[role="tabpanel"] {
   padding: 12px;
-  background: #b4b0a8;
   box-shadow: var(--raised);
 }
 
@@ -382,10 +391,118 @@ html.ui-98,
   box-shadow: var(--sunken);
 }
 
-/* The projects page sits on the light window grey, day and night; only the tab frame is a shade darker. */
+/* The projects page floats in a night sky (scripts/starfield.ts): light, softly glowing headings, tabs and a
+   pane of translucent purple glass, and the Windows 98 cards drifting just above the glass. */
 
-.window-body:has(> .projects-page) {
-  background: #d4d0c8;
+.projects-page .page-header h1 {
+  color: #fff3cf;
+  text-shadow: 0.0834em 0 currentColor, 0 0 6px rgba(255, 226, 150, 0.35); /* overstruck bold, then the glow */
+}
+
+.projects-page .page-header {
+  border-image: linear-gradient(90deg, rgba(255, 236, 190, 0.75), rgba(255, 236, 190, 0)) 1;
+}
+
+.projects-page :is(.page-header p, .notice) {
+  color: #d9d2ea;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+/* Glass: a faint purple tint, a fine dither for texture, light top-left and dark bottom-right edges. */
+.projects-page .project-tab,
+.projects-page .project-panel[role="tabpanel"] {
+  background-color: rgba(150, 110, 235, 0.14);
+  background-image: repeating-conic-gradient(rgba(255, 255, 255, 0.04) 0 25%, transparent 0 50%);
+  background-size: 4px 4px;
+}
+
+.projects-page .project-tab {
+  color: #efe8ff;
+  text-shadow: 0.0834em 0 currentColor, 0 0 4px rgba(200, 170, 255, 0.5);
+  box-shadow: inset 1px 1px rgba(255, 255, 255, 0.38), inset -1px 0 rgba(12, 0, 32, 0.7),
+    inset 2px 2px rgba(220, 200, 255, 0.12);
+}
+
+.projects-page .project-tab:hover {
+  background-color: rgba(170, 130, 255, 0.22);
+}
+
+.projects-page .project-tab[aria-selected="true"] {
+  color: #fff;
+  background-color: rgba(170, 130, 255, 0.2);
+}
+
+.projects-page .project-tab:focus-visible {
+  outline-color: #fff;
+}
+
+.projects-page .project-panel[role="tabpanel"] {
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 1px 1px rgba(255, 255, 255, 0.32), inset -1px -1px rgba(10, 0, 30, 0.6),
+    inset 2px 2px rgba(220, 200, 255, 0.1);
+}
+
+/* A soft sheen sweeps across the glass now and then. */
+.projects-page .project-panel[role="tabpanel"]::before {
+  content: "";
+  position: absolute;
+  inset: -50% -100%;
+  pointer-events: none;
+  background: linear-gradient(105deg, transparent 42%, rgba(220, 200, 255, 0.08) 48%, rgba(255, 255, 255, 0.13) 50%,
+    rgba(220, 200, 255, 0.08) 52%, transparent 58%);
+  animation: glass-sheen 12s ease-in-out infinite;
+}
+
+.projects-page .project-panel > * {
+  position: relative;
+}
+
+@keyframes glass-sheen {
+  0% {
+    transform: translateX(-40%);
+  }
+  55%,
+  100% {
+    transform: translateX(40%);
+  }
+}
+
+/* The cards drift a pixel at a time (whole pixels keep the pixel font crisp), each on its own slow rhythm. */
+.projects-page .project {
+  box-shadow: var(--raised), 0 6px 14px rgba(0, 0, 0, 0.5);
+  animation: card-float 8s step-end infinite;
+}
+
+.projects-page .project:nth-child(3n + 2) {
+  animation-duration: 9.5s;
+  animation-delay: -3s;
+}
+
+.projects-page .project:nth-child(3n) {
+  animation-duration: 7s;
+  animation-delay: -5s;
+}
+
+@keyframes card-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  25%,
+  75% {
+    transform: translateY(-1px);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .projects-page .project,
+  .projects-page .project-panel[role="tabpanel"]::before {
+    animation: none;
+  }
 }
 
 /* ------------------------------------------------------------------ Desktop */

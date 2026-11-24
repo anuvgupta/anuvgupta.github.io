@@ -3,10 +3,11 @@
 // fit: the window sizes itself to its content instead of filling most of the desktop.
 // address: the window shows an Explorer-style address bar.
 // maximize: the window can be maximized (a small dialog just looks empty filling the screen).
+// starfield: the window's content sits over an animated pixel-art night sky.
 export const PAGE_TYPES = {
-  projects: { icon: '/img/icons/projects.svg', fit: false, address: true, maximize: true },
-  resume: { icon: '/img/icons/resume.svg', fit: true, address: false, maximize: true },
-  about: { icon: '/img/icons/about.svg', fit: true, address: false, maximize: false },
+  projects: { icon: '/img/icons/projects.svg', fit: false, address: true, maximize: true, starfield: true },
+  resume: { icon: '/img/icons/resume.svg', fit: true, address: false, maximize: true, starfield: false },
+  about: { icon: '/img/icons/about.svg', fit: true, address: false, maximize: false, starfield: false },
 } as const;
 
 export const LINK_ICONS = {
