@@ -23,8 +23,8 @@
       ]
     },
     {
-      "name": "Anuv's Projects",
-      "description": "This site: a Windows XP-style desktop built with Astro, with draggable windows, a Start menu and a live, procedurally drawn wallpaper. All content comes from one validated JSON manifest.",
+      "name": "Project Portfolio",
+      "description": "This site: a Windows XP-style desktop built with Astro, with draggable windows, a Start menu and a live, procedurally drawn wallpaper.",
       "github": ["https://github.com/anuvgupta/anuvgupta.github.io"]
     },
     {
@@ -129,7 +129,7 @@
       "title": "Recents",
       "projects": [
         "SkyTube: Watch videos while playing Skyrim",
-        "Anuv's Projects",
+        "Project Portfolio",
         "Murk3D",
         "Self-Hosted Voice Assistant",
         "apple-notes-sync",
