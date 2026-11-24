@@ -309,7 +309,9 @@ class Widget {
       this.show();
     });
     this.live.addEventListener('change', () => {
-      const h = this.live.checked ? null : Number(this.slider.value);
+      // Turning it off holds the time shown now. (The slider's own value snaps to 5 minutes and
+      // only refreshes every 15 seconds, so it would jump back.)
+      const h = this.live.checked ? null : (this.api?.getTime() ?? Number(this.slider.value));
       this.api?.setTime(h);
       setUiHour(h);
       this.show();
@@ -414,7 +416,7 @@ function setOn(next: boolean) {
   on = next;
   root.classList.toggle('wallpaper-off', !on);
   // With the wallpaper off, a hand-set time no longer shows, so the UI follows the clock.
-  setUiHour(on && !widget.live.checked ? Number(widget.slider.value) : null);
+  setUiHour(on && !widget.live.checked ? (widget.api?.getTime() ?? Number(widget.slider.value)) : null);
   if (on && !widget.api) void load();
   else widget.update(on, loading);
 }
