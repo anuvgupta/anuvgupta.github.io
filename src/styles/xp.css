@@ -1001,32 +1001,37 @@ html.window-dragging * {
 
 /* Projects (styled after the XP Explorer task pane) */
 
-/* Cards sit two to a row, three when the window is maximized, and one in a narrow window. */
+/* Cards flow into two columns, three when the window is maximized, and one in a narrow window. Each card keeps
+   its own height (a masonry layout), so a card without a screenshot isn't stretched to match its neighbour. */
 .projects-page {
   container: projects / inline-size;
 }
 
 .project-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
+  columns: 2;
+  column-gap: 14px;
   margin-top: 16px;
 }
 
+.project-grid > .project {
+  margin-bottom: 14px;
+  break-inside: avoid;
+}
+
 .window.maximized .project-grid {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  columns: 3;
 }
 
 @container projects (max-width: 760px) {
   .window.maximized .project-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    columns: 2;
   }
 }
 
 @container projects (max-width: 480px) {
   .project-grid,
   .window.maximized .project-grid {
-    grid-template-columns: minmax(0, 1fr);
+    columns: 1;
   }
 }
 
