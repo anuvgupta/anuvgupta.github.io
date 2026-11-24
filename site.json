@@ -15,7 +15,7 @@
   ],
   "projects": [
     {
-      "name": "SkyTube: Watch YouTube In Skyrim",
+      "name": "SkyTube – Watch YouTube In Skyrim",
       "year": 2026,
       "description": "Video player mod for Skyrim. Watch YouTube, streams, or videos while you play. Auto-pauses during dialogue. Picture-in-picture with resize, drag, fade. Resumes last video when you load in. SKSE plugin, no ESP, nothing in saves.",
       "screenshots": [
@@ -52,7 +52,7 @@
       "github": ["https://github.com/anuvgupta/apple-notes-sync"]
     },
     {
-      "name": "PiWii",
+      "name": "PiWii – Ask Your Wii For Games",
       "year": 2026,
       "description": "Install games onto your Wii over WiFi. Access a massive game library directly on the Wii, no discs.\n\n* Raspberry Pi 4B powers and passes through a 1 TB drive over USB to a Wii modded with Homebrew and USBLoaderGX.\n* Self-hosted website takes requests and game files, then converts & uploads games to the Pi's NFS over LAN.",
       "screenshots": [
@@ -83,7 +83,7 @@
       "description": "Hallway LED strips that follow you as you walk: LD2450 mmWave radar sensors publish targets over MQTT, a fusion service tracks each person along the hallway, and WLED strips light up where they are. Ambient light controls and occupancy show up in Home Assistant."
     },
     {
-      "name": "Sound Design AI: Talk to Your Synthesizer",
+      "name": "Sound Design AI – Talk to Your Synthesizer",
       "year": 2026,
       "description": "Added a voice chat agent to the open-source Vital wavetable synth.\n\n* Describe what you want instead of hunting through menus for knobs.\n* Shape sounds hands-free, while you play keys.\n* Iterate through synth patches faster.\n\nNever touch your synth again.",
       "screenshots": [
@@ -105,7 +105,7 @@
       ]
     },
     {
-      "name": "Sketchy: Image Gen Sketchpad",
+      "name": "Sketchy – Image Gen Sketchpad",
       "year": 2024,
       "description": "A website for generating images with Stable Diffusion: a ComfyUI worker on RunPod's serverless GPUs, AWS infrastructure in CDK, and a simple web frontend.",
       "github": ["https://github.com/anuvgupta/image-gen-frontend", "https://github.com/anuvgupta/image-gen-infra", "https://github.com/anuvgupta/runpod-worker-comfyui", "https://github.com/anuvgupta/runpod-pod-downloader"],
@@ -120,7 +120,7 @@
       "github": ["https://github.com/anuvgupta/b"]
     },
     {
-      "name": "Edge AI: Computer Vision Competition",
+      "name": "Edge AI – Computer Vision Competition",
       "year": 2022,
       "description": "Compressed MobileNet into a 30 KB network that predicts in about 1 ms with over 70% accuracy on CIFAR-10. Won 1st in the speed competition for UT's EE379K Edge AI course."
     },
@@ -148,12 +148,12 @@
     {
       "title": "Recents",
       "projects": [
-        "SkyTube: Watch YouTube In Skyrim",
+        "SkyTube – Watch YouTube In Skyrim",
         "Project Portfolio",
         "Murk3D",
         "Self-Hosted Voice Assistant",
         "notes-sync – Search Notes with AI",
-        "PiWii",
+        "PiWii – Ask Your Wii For Games",
         "turnstile-solver",
         "git-autosync",
         "Presence-Based LED Light Strips",
@@ -163,7 +163,7 @@
     {
       "title": "Music",
       "projects": [
-        "Sound Design AI: Talk to Your Synthesizer"
+        "Sound Design AI – Talk to Your Synthesizer"
       ]
     },
     {
@@ -177,8 +177,8 @@
     {
       "title": "Machine Learning",
       "projects": [
-        "Sketchy: Image Gen Sketchpad",
-        "Edge AI: Computer Vision Competition"
+        "Sketchy – Image Gen Sketchpad",
+        "Edge AI – Computer Vision Competition"
       ]
     },
     {
@@ -192,8 +192,8 @@
     {
       "title": "Gaming",
       "projects": [
-        "PiWii",
-        "SkyTube: Watch YouTube In Skyrim",
+        "PiWii – Ask Your Wii For Games",
+        "SkyTube – Watch YouTube In Skyrim",
         "Rubbr.io"
       ]
     },
