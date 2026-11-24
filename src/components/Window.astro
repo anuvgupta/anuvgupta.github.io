@@ -9,6 +9,8 @@ interface Props {
 const { page, open = false } = Astro.props;
 const icon = PAGE_TYPES[page.type].icon;
 const titleId = `win-title-${page.id}`;
+// The page's public address; the desktop script swaps in the address it was actually opened from.
+const address = `${Astro.site?.href ?? '/'}#${page.id}`;
 ---
 
 <section class="window" id={page.id} data-page={page.id} role="dialog" aria-labelledby={titleId} hidden={!open}>
@@ -39,6 +41,15 @@ const titleId = `win-title-${page.id}`;
       </div>
     </div>
   </nav>
+  <div class="address-bar">
+    <span class="address-label" aria-hidden="true">Address</span>
+    <div class="address-field">
+      <img src={icon} alt="" width="16" height="16" draggable="false" />
+      <input class="address-input" type="text" value={address} readonly spellcheck="false" aria-label="Address" />
+      <span class="address-drop" aria-hidden="true"></span>
+    </div>
+    <a class="address-go" href={`#${page.id}`} title={`Go to ${address}`}><span class="address-go-icon" aria-hidden="true"></span>Go</a>
+  </div>
   <div class="window-body" tabindex="-1">
     <slot />
   </div>

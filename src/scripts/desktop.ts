@@ -187,8 +187,11 @@ function selectAll(el: HTMLElement) {
   sel?.addRange(range);
 }
 
+/** The address a page is reached at, from wherever the site was opened. */
+const pageUrl = (id: string) => `${location.origin}${location.pathname}#${id}`;
+
 async function copyLink(id: string) {
-  const url = `${location.origin}${location.pathname}#${id}`;
+  const url = pageUrl(id);
   try {
     await navigator.clipboard.writeText(url);
     showBalloon('Link copied');
@@ -256,6 +259,11 @@ for (const el of $$('.window[data-page]', desktopEl)) {
     geom: null,
   };
   wins.set(id, win);
+
+  // The address bar shows this page's address and selects it all on focus, like Explorer's.
+  const address = $<HTMLInputElement>('.address-input', el)!;
+  address.value = pageUrl(id);
+  address.addEventListener('focus', () => address.select());
 
   el.addEventListener('pointerdown', () => focusWin(id), true);
   el.addEventListener('click', (e) => {

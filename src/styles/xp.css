@@ -595,6 +595,123 @@ html.window-dragging * {
   position: relative;
 }
 
+/* Explorer-style address bar under the menu bar. */
+
+.address-bar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 4px 3px 7px;
+  color: #000;
+  font: 11px var(--ui-font);
+  background: var(--xp-face);
+  border-bottom: 1px solid #c5c2b2;
+  box-shadow: 0 1px 0 #fff;
+}
+
+.address-label {
+  color: #444;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.address-field {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 22px;
+  padding-left: 3px;
+  background: #fff;
+  border: 1px solid #7f9db9;
+}
+
+.address-field img {
+  flex: none;
+}
+
+.address-input {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  outline: none;
+  font: 11px var(--ui-font);
+  color: #000;
+  background: transparent;
+}
+
+/* The combo box's dropdown button (decorative, as there is no history to show). */
+.address-drop {
+  flex: none;
+  position: relative;
+  width: 17px;
+  height: 18px;
+  margin-right: 1px;
+  border: 1px solid #fff;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #dce7fd, #c1d4fa 55%, #aec6f6);
+  box-shadow: 0 0 0 1px #b4c8f2;
+}
+
+.address-drop::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -30%;
+  border: 4px solid transparent;
+  border-top: 4px solid #4d6185;
+}
+
+.address-go {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 22px;
+  padding: 0 6px 0 3px;
+  color: #000;
+  text-decoration: none;
+  border: 1px solid transparent;
+  border-radius: 3px;
+}
+
+.address-go:hover {
+  border-color: #c3c0ae;
+  background: linear-gradient(180deg, #fff, #f1efe6);
+}
+
+.address-go:active {
+  background: #e3e1d5;
+}
+
+.address-go:focus-visible {
+  outline: 1px dotted #000;
+  outline-offset: -3px;
+}
+
+/* Green Go arrow. */
+.address-go-icon {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, #8fdc7d, #3aab31 55%, #22861e);
+  box-shadow: inset 0 0 0 1px rgba(0, 70, 0, 0.45);
+}
+
+.address-go-icon::before {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  background: #fff;
+  clip-path: polygon(0 38%, 48% 38%, 48% 8%, 100% 50%, 48% 92%, 48% 62%, 0 62%);
+}
+
+
 .menu-btn {
   padding: 2px 8px;
   border: 0;
@@ -1316,6 +1433,10 @@ html.window-dragging * {
 }
 
 @media (max-width: 699px) {
+  .address-label {
+    display: none;
+  }
+
   .window {
     --win-w: calc(100% - 12px);
     top: 6px;
