@@ -1,0 +1,584 @@
+/* Windows 98 skin, shown at night (html.ui-98; see scripts/ui-theme.ts). It reuses xp.css's layout and
+   swaps the chrome: grey bevelled faces, square corners, navy title bars, and a dark blue gradient taskbar. */
+
+html.ui-98 {
+  --ui-font: "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Geneva, sans-serif;
+  --title-font: var(--ui-font);
+  --taskbar-h: 30px;
+  --xp-face: #c0c0c0;
+  --xp-select: #000080;
+  --xp-link: #000080;
+  --face-shadow: #808080;
+  --face-light: #fff;
+  --face-hilite: #dfdfdf;
+  --face-dark: #0a0a0a;
+  /* Two-pixel 3D edges. Children must sit inside the bevel (padding), as inset shadows paint under them. */
+  --raised: inset -1px -1px var(--face-dark), inset 1px 1px var(--face-hilite), inset -2px -2px var(--face-shadow),
+    inset 2px 2px var(--face-light);
+  --sunken: inset -1px -1px var(--face-light), inset 1px 1px var(--face-shadow), inset -2px -2px var(--face-hilite),
+    inset 2px 2px var(--face-dark);
+  --thin-raised: inset -1px -1px var(--face-shadow), inset 1px 1px var(--face-light);
+  --thin-sunken: inset -1px -1px var(--face-light), inset 1px 1px var(--face-shadow);
+  --navy-bar: linear-gradient(90deg, #000080, #1084d0);
+  --grey-bar: linear-gradient(90deg, #808080, #b5b5b5);
+  /* Pressed-in buttons show a light dither. */
+  --dither: repeating-conic-gradient(var(--face-light) 0 25%, var(--xp-face) 0 50%) 0 0 / 2px 2px;
+}
+
+.ui-98 body {
+  -webkit-font-smoothing: auto;
+}
+
+/* ------------------------------------------------------------------ Windows */
+
+.ui-98 .window {
+  padding: 3px;
+  border-radius: 0;
+  background: var(--xp-face);
+  box-shadow: var(--raised), 2px 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+.ui-98 .window.inactive {
+  background: var(--xp-face);
+  box-shadow: var(--raised);
+}
+
+.ui-98 .window.maximized {
+  padding: 0;
+}
+
+.ui-98 .title-bar {
+  height: 20px;
+  margin: 0 0 1px;
+  padding: 0 2px 0 3px;
+  gap: 3px;
+  border-radius: 0;
+  background: var(--navy-bar);
+  box-shadow: none;
+}
+
+.ui-98 .window.inactive .title-bar {
+  background: var(--grey-bar);
+  box-shadow: none;
+}
+
+.ui-98 .window.maximized .title-bar {
+  margin: 0;
+}
+
+.ui-98 .title-text {
+  font: bold 12px var(--title-font);
+  letter-spacing: 0;
+  text-shadow: none;
+}
+
+.ui-98 .window.inactive .title-text {
+  color: var(--xp-face);
+}
+
+.ui-98 .title-controls {
+  gap: 0;
+}
+
+/* Close stands apart from minimize and maximize. */
+.ui-98 .title-controls .tb-close {
+  margin-left: 2px;
+}
+
+.ui-98 .title-controls button,
+.ui-98 .title-controls .tb-close {
+  width: 16px;
+  height: 14px;
+  border: 0;
+  border-radius: 0;
+  background: var(--xp-face);
+  box-shadow: var(--raised);
+}
+
+.ui-98 .title-controls button:hover {
+  filter: none;
+}
+
+.ui-98 .title-controls button:active:not(:disabled) {
+  filter: none;
+  box-shadow: var(--sunken);
+}
+
+.ui-98 .window.inactive .title-controls button {
+  opacity: 1;
+}
+
+.ui-98 .title-controls button:disabled {
+  opacity: 1;
+}
+
+.ui-98 .title-controls button:disabled::before,
+.ui-98 .title-controls button:disabled::after {
+  opacity: 0.4;
+}
+
+.ui-98 .tb-min::before {
+  left: 4px;
+  bottom: 3px;
+  width: 6px;
+  height: 2px;
+  background: #000;
+}
+
+.ui-98 .tb-max::before {
+  left: 3px;
+  top: 2px;
+  width: 9px;
+  height: 9px;
+  border: 1px solid #000;
+  border-top-width: 2px;
+}
+
+.ui-98 .maximized .tb-max::before {
+  left: 5px;
+  top: 2px;
+  width: 6px;
+  height: 6px;
+}
+
+.ui-98 .maximized .tb-max::after {
+  left: 3px;
+  top: 5px;
+  width: 6px;
+  height: 6px;
+  border: 1px solid #000;
+  border-top-width: 2px;
+  background: var(--xp-face);
+}
+
+.ui-98 .tb-close::before,
+.ui-98 .tb-close::after {
+  width: 9px;
+  height: 2px;
+  background: #000;
+}
+
+/* Menu and address bars */
+
+.ui-98 .menu-bar,
+.ui-98 .address-bar {
+  border-bottom-color: var(--face-shadow);
+  box-shadow: 0 1px var(--face-light);
+}
+
+.ui-98 .menu-btn:hover,
+.ui-98 .menu.open > .menu-btn {
+  color: #fff;
+  background: var(--xp-select);
+}
+
+.ui-98 .menu-dropdown {
+  padding: 3px;
+  border: 0;
+  background: var(--xp-face);
+  box-shadow: var(--raised), 2px 2px 0 rgba(0, 0, 0, 0.25);
+}
+
+.ui-98 .menu-sep {
+  height: 2px;
+  margin: 3px 1px;
+  background: none;
+  border-top: 1px solid var(--face-shadow);
+  border-bottom: 1px solid var(--face-light);
+}
+
+.ui-98 .address-label {
+  color: #000;
+}
+
+.ui-98 .address-field {
+  padding: 2px 2px 2px 4px;
+  border: 0;
+  box-shadow: var(--sunken);
+}
+
+.ui-98 .address-drop {
+  width: 16px;
+  height: 18px;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: var(--xp-face);
+  box-shadow: var(--raised);
+}
+
+.ui-98 .address-drop::before {
+  border-top-color: #000;
+}
+
+.ui-98 .address-go {
+  border: 0;
+  border-radius: 0;
+}
+
+.ui-98 .address-go:hover {
+  background: none;
+  box-shadow: var(--thin-raised);
+}
+
+.ui-98 .address-go:active {
+  background: none;
+  box-shadow: var(--thin-sunken);
+}
+
+.ui-98 .address-go-icon {
+  border-radius: 0;
+}
+
+/* Content: a sunken white well with Windows 98 scrollbars. The About dialog fills its window flat. */
+
+.ui-98 .window-body {
+  border: 2px solid;
+  border-color: var(--face-shadow) var(--face-light) var(--face-light) var(--face-shadow);
+}
+
+.ui-98 .window-fit .window-body {
+  border: 0;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  .ui-98 .window-body {
+    scrollbar-color: var(--xp-face) var(--face-hilite);
+  }
+}
+
+.ui-98 .window-body::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+}
+
+.ui-98 .window-body::-webkit-scrollbar-track {
+  border: 0;
+  background: var(--dither);
+}
+
+.ui-98 .window-body::-webkit-scrollbar-thumb,
+.ui-98 .window-body::-webkit-scrollbar-thumb:hover {
+  border: 0;
+  border-radius: 0;
+  background: var(--xp-face);
+  box-shadow: var(--raised);
+}
+
+/* Loading window */
+
+.ui-98 .xp-progress {
+  border: 0;
+  padding: 3px;
+  box-shadow: var(--sunken);
+}
+
+/* ------------------------------------------------------------------ Pages */
+
+.ui-98 .page-header h1,
+.ui-98 .project-section {
+  color: #000080;
+}
+
+.ui-98 .page-header h1 {
+  font-size: 18px;
+}
+
+.ui-98 .page-header p {
+  color: #404040;
+}
+
+.ui-98 .project {
+  border-radius: 0;
+  box-shadow: var(--raised);
+  padding: 2px;
+  background: var(--xp-face);
+}
+
+.ui-98 .project-title {
+  color: #fff;
+  background: var(--navy-bar);
+}
+
+.ui-98 .project-content {
+  background: var(--xp-face);
+}
+
+.ui-98 .project-shots a {
+  padding: 2px;
+  border: 0;
+  background: #fff;
+  box-shadow: var(--sunken);
+}
+
+.ui-98 .project-shots a:hover,
+.ui-98 .project-shots a:focus-visible {
+  outline: 1px dotted #000;
+  outline-offset: 1px;
+}
+
+.ui-98 .xp-btn {
+  padding: 4px 12px 4px 9px;
+  border: 0;
+  border-radius: 0;
+  background: var(--xp-face);
+  box-shadow: var(--raised);
+}
+
+.ui-98 .xp-btn:hover {
+  box-shadow: var(--raised);
+}
+
+.ui-98 .xp-btn:focus-visible {
+  outline: 1px dotted #000;
+  outline-offset: -5px;
+  box-shadow: var(--raised);
+}
+
+.ui-98 .xp-btn:active {
+  padding: 5px 11px 3px 10px;
+  background: var(--xp-face);
+  box-shadow: var(--sunken);
+}
+
+/* ------------------------------------------------------------------ Desktop */
+
+.ui-98 .desktop-icon.selected .icon-img::after {
+  background: rgba(0, 0, 128, 0.5);
+}
+
+.ui-98 .desktop-icon.selected .icon-label {
+  background: #000080;
+}
+
+/* Wallpaper widget: a small Windows 98 tool window. */
+
+.ui-98 .wp-widget {
+  padding: 3px;
+  border-radius: 0;
+  background: var(--xp-face);
+  box-shadow: var(--raised), 2px 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+.ui-98 .wp-title {
+  height: 18px;
+  padding: 0 2px 0 4px;
+  font: bold 11px var(--title-font);
+  text-shadow: none;
+  background: var(--navy-bar);
+}
+
+.ui-98 .wp-collapse {
+  width: 16px;
+  height: 14px;
+  border: 0;
+  border-radius: 0;
+  background: var(--xp-face);
+  box-shadow: var(--raised);
+}
+
+.ui-98 .wp-collapse:active {
+  box-shadow: var(--sunken);
+}
+
+.ui-98 .wp-collapse::before {
+  border-top-color: #000;
+}
+
+.ui-98 .wp-row output,
+.ui-98 .wp-ticks {
+  color: #000;
+}
+
+.ui-98 .wp-slider::-webkit-slider-runnable-track {
+  border-color: var(--face-shadow) var(--face-light) var(--face-light) var(--face-shadow);
+  background: var(--face-hilite);
+}
+
+.ui-98 .wp-slider::-moz-range-track {
+  border-color: var(--face-shadow) var(--face-light) var(--face-light) var(--face-shadow);
+  background: var(--face-hilite);
+}
+
+.ui-98 .wp-slider::-webkit-slider-thumb {
+  border: 0;
+  border-radius: 0;
+  background: var(--xp-face);
+  box-shadow: var(--raised);
+}
+
+.ui-98 .wp-slider::-moz-range-thumb {
+  border: 0;
+  border-radius: 0;
+  background: var(--xp-face);
+  box-shadow: var(--raised);
+}
+
+.ui-98 .wp-enabled-row {
+  border-top-color: var(--face-shadow);
+}
+
+/* ------------------------------------------------------------------ Taskbar */
+
+/* Dark blue with a gradient and a light top edge, holding grey Windows 98 buttons. */
+.ui-98 .taskbar {
+  background: linear-gradient(180deg, #4a5fb4 0, #4a5fb4 1px, #23348c 2px, #18266f 45%, #0e1952 100%);
+}
+
+.ui-98 .start-button {
+  height: calc(var(--taskbar-h) - 6px);
+  margin: 3px 2px 3px 3px;
+  padding: 0 7px 0 4px;
+  gap: 4px;
+  border-radius: 0;
+  color: #000;
+  font: bold 12px/1 var(--ui-font);
+  letter-spacing: 0;
+  text-shadow: none;
+  text-transform: capitalize;
+  background: var(--xp-face);
+  box-shadow: var(--raised);
+}
+
+.ui-98 .start-logo {
+  width: 18px;
+  height: 18px;
+  translate: none;
+  filter: none;
+}
+
+.ui-98 .start-button:hover {
+  filter: none;
+}
+
+.ui-98 .start-button.pressed {
+  filter: none;
+  box-shadow: var(--sunken);
+}
+
+.ui-98 .start-button:focus-visible {
+  outline-color: #000;
+  outline-offset: -5px;
+}
+
+.ui-98 .taskbar-tasks {
+  padding: 3px 4px;
+}
+
+.ui-98 .task {
+  border-radius: 0;
+  color: #000;
+  background: var(--xp-face);
+  box-shadow: var(--raised);
+}
+
+.ui-98 .task:hover {
+  background: var(--xp-face);
+}
+
+.ui-98 .task.active {
+  font-weight: bold;
+  background: var(--dither);
+  box-shadow: var(--sunken);
+}
+
+/* The tray is a shallow well in the bar. */
+.ui-98 .tray {
+  height: calc(var(--taskbar-h) - 6px);
+  margin: 3px 3px 3px 2px;
+  padding: 0 10px;
+  border: 0;
+  background: rgba(0, 0, 0, 0.15);
+  box-shadow: inset 1px 1px rgba(0, 0, 0, 0.45), inset -1px -1px rgba(255, 255, 255, 0.35);
+}
+
+.ui-98 .clock {
+  -webkit-text-stroke: 0;
+}
+
+.ui-98 .balloon {
+  border-radius: 0;
+}
+
+/* ------------------------------------------------------------------ Start menu */
+
+.ui-98 .start-menu {
+  padding: 3px;
+  border-radius: 0;
+  background: var(--xp-face);
+  box-shadow: var(--raised), 2px -2px 6px rgba(0, 0, 0, 0.35);
+}
+
+.ui-98 .sm-header {
+  background: var(--navy-bar);
+  box-shadow: none;
+  border-bottom: 0;
+}
+
+.ui-98 .sm-user {
+  font: bold 14px var(--title-font);
+  text-shadow: none;
+}
+
+.ui-98 .sm-header .user-tile {
+  border-radius: 0;
+  border-width: 1px;
+  box-shadow: none;
+}
+
+.ui-98 .sm-body {
+  border: 0;
+}
+
+.ui-98 .sm-search {
+  border: 0;
+  padding: 4px 7px;
+  box-shadow: var(--sunken);
+}
+
+.ui-98 .sm-sep {
+  height: 2px;
+  background: none;
+  border-top: 1px solid var(--face-shadow);
+  border-bottom: 1px solid var(--face-light);
+}
+
+.ui-98 .sm-item {
+  border-radius: 0;
+}
+
+.ui-98 .sm-item-text small {
+  color: #404040;
+}
+
+.ui-98 .sm-item:hover small,
+.ui-98 .sm-item:focus-visible small {
+  color: #fff;
+}
+
+.ui-98 .sm-footer {
+  display: none;
+}
+
+/* Bigger hit targets on touch screens. */
+@media (pointer: coarse) {
+  .ui-98 .title-bar {
+    height: 28px;
+  }
+
+  .ui-98 .title-controls button,
+  .ui-98 .title-controls .tb-close {
+    width: 22px;
+    height: 20px;
+  }
+
+  .ui-98 .tb-min::before {
+    left: 7px;
+    bottom: 5px;
+  }
+
+  .ui-98 .tb-max::before {
+    left: 6px;
+    top: 4px;
+  }
+}

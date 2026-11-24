@@ -11,6 +11,7 @@
  */
 import { SUNRISE, SUNSET, NOON } from '../wallpaper/sun.js';
 import { BOTTOM_Z, nextZ } from './zorder';
+import { setUiHour } from './ui-theme';
 
 const root = document.documentElement;
 const host = document.getElementById('wallpaper');
@@ -293,13 +294,17 @@ class Widget {
   api: WallpaperApi | null = null;
 
   constructor(onToggle: (on: boolean) => void) {
+    // The UI's day and night themes follow the wallpaper's time of day too.
     this.slider.addEventListener('input', () => {
       this.live.checked = false;
       this.api?.setTime(Number(this.slider.value));
+      setUiHour(Number(this.slider.value));
       this.show();
     });
     this.live.addEventListener('change', () => {
-      this.api?.setTime(this.live.checked ? null : Number(this.slider.value));
+      const h = this.live.checked ? null : Number(this.slider.value);
+      this.api?.setTime(h);
+      setUiHour(h);
       this.show();
     });
     setInterval(() => this.live.checked && this.show(), 15_000);
@@ -363,6 +368,8 @@ let widget: Widget;
 function setOn(next: boolean) {
   on = next;
   root.classList.toggle('wallpaper-off', !on);
+  // With the wallpaper off, a hand-set time no longer shows, so the UI follows the clock.
+  setUiHour(on && !widget.live.checked ? Number(widget.slider.value) : null);
   if (on && !widget.api) void load();
   else widget.update(on, loading);
 }

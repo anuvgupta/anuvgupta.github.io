@@ -12,6 +12,10 @@ export const LINK_ICONS = {
   link: '/img/icons/link.svg',
 } as const;
 
+/** The UI is Windows XP from DAY_START to DAY_END (hours, local time) and Windows 98 the rest of the night. */
+export const UI_DAY_START = 6;
+export const UI_DAY_END = 19;
+
 /** The user picture in the Start menu header and on the About page. */
 export const USER_PICTURE = '/img/icons/circuit.svg';
 
