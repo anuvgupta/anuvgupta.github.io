@@ -343,7 +343,7 @@ html.ui-98,
   background: var(--xp-face);
   box-shadow: inset 1px 1px var(--face-light), inset -1px 0 var(--face-dark), inset 2px 2px var(--face-hilite),
     inset -2px 0 var(--face-shadow);
-  cursor: default;
+  cursor: pointer;
 }
 
 .project-tab[aria-selected="true"] {
