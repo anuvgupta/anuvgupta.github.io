@@ -47,7 +47,21 @@ let taskOrder = 0; // keeps taskbar buttons in the order windows were opened
 
 const desktopSize = () => ({ w: desktopEl.clientWidth, h: desktopEl.clientHeight });
 
-// Every window opens centred on the desktop.
+const CASCADE = 28; // how far a new window sits from the one already open
+
+// The page window in front (open, not minimized), to place a new one beside. The wallpaper loader and
+// widget aren't page windows, so they never count.
+function frontWin(except: Win): Win | null {
+  let top: Win | null = null;
+  for (const w of wins.values()) {
+    if (w === except || !w.open || w.minimized) continue;
+    if (!top || +w.el.style.zIndex > +top.el.style.zIndex) top = w;
+  }
+  return top;
+}
+
+// A new window opens centred on the desktop, or, with another page window open, down and to the right
+// of the front one; up and to the left if that would run off the desktop.
 function defaultGeom(win: Win): Geom {
   const { w: dw, h: dh } = desktopSize();
   let width: number;
@@ -61,8 +75,21 @@ function defaultGeom(win: Win): Geom {
     width = Math.min(dw - 24, Math.max(560, Math.round((dw * 2) / 3)));
     height = Math.max(240, dh - 24);
   }
-  const left = clamp(Math.round((dw - width) / 2), 0, dw - width);
-  const top = clamp(Math.round((dh - height) / 2), 0, dh - height);
+  const ref = frontWin(win);
+  if (!ref || ref.maximized) {
+    const left = clamp(Math.round((dw - width) / 2), 0, dw - width);
+    const top = clamp(Math.round((dh - height) / 2), 0, dh - height);
+    return { left, top, width, height };
+  }
+  const r = measureGeom(ref.el);
+  const fits = (dir: number) =>
+    r.left + dir * CASCADE >= 0 && r.top + dir * CASCADE >= 0 &&
+    r.left + dir * CASCADE + width <= dw && r.top + dir * CASCADE + height <= dh;
+  const dir = fits(1) ? 1 : -1;
+  const left = clamp(Math.round(r.left + dir * CASCADE), 0, dw - width);
+  const top = clamp(Math.round(r.top + dir * CASCADE), 0, dh - (win.fit ? height : 240));
+  // A tall window shortens to stay on the desktop rather than giving up its offset.
+  if (!win.fit) height = Math.min(height, Math.max(240, dh - top - (dw < 700 ? 6 : 12)));
   return { left, top, width, height };
 }
 
