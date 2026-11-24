@@ -91,7 +91,13 @@ class Wallpaper {
     this.reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
     this.isHidden = () => false;
     this._bufferSize = new THREE.Vector2();
-    this._onResize = () => this.onResize();
+    // Resizing the canvas wipes it, and with the frame cap the next frame can
+    // be most of a frame away, showing the blue desktop meanwhile: draw at
+    // the new size straight away.
+    this._onResize = () => {
+      this.onResize();
+      if (this.raf && !this.isHidden()) this.composer.render();
+    };
     window.addEventListener('resize', this._onResize);
   }
 
@@ -225,9 +231,12 @@ class Wallpaper {
         return;
       }
       this.elapsed += dt;
+      // Before drawing: a quality step resizes the canvas, which wipes it.
+      // After drawing, the browser would show the wiped canvas (the blue
+      // desktop) until the next frame.
+      this.updatePerf(dt);
       this.updateWorld(dt);
       this.composer.render();
-      this.updatePerf(dt);
     };
     this.raf = requestAnimationFrame(frame);
   }
