@@ -83,6 +83,7 @@ const repo = z.preprocess(shorthand('url'), z.strictObject({ url, label: z.strin
 const project = z.strictObject({
   name: z.string().min(1),
   // Blank lines separate paragraphs; a paragraph whose lines all start with "* " is a bullet list.
+  // Inline, *word* is italic, **word** bold, and ***word*** both.
   description: z.string().optional(),
   screenshots: z.array(screenshot).max(3, 'At most 3 screenshots per project').default([]),
   github: z.array(repo).default([]),

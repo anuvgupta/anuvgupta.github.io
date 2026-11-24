@@ -1,0 +1,23 @@
+---
+/** Text with inline emphasis, from ProjectsPage's inline() parser. */
+interface Props {
+  parts: { text: string; bold: boolean; italic: boolean }[];
+}
+const { parts } = Astro.props;
+---
+
+{
+  parts.map((p) =>
+    p.bold && p.italic ? (
+      <strong>
+        <em>{p.text}</em>
+      </strong>
+    ) : p.bold ? (
+      <strong>{p.text}</strong>
+    ) : p.italic ? (
+      <em>{p.text}</em>
+    ) : (
+      p.text
+    )
+  )
+}

@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import type { Page, Project, Section } from '../site';
 import { LINK_ICONS, repoName } from '../theme';
+import Inline from './Inline.astro';
 import LinkButton from './LinkButton.astro';
 
 interface Props {
@@ -29,6 +30,18 @@ const paragraphs = (text: string) =>
       return lines.every((l) => l.startsWith('* '))
         ? { items: lines.map((l) => l.slice(2)) }
         : { text: lines.join(' ') };
+    });
+
+// Inline emphasis: ***bold italic***, **bold**, *italic*; everything else is plain text.
+const inline = (text: string) =>
+  text
+    .split(/(\*{1,3}[^*\s](?:[^*]*[^*\s])?\*{1,3})/)
+    .filter(Boolean)
+    .map((part) => {
+      const m = part.match(/^(\*{1,3})([^*]+)\1$/);
+      if (!m) return { text: part, bold: false, italic: false };
+      const n = m[1].length;
+      return { text: m[2], bold: n >= 2, italic: n !== 2 };
     });
 const tabId = (i: number) => `${page.id}-tab-${i}`;
 const panelId = (i: number) => `${page.id}-panel-${i}`;
@@ -80,11 +93,15 @@ const panelId = (i: number) => `${page.id}-panel-${i}`;
                       'items' in b ? (
                         <ul>
                           {b.items.map((item) => (
-                            <li>{item}</li>
+                            <li>
+                              <Inline parts={inline(item)} />
+                            </li>
                           ))}
                         </ul>
                       ) : (
-                        <p>{b.text}</p>
+                        <p>
+                          <Inline parts={inline(b.text)} />
+                        </p>
                       )
                     )}
                   </div>
