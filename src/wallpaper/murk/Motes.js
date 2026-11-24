@@ -21,6 +21,7 @@ import { mulberry32 } from './noise.js';
 const COUNT = 400; // particles: a scattering of fine motes through the air, never a snowfall
 const BOX = 60; // metres across: wide, so they are well spread out
 const HEIGHT = 12;
+const FADE = 1; // metres of its fall over which a mote fades in at the top and out at the bottom
 const STREAK = 0.08; // seconds of your motion each streak spans
 
 export class Motes {
@@ -58,6 +59,13 @@ export class Motes {
     this.posAttr = new THREE.InstancedBufferAttribute(new Float32Array(COUNT * 3), 3);
     this.posAttr.setUsage(THREE.DynamicDrawUsage);
     geometry.setAttribute('aPos', this.posAttr);
+    // How far each mote has faded in after appearing up high, and out as it
+    // nears the ground: without it one vanished in a frame where it landed
+    // and another popped in above, and by night, against the sky, those read
+    // as stars blinking out and on.
+    this.fadeAttr = new THREE.InstancedBufferAttribute(new Float32Array(COUNT), 1);
+    this.fadeAttr.setUsage(THREE.DynamicDrawUsage);
+    geometry.setAttribute('aFade', this.fadeAttr);
     geometry.setAttribute('aSeed', new THREE.InstancedBufferAttribute(seeds, 4));
     geometry.instanceCount = COUNT;
     const uniforms = {
@@ -75,6 +83,7 @@ export class Motes {
         attribute vec2 corner;
         attribute vec3 aPos;
         attribute vec4 aSeed;
+        attribute float aFade;
         uniform float uTime;
         uniform float uPixelScale;
         uniform vec3 uSunDir;
@@ -103,7 +112,7 @@ export class Motes {
           mote *= kindOf < 0.333 ? 1.0 : kindOf < 0.667 ? 0.5 : 0.18;
           // A few always rest, and over half of them by moonlight.
           mote *= step( fract( aSeed.w * 29.0 ), 0.78 ) * ( 1.0 - uNight * step( 0.45, fract( aSeed.w * 17.0 ) ) );
-          vAlpha = mix( mote, twinkle * uNight * step( fract( aSeed.x * 13.0 ), 0.4 ), spark ) * smoothstep( 1.0, 3.0, d ) * ( 1.0 - smoothstep( 14.0, 26.0, d ) );
+          vAlpha = mix( mote, twinkle * uNight * step( fract( aSeed.x * 13.0 ), 0.4 ), spark ) * smoothstep( 1.0, 3.0, d ) * ( 1.0 - smoothstep( 14.0, 26.0, d ) ) * aFade;
           vec3 dust = mix( vec3( 1.0, 0.92, 0.7 ), uSunColor / max( 0.001, length( uSunColor ) ), 0.4 ) * ( 0.45 + 0.75 * uLight );
           vColor = mix( dust, vec3( 1.0, 0.8, 0.45 ), spark );
           // The glow is drawn several times the mote's size; vCore is the hot
@@ -210,6 +219,7 @@ export class Motes {
     this.material.uniforms.uStreak.value.set(this.velocity.x - this.drift.x, (this.velocity.y - this.drift.y) * 0.5, this.velocity.z - this.drift.z).multiplyScalar(STREAK * moving);
 
     const arr = this.posAttr.array;
+    const fade = this.fadeAttr.array;
     const off = this.offsets;
     const cx = playerPos.x;
     const cz = playerPos.z;
@@ -240,8 +250,11 @@ export class Motes {
       arr[k] = x;
       arr[k + 1] = Math.max(ground, baseY - 3) + 0.2 + off[k + 1];
       arr[k + 2] = z;
+      // Over the first and last metre of its fall (several seconds).
+      fade[i] = THREE.MathUtils.smoothstep(off[k + 1], 0, FADE) * THREE.MathUtils.smoothstep(HEIGHT - off[k + 1], 0, FADE);
     }
     this.posAttr.needsUpdate = true;
+    this.fadeAttr.needsUpdate = true;
     this.material.uniforms.uTime.value = this.time;
     this.material.uniforms.uNight.value = night;
     this.material.uniforms.uLight.value = light;
