@@ -14,35 +14,165 @@
   ],
   "projects": [
     {
-      "name": "Sample Project One",
-      "description": "Placeholder entry showing every field: a short description, three screenshots, one GitHub repo and a couple of extra links. Replace with a real project.",
-      "screenshots": [
-        { "src": "content/projects/sample-1.svg", "alt": "Sample Project One main screen" },
-        { "src": "content/projects/sample-2.svg", "alt": "Sample Project One settings" },
-        { "src": "content/projects/sample-3.svg", "alt": "Sample Project One results view" }
-      ],
-      "github": ["https://github.com/anuvgupta/sample-project-one"],
+      "section": "Recent",
+      "name": "Anuv's Projects",
+      "description": "This site: a Windows XP-style desktop built with Astro, with draggable windows, a Start menu and a live, procedurally drawn wallpaper. All content comes from one validated JSON manifest.",
+      "github": ["https://github.com/anuvgupta/anuvgupta.github.io"]
+    },
+    {
+      "section": "Recent",
+      "name": "SkyPiP",
+      "description": "SKSE plugin for Skyrim and Enderal SE that plays YouTube videos, livestreams or video files in a picture-in-picture window while you play. It pauses during conversations and remembers where each video left off.",
+      "github": ["https://github.com/anuvgupta/skypip"],
       "links": [
-        { "label": "Live demo", "url": "https://example.com" },
-        { "label": "Write-up", "url": "https://example.com/write-up" }
+        { "label": "Download", "url": "https://github.com/anuvgupta/skypip/releases/latest" }
       ]
     },
     {
-      "name": "Sample Project Two",
-      "description": "Placeholder entry with one screenshot and two GitHub repos (e.g. separate frontend and backend). With more than one repo, each button shows the repo name.",
-      "screenshots": [
-        { "src": "content/projects/sample-4.svg", "alt": "Sample Project Two dashboard" }
-      ],
-      "github": [
-        "https://github.com/anuvgupta/sample-project-two-web",
-        "https://github.com/anuvgupta/sample-project-two-server"
-      ],
-      "links": [{ "label": "Video", "url": "https://example.com/video" }]
+      "section": "Recent",
+      "name": "apple-notes-sync",
+      "description": "Keeps a folder of Markdown files in sync with Apple Notes every 15 seconds, so Obsidian, grep or Basic Memory's semantic search can read your notes. Plain system Python, run as a macOS background agent.",
+      "github": ["https://github.com/anuvgupta/apple-notes-sync"]
     },
     {
-      "name": "Sample Project Three",
-      "description": "Placeholder entry with no screenshots and no extra links, just a description and a repo.",
-      "github": ["https://github.com/anuvgupta/sample-project-three"]
+      "section": "Recent",
+      "name": "piwii",
+      "description": "Turns a Raspberry Pi into a network-fed USB drive for a softmodded Wii. A Wii Menu-style web app converts and uploads games, and the Pi copies them onto the drive whenever the Wii goes idle.",
+      "screenshots": [
+        { "src": "content/projects/piwii.png", "alt": "piwii's Wii Menu-style library page" }
+      ],
+      "github": ["https://github.com/anuvgupta/piwii"]
+    },
+    {
+      "section": "Recent",
+      "name": "git-autosync",
+      "description": "Auto-commits, rebases and pushes any git repo on a schedule, each repo with its own scheduler and lock. Works on macOS, Linux (cron or systemd) and Windows.",
+      "github": ["https://github.com/anuvgupta/git-autosync"]
+    },
+    {
+      "section": "Recent",
+      "name": "Vital AI Agent",
+      "description": "A fork of the open-source Vital wavetable synth that adds an AI agent side panel inside the synth, backed by its own cloud infrastructure.",
+      "github": ["https://github.com/anuvgupta/vital", "https://github.com/anuvgupta/synth-agent-infra"],
+      "links": [
+        { "label": "Demo video", "url": "https://www.youtube.com/watch?v=GkKuZN7fDMQ" }
+      ]
+    },
+    {
+      "section": "Recent",
+      "name": "Procedural Cityscape",
+      "description": "A procedurally generated 3D city in a single HTML file with Three.js: instanced buildings, sunlight and shadows, and wind-blown grass, tuned to run smoothly in iPad Safari.",
+      "github": ["https://github.com/anuvgupta/cityscape"],
+      "links": [
+        { "label": "Live demo", "url": "https://github.anuv.me/cityscape/" }
+      ]
+    },
+    {
+      "section": "Recent",
+      "name": "Image Generation",
+      "description": "A website for generating images with Stable Diffusion: a ComfyUI worker on RunPod's serverless GPUs, AWS infrastructure in CDK, and a simple web frontend.",
+      "github": ["https://github.com/anuvgupta/image-gen-frontend", "https://github.com/anuvgupta/image-gen-infra", "https://github.com/anuvgupta/runpod-worker-comfyui", "https://github.com/anuvgupta/runpod-pod-downloader"],
+      "links": [
+        { "label": "Website", "url": "https://images.anuv.me" }
+      ]
+    },
+    {
+      "section": "Recent",
+      "name": "Soccer News Bot",
+      "description": "A daily soccer digest for Discord: a headless-browser Lambda scrapes ESPN schedules and standings, GPT-4o pulls out results and fixtures, and a summary gets posted. Deployed with AWS CDK.",
+      "github": ["https://github.com/anuvgupta/soccer-news-infra"]
+    },
+    {
+      "section": "Recent",
+      "name": "Media Library",
+      "description": "Streaming for a home movie library: a worker on the home machine cuts films into HLS segments and uploads them to S3, and a web app behind Cognito sign-in plays them back. Deployed with AWS CDK.",
+      "github": ["https://github.com/anuvgupta/media-library-frontend", "https://github.com/anuvgupta/media-library-infra", "https://github.com/anuvgupta/media-library-source-worker"]
+    },
+    {
+      "section": "All-Time",
+      "name": "Edge AI",
+      "description": "Compressed MobileNet into a 30 KB network that predicts in about 1 ms with over 70% accuracy on CIFAR-10. Won 1st in the speed competition for UT's EE379K Edge AI course.",
+      "links": [
+        { "label": "Video", "url": "https://youtu.be/ygIb1069kac" }
+      ]
+    },
+    {
+      "section": "All-Time",
+      "name": "SoundFinder",
+      "description": "A conference-room camera that turns toward whoever is speaking, finding the voice by cross-correlating a microphone array and framing it with OpenCV. Built for EE464H Senior Design.",
+      "links": [
+        { "label": "Video", "url": "https://youtu.be/q-7Y4XzQp54" }
+      ]
+    },
+    {
+      "section": "All-Time",
+      "name": "Tremor Tracker",
+      "description": "A flex-sensing glove that tracks a patient's hand tremors, with a synced 3D hand model and cloud metrics. Built for EE445L Embedded Systems Lab.",
+      "links": [
+        { "label": "Video", "url": "https://youtu.be/B5WdFLI_awU" }
+      ]
+    },
+    {
+      "section": "All-Time",
+      "name": "FitCheck",
+      "description": "A Chrome extension for trying on outfits across online stores and sharing them with friends. Won 1st at Texas Convergent Build Teams, Fall 2021.",
+      "github": ["https://github.com/anuvgupta/fitcheck"],
+      "links": [
+        { "label": "Video", "url": "https://youtu.be/S2kdnO6QAgo" }
+      ]
+    },
+    {
+      "section": "All-Time",
+      "name": "audiU",
+      "description": "Music recommendations from a neural network: Keras deep learning and ensemble models trained on Spotify data suggest songs you'll like.",
+      "github": ["https://github.com/anuvgupta/audiU"]
+    },
+    {
+      "section": "All-Time",
+      "name": "UT Ticket Exchange",
+      "description": "An auction site where UT Austin students buy and sell sporting-event tickets. Built for IEEE Computer Society, 2020–21."
+    },
+    {
+      "section": "All-Time",
+      "name": "Nestor",
+      "description": "Home automation from scratch: Arduino and ESP32 devices for audio-reactive LED lights, an IR TV remote and a smart lamp, all run from a Node.js server over MQTT.",
+      "screenshots": [
+        { "src": "content/projects/nestor.png", "alt": "Nestor's sign-in screen" }
+      ]
+    },
+    {
+      "section": "All-Time",
+      "name": "rubbr",
+      "description": "A multiplayer .io-style car arena with socket.io and HTML5 canvas: crash cars, collect cash and race to the top of the leaderboard.",
+      "screenshots": [
+        { "src": "content/projects/rubbr.png", "alt": "rubbr gameplay: a car among cash pickups" }
+      ],
+      "github": ["https://github.com/anuvgupta/rubbr"]
+    },
+    {
+      "section": "All-Time",
+      "name": "Peer2Peer",
+      "description": "An iPhone app that connects students with nearby tutors by subject. Won 1st at the 2016 Congressional App Challenge in California's 18th district.",
+      "screenshots": [
+        { "src": "content/projects/peer2peer.png", "alt": "Peer2Peer app icon over a map" }
+      ],
+      "github": ["https://github.com/anuvgupta/peer2peer"],
+      "links": [
+        { "label": "Video", "url": "https://youtu.be/PQ4SMc8Uc-E" },
+        { "label": "Mercury News", "url": "https://www.mercurynews.com/2017/08/14/app-challenge-open-to-district-18-high-school-students/" }
+      ]
+    },
+    {
+      "section": "All-Time",
+      "name": "block.js",
+      "description": "A JavaScript library for building web UIs from modular, event-driven templates, without writing HTML.",
+      "screenshots": [
+        { "src": "content/projects/blockjs.png", "alt": "block.js logo" }
+      ],
+      "github": ["https://github.com/anuvgupta/block.js"],
+      "links": [
+        { "label": "Docs", "url": "https://github.anuv.me/block.js/" }
+      ]
     }
   ]
 }
