@@ -93,30 +93,20 @@
       "section": "B.C. (Before Claude)",
       "name": "Edge AI",
       "description": "Compressed MobileNet into a 30 KB network that predicts in about 1 ms with over 70% accuracy on CIFAR-10. Won 1st in the speed competition for UT's EE379K Edge AI course.",
+      "screenshots": [
+        { "src": "content/projects/edge-ai.png", "alt": "Test accuracy over fine-tuning epochs at each pruning threshold" }
+      ],
       "links": [
         { "label": "Video", "url": "https://youtu.be/ygIb1069kac" }
       ]
     },
     {
       "section": "B.C. (Before Claude)",
-      "name": "SoundFinder",
-      "description": "A conference-room camera that turns toward whoever is speaking, finding the voice by cross-correlating a microphone array and framing it with OpenCV. Built for EE464H Senior Design.",
-      "links": [
-        { "label": "Video", "url": "https://youtu.be/q-7Y4XzQp54" }
-      ]
-    },
-    {
-      "section": "B.C. (Before Claude)",
-      "name": "Tremor Tracker",
-      "description": "A flex-sensing glove that tracks a patient's hand tremors, with a synced 3D hand model and cloud metrics. Built for EE445L Embedded Systems Lab.",
-      "links": [
-        { "label": "Video", "url": "https://youtu.be/B5WdFLI_awU" }
-      ]
-    },
-    {
-      "section": "B.C. (Before Claude)",
       "name": "FitCheck",
       "description": "A Chrome extension for trying on outfits across online stores and sharing them with friends. Won 1st at Texas Convergent Build Teams, Fall 2021.",
+      "screenshots": [
+        { "src": "content/projects/fitcheck.jpg", "alt": "FitCheck wardrobe page with clothing items and a selected pair of jeans" }
+      ],
       "github": ["https://github.com/anuvgupta/fitcheck"],
       "links": [
         { "label": "Video", "url": "https://youtu.be/S2kdnO6QAgo" }
