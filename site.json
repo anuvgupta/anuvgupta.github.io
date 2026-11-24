@@ -15,14 +15,7 @@
   ],
   "projects": [
     {
-      "section": "C.E. (Claude Era)",
-      "name": "Anuv's Projects",
-      "description": "This site: a Windows XP-style desktop built with Astro, with draggable windows, a Start menu and a live, procedurally drawn wallpaper. All content comes from one validated JSON manifest.",
-      "github": ["https://github.com/anuvgupta/anuvgupta.github.io"]
-    },
-    {
-      "section": "C.E. (Claude Era)",
-      "name": "SkyTube",
+      "name": "SkyTube: Watch videos while playing Skyrim",
       "description": "SKSE plugin for Skyrim and Enderal SE that plays YouTube videos, livestreams or video files in a picture-in-picture window while you play. It pauses during conversations and remembers where each video left off.",
       "github": ["https://github.com/anuvgupta/skytube"],
       "links": [
@@ -30,14 +23,25 @@
       ]
     },
     {
-      "section": "C.E. (Claude Era)",
+      "name": "Anuv's Projects",
+      "description": "This site: a Windows XP-style desktop built with Astro, with draggable windows, a Start menu and a live, procedurally drawn wallpaper. All content comes from one validated JSON manifest.",
+      "github": ["https://github.com/anuvgupta/anuvgupta.github.io"]
+    },
+    {
+      "name": "Murk3D",
+      "description": "A browser-based high-fantasy open-world RPG built with Three.js: first-person exploration of hills ringed by mountains, with a full day-night cycle."
+    },
+    {
+      "name": "Pilo Voice Assistant",
+      "description": "A local-first voice assistant on a Raspberry Pi 5 with a four-mic array: say the wake word, ask a question, and it answers out loud. Speech-to-text, the LLM and text-to-speech can each run on the Pi, a stronger machine on the LAN, or in the cloud."
+    },
+    {
       "name": "apple-notes-sync",
       "description": "Keeps a folder of Markdown files in sync with Apple Notes every 15 seconds, so Obsidian, grep or Basic Memory's semantic search can read your notes. Plain system Python, run as a macOS background agent.",
       "github": ["https://github.com/anuvgupta/apple-notes-sync"]
     },
     {
-      "section": "C.E. (Claude Era)",
-      "name": "piwii",
+      "name": "PiWii",
       "description": "Turns a Raspberry Pi into a network-fed USB drive for a softmodded Wii. A Wii Menu-style web app converts and uploads games, and the Pi copies them onto the drive whenever the Wii goes idle.",
       "screenshots": [
         { "src": "content/projects/piwii.png", "alt": "piwii's Wii Menu-style library page" }
@@ -45,14 +49,25 @@
       "github": ["https://github.com/anuvgupta/piwii"]
     },
     {
-      "section": "C.E. (Claude Era)",
+      "name": "turnstile-solver",
+      "description": "A fork of a multi-threaded Cloudflare Turnstile solver API, adding Camoufox support, a Docker Compose setup, a page-readiness wait option and a /health endpoint for automatic recovery.",
+      "github": ["https://github.com/anuvgupta/Turnstile-Solver"]
+    },
+    {
       "name": "git-autosync",
       "description": "Auto-commits, rebases and pushes any git repo on a schedule, each repo with its own scheduler and lock. Works on macOS, Linux (cron or systemd) and Windows.",
       "github": ["https://github.com/anuvgupta/git-autosync"]
     },
     {
-      "section": "C.E. (Claude Era)",
-      "name": "Vital AI Agent",
+      "name": "Projector Screen Controller",
+      "description": "An ESPHome controller for a motorized projector screen. A Home Assistant automation lowers it whenever the NVIDIA Shield is on or the projector's smart plug shows it drawing power, and raises it once both are off."
+    },
+    {
+      "name": "Presence-Based LED Light Strips",
+      "description": "Hallway LED strips that follow you as you walk: LD2450 mmWave radar sensors publish targets over MQTT, a fusion service tracks each person along the hallway, and WLED strips light up where they are. Occupancy shows up in Home Assistant."
+    },
+    {
+      "name": "Vital AI: Synth Sound Design Agent",
       "description": "A fork of the open-source Vital wavetable synth that adds an AI agent side panel inside the synth, backed by its own cloud infrastructure.",
       "github": ["https://github.com/anuvgupta/vital", "https://github.com/anuvgupta/synth-agent-infra"],
       "links": [
@@ -60,8 +75,7 @@
       ]
     },
     {
-      "section": "C.E. (Claude Era)",
-      "name": "Procedural Cityscape",
+      "name": "CityScape",
       "description": "A procedurally generated 3D city in a single HTML file with Three.js: instanced buildings, sunlight and shadows, and wind-blown grass, tuned to run smoothly in iPad Safari.",
       "github": ["https://github.com/anuvgupta/cityscape"],
       "links": [
@@ -69,8 +83,7 @@
       ]
     },
     {
-      "section": "C.E. (Claude Era)",
-      "name": "Image Generation",
+      "name": "Sketchy: Image Gen Sketchpad",
       "description": "A website for generating images with Stable Diffusion: a ComfyUI worker on RunPod's serverless GPUs, AWS infrastructure in CDK, and a simple web frontend.",
       "github": ["https://github.com/anuvgupta/image-gen-frontend", "https://github.com/anuvgupta/image-gen-infra", "https://github.com/anuvgupta/runpod-worker-comfyui", "https://github.com/anuvgupta/runpod-pod-downloader"],
       "links": [
@@ -78,43 +91,16 @@
       ]
     },
     {
-      "section": "C.E. (Claude Era)",
-      "name": "Soccer News Bot",
-      "description": "A daily soccer digest for Discord: a headless-browser Lambda scrapes ESPN schedules and standings, GPT-4o pulls out results and fixtures, and a summary gets posted. Deployed with AWS CDK.",
-      "github": ["https://github.com/anuvgupta/soccer-news-infra"]
+      "name": "b",
+      "description": "A tiny Node CLI that runs named build targets from a project's b.json, like a lightweight Make. Used across my web and infrastructure repos.",
+      "github": ["https://github.com/anuvgupta/b"]
     },
     {
-      "section": "C.E. (Claude Era)",
-      "name": "Media Library",
-      "description": "Streaming for a home movie library: a worker on the home machine cuts films into HLS segments and uploads them to S3, and a web app behind Cognito sign-in plays them back. Deployed with AWS CDK.",
-      "github": ["https://github.com/anuvgupta/media-library-frontend", "https://github.com/anuvgupta/media-library-infra", "https://github.com/anuvgupta/media-library-source-worker"]
+      "name": "Edge AI: Computer Vision Competition",
+      "description": "Compressed MobileNet into a 30 KB network that predicts in about 1 ms with over 70% accuracy on CIFAR-10. Won 1st in the speed competition for UT's EE379K Edge AI course."
     },
     {
-      "section": "B.C. (Before Claude)",
-      "name": "Edge AI",
-      "description": "Compressed MobileNet into a 30 KB network that predicts in about 1 ms with over 70% accuracy on CIFAR-10. Won 1st in the speed competition for UT's EE379K Edge AI course.",
-      "screenshots": [
-        { "src": "content/projects/edge-ai.png", "alt": "Test accuracy over fine-tuning epochs at each pruning threshold" }
-      ],
-      "links": [
-        { "label": "Video", "url": "https://youtu.be/ygIb1069kac" }
-      ]
-    },
-    {
-      "section": "B.C. (Before Claude)",
-      "name": "FitCheck",
-      "description": "A Chrome extension for trying on outfits across online stores and sharing them with friends. Won 1st at Texas Convergent Build Teams, Fall 2021.",
-      "screenshots": [
-        { "src": "content/projects/fitcheck.jpg", "alt": "FitCheck wardrobe page with clothing items and a selected pair of jeans" }
-      ],
-      "github": ["https://github.com/anuvgupta/fitcheck"],
-      "links": [
-        { "label": "Video", "url": "https://youtu.be/S2kdnO6QAgo" }
-      ]
-    },
-    {
-      "section": "B.C. (Before Claude)",
-      "name": "rubbr",
+      "name": "Rubbr.io",
       "description": "A multiplayer .io-style car arena with socket.io and HTML5 canvas: crash cars, collect cash and race to the top of the leaderboard.",
       "screenshots": [
         { "src": "content/projects/rubbr.png", "alt": "rubbr gameplay: a car among cash pickups" }
@@ -122,25 +108,71 @@
       "github": ["https://github.com/anuvgupta/rubbr"]
     },
     {
-      "section": "B.C. (Before Claude)",
-      "name": "Peer2Peer",
-      "description": "An iPhone app that connects students with nearby tutors by subject. Won 1st at the 2016 Congressional App Challenge in California's 18th district.",
-      "screenshots": [
-        { "src": "content/projects/peer2peer.png", "alt": "Peer2Peer app icon over a map" }
-      ],
-      "github": ["https://github.com/anuvgupta/peer2peer"],
-      "links": [
-        { "label": "Video", "url": "https://youtu.be/PQ4SMc8Uc-E" }
-      ]
-    },
-    {
-      "section": "B.C. (Before Claude)",
       "name": "block.js",
       "description": "A JavaScript library for building web UIs from modular, event-driven templates, without writing HTML.",
       "screenshots": [
         { "src": "content/projects/blockjs.png", "alt": "block.js logo" }
       ],
       "github": ["https://github.com/anuvgupta/block.js"]
+    }
+  ],
+  "sections": [
+    { "title": "Highlights", "projects": [] },
+    {
+      "title": "Recents",
+      "projects": [
+        "SkyTube: Watch videos while playing Skyrim",
+        "Anuv's Projects",
+        "Murk3D",
+        "Pilo Voice Assistant",
+        "apple-notes-sync",
+        "PiWii",
+        "turnstile-solver",
+        "git-autosync",
+        "Projector Screen Controller",
+        "Presence-Based LED Light Strips"
+      ]
+    },
+    {
+      "title": "Music",
+      "projects": [
+        "Vital AI: Synth Sound Design Agent"
+      ]
+    },
+    {
+      "title": "Home Automation",
+      "projects": [
+        "Pilo Voice Assistant",
+        "Projector Screen Controller",
+        "Presence-Based LED Light Strips"
+      ]
+    },
+    {
+      "title": "Machine Learning",
+      "projects": [
+        "Sketchy: Image Gen Sketchpad",
+        "Edge AI: Computer Vision Competition"
+      ]
+    },
+    {
+      "title": "Gaming",
+      "projects": [
+        "Murk3D",
+        "CityScape",
+        "PiWii",
+        "SkyTube: Watch videos while playing Skyrim",
+        "Rubbr.io"
+      ]
+    },
+    {
+      "title": "Tools",
+      "projects": [
+        "turnstile-solver",
+        "apple-notes-sync",
+        "git-autosync",
+        "block.js",
+        "b"
+      ]
     }
   ]
 }
