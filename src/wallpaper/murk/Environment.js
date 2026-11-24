@@ -608,9 +608,11 @@ function createStars(moonAt) {
     fog: false,
   });
   // Soft round sprites (a hard 1-2 px point shimmers as the view moves), dim
-  // toward the horizon where the air is thickest, and a twinkle: a sparkle
-  // that many stars are partway through at any moment, and about three in
-  // five of them wavering a little between dim and bright as well, on two
+  // toward the horizon where the air is thickest, and a twinkle: now and then
+  // a star brightens in a brief, small glint (every ten to twenty-five
+  // seconds or so; with every star sparkling every few seconds the sky never
+  // sat still), and about three in five of them waver slowly and slightly
+  // between dim and bright as well, on two
   // unrelated waves so it never reads as a beat. Only rarely does a star go
   // nearly out for a second or two: when two slow waves of its own happen to
   // peak together. (It used to dip most of them to a quarter for seconds at
@@ -623,15 +625,15 @@ function createStars(moonAt) {
     m.userData.shader = shader;
     shader.vertexShader = shader.vertexShader
       .replace('#include <common>', '#include <common>\nattribute vec3 aStar;\nuniform float uTime;\nvarying float vElev;\nvarying float vTwinkle;\nvarying float vFlick;\nvarying float vOut;\nvarying float vCloud;\n' + CLOUD_BANKS_GLSL)
-      .replace('#include <project_vertex>', '#include <project_vertex>\nvCloud = cloudBanks( normalize( ( modelMatrix * vec4( position, 1.0 ) ).xyz - cameraPosition ) );\nvElev = normalize( ( modelMatrix * vec4( position, 0.0 ) ).xyz ).y;\nvTwinkle = smoothstep( 0.35, 1.0, sin( uTime * aStar.z * 4.2 + aStar.y ) );\nvFlick = fract( aStar.y * 7.31 ) < 0.62 ? 0.5 + 0.3 * sin( uTime * aStar.z * 3.5 + aStar.y * 3.0 ) + 0.2 * sin( uTime * aStar.z * 5.3 + aStar.y * 8.0 ) : 1.0;\nvOut = smoothstep( 0.93, 0.99, sin( uTime * ( 0.31 + 0.2 * aStar.z ) + aStar.y * 4.0 ) * sin( uTime * ( 0.23 + 0.15 * aStar.z ) + aStar.y * 9.0 ) );')
-      .replace('gl_PointSize = size;', 'gl_PointSize = aStar.x * ( 1.0 + 0.45 * vTwinkle );');
+      .replace('#include <project_vertex>', '#include <project_vertex>\nvCloud = cloudBanks( normalize( ( modelMatrix * vec4( position, 1.0 ) ).xyz - cameraPosition ) );\nvElev = normalize( ( modelMatrix * vec4( position, 0.0 ) ).xyz ).y;\nvTwinkle = smoothstep( 0.8, 1.0, sin( uTime * aStar.z * 1.6 + aStar.y ) );\nvFlick = fract( aStar.y * 7.31 ) < 0.62 ? 0.5 + 0.3 * sin( uTime * aStar.z * 1.4 + aStar.y * 3.0 ) + 0.2 * sin( uTime * aStar.z * 2.1 + aStar.y * 8.0 ) : 1.0;\nvOut = smoothstep( 0.93, 0.99, sin( uTime * ( 0.31 + 0.2 * aStar.z ) + aStar.y * 4.0 ) * sin( uTime * ( 0.23 + 0.15 * aStar.z ) + aStar.y * 9.0 ) );')
+      .replace('gl_PointSize = size;', 'gl_PointSize = aStar.x * ( 1.0 + 0.2 * vTwinkle );');
     shader.fragmentShader = shader.fragmentShader
       .replace('#include <common>', '#include <common>\nvarying float vElev;\nvarying float vTwinkle;\nvarying float vFlick;\nvarying float vOut;\nvarying float vCloud;')
       .replace(
         '#include <opaque_fragment>',
         `{
           float rr = length( gl_PointCoord - 0.5 ) * 2.0;
-          diffuseColor.a *= exp( -rr * rr * 3.2 ) * smoothstep( 0.02, 0.35, vElev ) * ( 0.75 + 0.55 * vTwinkle ) * mix( 0.7, 1.0, vFlick ) * ( 1.0 - 0.9 * vOut ) * ( 1.0 - min( 1.0, vCloud * 1.35 ) );
+          diffuseColor.a *= exp( -rr * rr * 3.2 ) * smoothstep( 0.02, 0.35, vElev ) * ( 0.85 + 0.3 * vTwinkle ) * mix( 0.85, 1.0, vFlick ) * ( 1.0 - 0.9 * vOut ) * ( 1.0 - min( 1.0, vCloud * 1.35 ) );
         }
         #include <opaque_fragment>`
       );
