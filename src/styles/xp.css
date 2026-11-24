@@ -157,9 +157,10 @@ html:not(.js) .window[hidden]:target {
   transform: translate(-50%, -40%) rotate(180deg);
 }
 
-/* Minimize to the system tray: XP's red close button. */
+/* Minimize to the system tray: XP's red close button, 2px from the arrow like a window's title buttons. */
 .wp-close {
   position: relative;
+  margin-left: -3px;
   width: 16px;
   height: 16px;
   padding: 0;

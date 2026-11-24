@@ -77,12 +77,7 @@ html.ui-98 {
 }
 
 .ui-98 .title-controls {
-  gap: 0;
-}
-
-/* Close stands apart from minimize and maximize. */
-.ui-98 .title-controls .tb-close {
-  margin-left: 2px;
+  gap: 2px;
 }
 
 .ui-98 .title-controls button,
@@ -369,7 +364,6 @@ html.ui-98 {
 }
 
 .ui-98 .wp-close {
-  margin-left: 2px;
   width: 16px;
   height: 14px;
   border: 0;
