@@ -257,6 +257,9 @@ const STYLES = {
       vec3 cirrusColor = ( skyAmb * 1.2 + sunCol * 1.0 ) * max( dayFactor, 0.03 );
       texColor = mix( texColor, mix( texColor, cirrusColor, Fex ), cirrus * horizonFade );
       texColor = mix( texColor, cloudNightCol * 0.8, cirrus * horizonFade * nightK );
+      // How much cloud covers this pixel, so the day sky's blue goes on the
+      // sky behind the clouds and not on them.
+      skyCloudA = max( aBank, cirrus * horizonFade );
     }
   `,
 };
@@ -319,7 +322,7 @@ export function applyCloudStyle(fragmentShader, style) {
   const end = fragmentShader.indexOf('gl_FragColor = vec4( texColor, 1.0 );');
   if (start < 0 || end < 0) return fragmentShader;
   const body = STYLES[style] || STYLES.realistic;
-  let out = fragmentShader.slice(0, start) + '// Clouds (' + style + ')\n' + body + '\n' + fragmentShader.slice(end);
+  let out = fragmentShader.slice(0, start) + '// Clouds (' + style + ')\nfloat skyCloudA = 0.0;\n' + body + '\n' + fragmentShader.slice(end);
   // Helpers go after the Sky's fbm().
   out = out.replace('const float pi = 3.141592653589793238462643383279502884197169;', COMMON + LIGHTING + '\n\t\tconst float pi = 3.141592653589793238462643383279502884197169;');
   return out;

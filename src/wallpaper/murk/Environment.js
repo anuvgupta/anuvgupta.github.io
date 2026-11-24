@@ -38,7 +38,9 @@ function finishSkyFragment(fragment) {
       float dayF = smoothstep( 0.1, 0.4, vSunDirection.y );
       // (Strong, because the sun's corona and the tone map wash it back toward white.)
       float up = smoothstep( 0.0, 0.4, direction.y );
-      texColor = mix( texColor, texColor * vec3( 0.32, 0.54, 1.05 ), dayF * up );
+      // Only on the open sky: tinted too, the clouds went a dim lavender.
+      float clear = 1.0 - smoothstep( 0.0, 0.45, skyCloudA );
+      texColor = mix( texColor, texColor * vec3( 0.32, 0.54, 1.05 ), dayF * up * clear );
     }
     {
       // Golden hour: the whole horizon warms, not just the sun's side.
