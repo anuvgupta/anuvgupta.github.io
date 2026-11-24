@@ -519,8 +519,7 @@ html.ui-98 {
 }
 
 .ui-98 .clock {
-  font-weight: bold;
-  -webkit-text-stroke: 0.5px currentColor;
+  -webkit-text-stroke: 0;
 }
 
 .ui-98 .balloon {
