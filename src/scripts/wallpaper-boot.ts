@@ -208,8 +208,8 @@ class Cover {
   // The whole screen pixelates away at once, but faster towards the middle:
   // each block clears at a random moment, and that moment's latest possible
   // time grows with the block's distance from the centre. Distance is measured
-  // against a spiky star with the screen's proportions, so the clearing
-  // reaches out along its points first. So the centre is gone early while the
+  // against a soft, feathered star with the screen's proportions, so the
+  // clearing leans out along its points first. So the centre is gone early while the
   // edges keep thinning out until the end. The blocks still standing fade out
   // over the same time, so the scene fades in too.
   dissolve(ms = reducedMotion ? 0 : 500): Promise<void> {
@@ -225,14 +225,15 @@ class Cover {
     const ROUND = 6; // superellipse exponent for the star's overall outline: higher is squarer
     const SPIKES = 10; // points on the star
     const SHARP = 3; // higher makes the points narrower
-    const DEPTH = 0.5; // how far the gaps between points sit inside the tips
+    const DEPTH = 0.3; // how far the gaps between points sit inside the tips
+    const FEATHER = 0.35; // random spread on each block's distance, blurring the star's outline
     const spin = Math.random() * Math.PI * 2;
     const reach = Array.from({ length: cols * rows }, (_, i) => {
       const nx = (((i % cols) + 0.5) * cell - cx) / cx;
       const ny = ((Math.floor(i / cols) + 0.5) * cell - cy) / cy;
       const d = (Math.abs(nx) ** ROUND + Math.abs(ny) ** ROUND) ** (1 / ROUND);
       const tip = ((1 + Math.cos(SPIKES * Math.atan2(ny, nx) + spin)) / 2) ** SHARP;
-      return d / (1 - DEPTH * (1 - tip));
+      return (d / (1 - DEPTH * (1 - tip))) * (1 + FEATHER * (Math.random() - 0.5));
     });
     const far = reach.reduce((m, r) => Math.max(m, r), 0);
     const turn = reach.map((r) => Math.random() * (CENTRE + (1 - CENTRE) * (r / far)));
