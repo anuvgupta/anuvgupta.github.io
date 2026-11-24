@@ -1119,6 +1119,11 @@ html.window-dragging * {
   background: #f4f3ee;
 }
 
+/* Videos keep their own shape, so nothing in a demo (like a chat panel at the edge) is cropped away. */
+.project-shots video {
+  aspect-ratio: auto;
+}
+
 .project-links,
 .dialog-buttons {
   display: flex;
