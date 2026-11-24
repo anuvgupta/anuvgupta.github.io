@@ -214,7 +214,7 @@ class Cover {
     const rows = Math.ceil(canvas.height / cell);
     const cx = canvas.width / 2;
     const cy = canvas.height / 2;
-    const JITTER = 0.25;
+    const JITTER = 0.1; // how wide the ragged edge is, as a share of the way out
     const ROUND = 6; // superellipse exponent: higher is squarer
     const corner = 2 ** (1 / ROUND);
     const turn = Array.from({ length: cols * rows }, (_, i) => {
