@@ -22,11 +22,11 @@
     },
     {
       "section": "Recent",
-      "name": "SkyPiP",
+      "name": "SkyTube",
       "description": "SKSE plugin for Skyrim and Enderal SE that plays YouTube videos, livestreams or video files in a picture-in-picture window while you play. It pauses during conversations and remembers where each video left off.",
-      "github": ["https://github.com/anuvgupta/skypip"],
+      "github": ["https://github.com/anuvgupta/skytube"],
       "links": [
-        { "label": "Download", "url": "https://github.com/anuvgupta/skypip/releases/latest" }
+        { "label": "Download", "url": "https://github.com/anuvgupta/skytube/releases/latest" }
       ]
     },
     {
