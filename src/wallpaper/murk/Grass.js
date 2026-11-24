@@ -37,6 +37,12 @@ const TILE = 16;
 // costs little.
 const FAR_DENSITY = 50;
 const BLADES_PER_TUFT = 5;
+// Far off, a blade is drawn at least this many pixels wide (at its base),
+// and there are fewer of them so the field is no more covered than before:
+// blades narrower than a pixel only ever showed as grain and shimmer.
+// BLADE_W is a blade's usual base width in metres.
+const MIN_BLADE_PX = 1.6;
+const BLADE_W = 0.02;
 const TUFT_RADIUS = 0.14;
 
 function bladeGeometry(segments) {
@@ -114,6 +120,7 @@ export class Grass {
       uNoise: { value: noise },
       uFullRadius: { value: this.fullRadius },
       uPixelWiden: { value: 1 }, // blades broaden under the pixelated modes
+      uPixelAngle: { value: 0.001 }, // radians one pixel spans (setPixelAngle)
       uRadius: { value: this.radius },
       uSunDir: { value: sun.direction },
       uSunColor: { value: sun.color },
@@ -147,11 +154,19 @@ export class Grass {
     this.viewProj = new THREE.Matrix4();
   }
 
+  // The angle one pixel of the drawing buffer spans, for the far blades'
+  // least width; set on resize and when the resolution steps.
+  setPixelAngle(radians) {
+    this.uniforms.uPixelAngle.value = radians;
+  }
+
   // Fraction of blades kept at distance d (mirrors the shader).
   keep(d) {
     if (d <= this.fullRadius) return 1;
     const k = this.fullRadius / d;
-    return Math.max(this.keepFloor, k * k * Math.sqrt(k));
+    const keep = Math.max(this.keepFloor, k * k * Math.sqrt(k));
+    const widen = Math.max(1 / Math.sqrt(keep), (this.uniforms.uPixelAngle.value * d * MIN_BLADE_PX) / BLADE_W);
+    return Math.min(keep, Math.sqrt(keep) / widen);
   }
 
   countFor(f) {
@@ -226,6 +241,7 @@ export class Grass {
           uniform float uFullRadius;
           uniform float uRadius;
           uniform float uPixelWiden;
+          uniform float uPixelAngle;
           uniform vec3 uSunDir;
           attribute vec4 aBlade;
           varying float vTrans;
@@ -269,11 +285,14 @@ export class Grass {
           float farMix = smoothstep( 15.0, 70.0, dist );
           float kk = uFullRadius / max( dist, uFullRadius );
           float keep = max( ${this.keepFloor.toFixed(3)}, kk * kk * sqrt( kk ) );
+          // Widened where they're thinnest, so the middle distance stays
+          // covered without drawing more blades; and far off, never narrower
+          // than ${MIN_BLADE_PX} pixels, with fewer of them to match (the same
+          // share of ground covered, sqrt( keep )).
+          float widen = max( inversesqrt( keep ), uPixelAngle * dist * ${MIN_BLADE_PX.toFixed(2)} / ${BLADE_W.toFixed(3)} );
+          keep = min( keep, sqrt( keep ) / widen );
           float thin = clamp( ( keep - aBlade.z ) / ( 0.3 * keep ), 0.0, 1.0 );
           float fade = 1.0 - smoothstep( uRadius * 0.85, uRadius, dist );
-          // (Up to six and a half times as wide where they're thinnest, so
-          // the middle distance stays covered without drawing more blades.)
-          float widen = clamp( inversesqrt( keep ), 1.0, 6.5 );
 
           // Tall lush patches, shorter dry patches, short at the verges.
           // (Where the mask still says grass, the earth is only worn, round a
@@ -335,15 +354,20 @@ export class Grass {
           // from 1.4 when the wallpaper's breeze was made lighter, so the
           // grass still leans and sways as much, only more slowly.)
           float w = windAt( root ) * 2.2 + 0.05;
+          // Far off the field sways as one: each blade's own phase and
+          // flutter fade out and the lean eases, so wide distant blades roll
+          // with the waves instead of jittering against each other.
+          float calm = smoothstep( 25.0, 90.0, dist );
+          w *= 1.0 - 0.35 * calm;
           // Waves roll across the field quickly where it's exposed, slowly
           // in shelter (two waves blended, so neither ever shears).
           float we = windExposure( root );
-          float waveF = sin( dot( root, uWindDir ) * 0.22 - uWindTravel * 0.9 + tr * 2.0 );
-          float waveS = sin( dot( root, uWindDir ) * 0.16 - uWindTravelSlow * 0.7 + tr * 2.0 );
+          float waveF = sin( dot( root, uWindDir ) * 0.22 - uWindTravel * 0.9 + tr * 2.0 * ( 1.0 - calm ) );
+          float waveS = sin( dot( root, uWindDir ) * 0.16 - uWindTravelSlow * 0.7 + tr * 2.0 * ( 1.0 - calm ) );
           float wave = mix( waveS, waveF, we ) * 0.5 + 0.5;
           // (Each blade's own flutter, a slow sway every 4-7 s: the game's
           // 2-3 s flicker read as frantic on a still view.)
-          float flutter = sin( uTime * ( 0.9 + br * 0.6 ) + br * 6.28 + dot( root, uWindDir ) * 0.6 ) * 0.5;
+          float flutter = sin( uTime * ( 0.9 + br * 0.6 ) + br * 6.28 + dot( root, uWindDir ) * 0.6 ) * 0.5 * ( 1.0 - calm );
           vec2 bend = facing * leanAmt;
           bend += uWindDir * ( w * ( 0.25 + 0.55 * wave ) + flutter * ( 0.03 + 0.1 * w ) );
           float blen = min( length( bend ), 1.6 );

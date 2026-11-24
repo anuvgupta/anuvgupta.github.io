@@ -334,6 +334,8 @@ class Wallpaper {
     this.camera.aspect = w / h;
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(w, h);
+    // The angle a drawing-buffer pixel spans, for the far grass's least width.
+    if (this.grass) this.grass.setPixelAngle((2 * Math.tan(THREE.MathUtils.degToRad(this.camera.fov) / 2)) / (h * this.renderer.getPixelRatio()));
     if (this.composer) {
       this.composer.setSize(w, h);
       const dpr = this.renderer.getPixelRatio();
