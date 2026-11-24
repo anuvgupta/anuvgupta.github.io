@@ -159,7 +159,11 @@ export class Motes {
           float glow = exp( -rr * rr * 4.0 ) * 0.6 * ( 1.0 - 0.85 * back );
           float a = ( core + glow ) * vAlpha;
           if ( a < 0.004 ) discard;
-          gl_FragColor = vec4( vColor * ( 1.0 + core * 0.8 ), a );
+          vec3 c = vColor * ( 1.0 + core * 0.8 );
+          // Never as bright as the bloom threshold (4), even over sunlit
+          // grass: a backlit mote's core reached about 4.3, and hovering at
+          // the threshold its halo popped on and off for a frame or two.
+          gl_FragColor = vec4( c, min( a, 1.2 / max( c.r, max( c.g, c.b ) ) ) );
         }
       `,
       transparent: true,

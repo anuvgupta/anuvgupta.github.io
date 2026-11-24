@@ -438,6 +438,9 @@ export class Grass {
         .replace(
           '#include <opaque_fragment>',
           `outgoingLight += uSunColor * ( diffuseColor.rgb * vTrans * 0.7 + vec3( 0.9, 0.92, 0.7 ) * vSheen * 0.05 );
+          // Grass never blooms (only the sun and bright cloud edges should): a
+          // white flower lit through by a low sun could reach the threshold.
+          outgoingLight = min( outgoingLight, vec3( 2.5 ) );
           #include <opaque_fragment>`
         );
     };
