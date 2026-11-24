@@ -291,7 +291,10 @@ class Widget {
   live = document.getElementById('wp-live') as HTMLInputElement;
   timeGroup = document.getElementById('wp-time-group') as HTMLFieldSetElement;
   enabled = document.getElementById('wp-enabled') as HTMLInputElement;
+  trayIcon = document.getElementById('tray-wallpaper') as HTMLButtonElement;
   api: WallpaperApi | null = null;
+  available = false; // there's something to offer (shown in place or as the tray icon)
+  inTray = false; // minimized to the system tray
 
   constructor(onToggle: (on: boolean) => void) {
     // The UI's day and night themes follow the wallpaper's time of day too.
@@ -315,6 +318,39 @@ class Widget {
       onToggle(this.enabled.checked);
     });
     this.setupCollapse();
+    this.setupTray();
+  }
+
+  // The X minimizes it to a sun in the system tray, which brings it back. Remembered for next time.
+  setupTray() {
+    try {
+      this.inTray = localStorage.getItem('wallpaper.widgetInTray') === 'true';
+    } catch {}
+    document.getElementById('wp-close')!.addEventListener('click', (e) => {
+      e.stopPropagation(); // not a click on the title bar, which collapses it
+      this.setInTray(true);
+      this.trayIcon.focus();
+    });
+    this.trayIcon.addEventListener('click', () => this.setInTray(false));
+  }
+
+  setInTray(inTray: boolean) {
+    this.inTray = inTray;
+    try {
+      localStorage.setItem('wallpaper.widgetInTray', String(inTray));
+    } catch {}
+    this.place();
+  }
+
+  place() {
+    this.el.hidden = !this.available || this.inTray;
+    this.trayIcon.hidden = !this.available || !this.inTray;
+  }
+
+  // It can't be switched on, so there's nothing to offer.
+  withdraw() {
+    this.available = false;
+    this.place();
   }
 
   // Collapsed by default; opening or closing it is remembered for next time. (The earlier
@@ -355,7 +391,8 @@ class Widget {
     this.enabled.disabled = loading;
     this.timeGroup.disabled = !on || !this.api;
     this.show();
-    this.el.hidden = false;
+    this.available = true;
+    this.place();
   }
 }
 
@@ -378,7 +415,7 @@ function setOn(next: boolean) {
 async function load() {
   if (loading) return;
   loading = true;
-  if (!widget.el.hidden) widget.update(on, true);
+  if (widget.available) widget.update(on, true);
   const cover = new Cover(host!);
   const loader = new Loader();
   try {
@@ -400,7 +437,7 @@ async function load() {
     console.error('Live wallpaper unavailable:', err);
     loader.close();
     loading = false;
-    widget.el.hidden = true; // it can't be switched on, so there's nothing to offer
+    widget.withdraw();
     await cover.dissolve();
   }
 }

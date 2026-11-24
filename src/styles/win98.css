@@ -368,6 +368,31 @@ html.ui-98 {
   background: var(--navy-bar);
 }
 
+.ui-98 .wp-close {
+  margin-left: 2px;
+  width: 16px;
+  height: 14px;
+  border: 0;
+  border-radius: 0;
+  background: var(--xp-face);
+  box-shadow: var(--raised);
+}
+
+.ui-98 .wp-close::before,
+.ui-98 .wp-close::after {
+  width: 8px;
+  background: #000;
+}
+
+.ui-98 .wp-close:active {
+  box-shadow: var(--sunken);
+}
+
+.ui-98 .wp-collapse:hover,
+.ui-98 .wp-close:hover {
+  filter: none;
+}
+
 .ui-98 .wp-collapse {
   width: 16px;
   height: 14px;
