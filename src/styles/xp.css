@@ -7,6 +7,9 @@
      12px (and 18px, 24px). Only the XP Start button keeps its own face. */
   --ui-font: "W95FA", "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Geneva, sans-serif;
   --title-font: var(--ui-font);
+  /* The address bar reads like a terminal; these all centre the ~ vertically. */
+  --mono-font: ui-monospace, Menlo, Consolas, "SF Mono", "Cascadia Mono", "DejaVu Sans Mono", "Liberation Mono",
+    monospace;
   --xp-face: #ece9d8;
   --xp-select: #316ac5;
   --xp-frame: #0054e3;
@@ -784,7 +787,7 @@ html.window-dragging * {
   gap: 5px;
   padding: 2px 4px 3px 7px;
   color: #000;
-  font: 12px var(--ui-font);
+  font: 12px var(--mono-font);
   background: var(--xp-face);
   border-bottom: 1px solid #c5c2b2;
   box-shadow: 0 1px 0 #fff;
@@ -812,9 +815,17 @@ html.window-dragging * {
   padding: 0;
   border: 0;
   outline: none;
-  font: 12px var(--ui-font);
+  font: 12px var(--mono-font);
   color: #000;
   background: transparent;
+}
+
+/* Monospace text keeps its own spacing and smooth edges, unlike the pixel font. */
+.address-bar,
+.address-bar * {
+  letter-spacing: normal;
+  -webkit-font-smoothing: auto;
+  font-smooth: auto;
 }
 
 /* The combo box's dropdown button (decorative, as there is no history to show). */
