@@ -326,7 +326,8 @@ html:not(.js) .window[hidden]:target {
   left: 1px;
   width: 12px;
   height: 12px;
-  border: 1px solid #1c5180;
+  border: 1px solid;
+  border-color: inherit; /* the track's outline: blue-grey off, green on */
   border-radius: 50%;
   background: linear-gradient(180deg, #fff, #e6eefc 45%, #c0d0ef);
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
