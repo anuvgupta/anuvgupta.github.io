@@ -33,7 +33,7 @@
     },
     {
       "name": "Self-Hosted Voice Assistant",
-      "description": "A voice assistant on a Raspberry Pi 5 with a four-mic array, integrated with Claude and a custom Claude harness that has full Home Assistant (IoT) and Jellyfin (media server) integration. Whisper, Laya and openWakeWord handle smart wake, Deepgram does speech-to-text, Claude or the harness writes replies and calls tools, and Piper speaks them.",
+      "description": "A voice assistant on a Raspberry Pi 5 with a four-mic array:\n\n* Integrated with custom Claude harness for replies and tool calling to smart home (Home Assistant) and media server (Jellyfin/Radarr).\n* Whisper and Laya handle smart wake. Self-hosted on an old GPU for privacy and speed.\n* Deepgram does speech-to-text, Piper does text-to-speech.\n\nJust ask!",
       "screenshots": [
         { "src": "content/projects/voice-assistant.mp4", "alt": "The voice assistant's screen moving between resting, listening, speaking and smart wake states" }
       ]
