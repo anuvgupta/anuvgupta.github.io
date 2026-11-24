@@ -4,9 +4,6 @@
 
 html.ui-98,
 .projects-page {
-  /* W95FA redraws MS Sans Serif's bitmap on a 12-unit em, so it's pixel-exact at 12px (and 18px, 24px). */
-  --ui-font: "W95FA", "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Geneva, sans-serif;
-  --title-font: var(--ui-font);
   --taskbar-h: 32px;
   --xp-face: #c0c0c0;
   --xp-select: #000080;
@@ -28,32 +25,8 @@ html.ui-98,
   --dither: repeating-conic-gradient(var(--face-light) 0 25%, var(--xp-face) 0 50%) 0 0 / 2px 2px;
 }
 
-/* Bitmap-style text: no smoothing, and every size a whole multiple of the font's pixel. */
-.ui-98 body,
-.projects-page {
-  -webkit-font-smoothing: none;
-  font-smooth: never;
-}
-
-/* The font's own spacing is tight; one font pixel more between letters, at every size (on every
-   element, since form controls don't inherit it). */
-.ui-98 *,
-.projects-page * {
-  letter-spacing: 0.0834em;
-}
-
-.projects-page {
-  font-family: var(--ui-font);
-}
-
-.projects-page,
-.ui-98 :is(.page, .address-bar, .address-input, .wp-widget, .wp-ticks, .sm-item-text small) {
-  font-size: 12px;
-}
-
-/* The font has no bold; Windows drew bold bitmap text by overstriking it one pixel to the right. */
-.projects-page :is(b, strong, h1, h2, h3, .project-tab),
-.ui-98 :is(b, strong, h1, h2, h3, .title-text, .start-button, .task.active, .wp-title, .sm-user) {
+/* Bold pixel text (see xp.css), overstruck with no drop shadow; the Start button and active task are bold too. */
+.ui-98 :is(.title-text, .wp-title, .sm-user, .start-button, .task.active) {
   font-weight: normal;
   text-shadow: 0.0834em 0 currentColor; /* one font pixel at any size */
 }
@@ -93,10 +66,6 @@ html.ui-98,
 
 .ui-98 .window.maximized .title-bar {
   margin: 0;
-}
-
-.ui-98 .title-text {
-  font: 12px var(--title-font);
 }
 
 .ui-98 .window.inactive .title-text {
@@ -307,18 +276,6 @@ html.ui-98,
   color: #000080;
 }
 
-:is(.ui-98, .projects-page) .page-header h1 {
-  font-size: 24px;
-}
-
-.ui-98 .dialog h1 {
-  font-size: 18px;
-}
-
-:is(.ui-98, .projects-page) .project-title {
-  font-size: 12px;
-}
-
 :is(.ui-98, .projects-page) .page-header p {
   color: #404040;
 }
@@ -455,8 +412,6 @@ html.ui-98,
 /* Wallpaper widget: a small Windows 98 tool window. */
 
 .ui-98 .wp-widget {
-  /* Wider than XP's, so the pixel font's tick labels (Night, Sunrise) don't run together. */
-  --wp-w: min(300px, calc(100% - 112px));
   padding: 3px;
   border-radius: 0;
   background: var(--xp-face);
@@ -466,7 +421,6 @@ html.ui-98,
 .ui-98 .wp-title {
   height: 18px;
   padding: 0 2px 0 4px;
-  font: 12px var(--title-font);
   background: var(--navy-bar);
 }
 
@@ -595,6 +549,7 @@ html.ui-98,
   border-radius: 0;
   color: #000;
   font: 15px/1 var(--ui-font);
+  letter-spacing: 0.0834em;
   text-transform: capitalize;
   background: var(--xp-face);
   box-shadow: var(--raised);
@@ -677,10 +632,6 @@ html.ui-98,
   background: var(--navy-bar);
   box-shadow: none;
   border-bottom: 0;
-}
-
-.ui-98 .sm-user {
-  font: 18px var(--title-font);
 }
 
 .ui-98 .sm-header .user-tile {

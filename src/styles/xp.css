@@ -3,8 +3,10 @@
 :root {
   --taskbar-h: 34px;
   --safe-bottom: env(safe-area-inset-bottom, 0px);
-  --ui-font: Tahoma, Verdana, "Segoe UI", Geneva, sans-serif;
-  --title-font: "Trebuchet MS", Tahoma, Verdana, sans-serif;
+  /* Text is set in W95FA, a pixel font redrawing MS Sans Serif's bitmap on a 12-unit em, so it's pixel-exact at
+     12px (and 18px, 24px). Only the XP Start button keeps its own face. */
+  --ui-font: "W95FA", "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Geneva, sans-serif;
+  --title-font: var(--ui-font);
   --xp-face: #ece9d8;
   --xp-select: #316ac5;
   --xp-frame: #0054e3;
@@ -37,7 +39,9 @@ body {
   font: 12px/1.4 var(--ui-font);
   color: #000;
   background: #3d629a var(--desktop-bg);
-  -webkit-font-smoothing: antialiased;
+  /* Bitmap-style text: no smoothing. */
+  -webkit-font-smoothing: none;
+  font-smooth: never;
   -webkit-tap-highlight-color: transparent;
   -webkit-text-size-adjust: 100%;
 }
@@ -46,6 +50,18 @@ button,
 input {
   font: inherit;
   color: inherit;
+}
+
+/* The font's own spacing is tight; one font pixel more between letters, at every size (on every element,
+   since form controls don't inherit it). */
+* {
+  letter-spacing: 0.0834em;
+}
+
+/* The font has no bold; Windows drew bold bitmap text by overstriking it one pixel to the right. */
+:is(b, strong, h1, h2, h3, .title-text, .wp-title, .sm-user, .project-tab) {
+  font-weight: normal;
+  text-shadow: 0.0834em 0 currentColor; /* one font pixel at any size */
 }
 
 [hidden] {
@@ -101,11 +117,12 @@ html:not(.js) .window[hidden]:target {
   top: 10px;
   right: 10px;
   z-index: 5;
-  --wp-w: min(250px, calc(100% - 112px));
+  /* Wide enough that the pixel font's tick labels (Night, Sunrise) don't run together. */
+  --wp-w: min(300px, calc(100% - 112px));
   width: var(--wp-w);
   border-radius: 6px 6px 3px 3px;
   overflow: hidden;
-  font-size: 11px;
+  font-size: 12px;
   background: rgba(236, 233, 216, 0.95);
   box-shadow:
     0 0 0 1px #0831d9,
@@ -126,8 +143,8 @@ html:not(.js) .window[hidden]:target {
   height: 22px;
   padding: 0 3px 0 6px;
   color: #fff;
-  font: bold 11px var(--title-font);
-  text-shadow: 1px 1px #0f1089;
+  font: 12px var(--title-font);
+  text-shadow: 0.0834em 0 currentColor, 1px 1px #0f1089; /* overstruck bold, then the drop shadow */
   background: linear-gradient(180deg, #0997ff, #0053ee 8%, #0050ee 40%, #06f 88%, #06f 93%, #005bff 95%, #003dd7 96%, #003dd7);
   user-select: none;
   -webkit-user-select: none;
@@ -277,7 +294,7 @@ html:not(.js) .window[hidden]:target {
   height: 20px;
   margin: 0 5.5px;
   color: #444;
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .wp-tick {
@@ -542,9 +559,8 @@ html.window-dragging * {
 .title-text {
   flex: 1;
   min-width: 0;
-  font: bold 13px var(--title-font);
-  letter-spacing: 0.2px;
-  text-shadow: 1px 1px #0f1089;
+  font: 12px var(--title-font);
+  text-shadow: 0.0834em 0 currentColor, 1px 1px #0f1089; /* overstruck bold, then the drop shadow */
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -654,7 +670,7 @@ html.window-dragging * {
 
 .window.inactive .title-text {
   color: #d8e4f8;
-  text-shadow: none;
+  text-shadow: 0.0834em 0 currentColor;
 }
 
 .window.inactive .title-controls button {
@@ -757,7 +773,7 @@ html.window-dragging * {
   gap: 5px;
   padding: 2px 4px 3px 7px;
   color: #000;
-  font: 11px var(--ui-font);
+  font: 12px var(--ui-font);
   background: var(--xp-face);
   border-bottom: 1px solid #c5c2b2;
   box-shadow: 0 1px 0 #fff;
@@ -791,7 +807,7 @@ html.window-dragging * {
   padding: 0;
   border: 0;
   outline: none;
-  font: 11px var(--ui-font);
+  font: 12px var(--ui-font);
   color: #000;
   background: transparent;
 }
@@ -963,7 +979,7 @@ html.window-dragging * {
 
 .page {
   padding: 18px 22px 28px;
-  font-size: 13px;
+  font-size: 12px;
   line-height: 1.5;
 }
 
@@ -980,7 +996,7 @@ html.window-dragging * {
 
 .page-header h1 {
   margin: 0;
-  font: bold 20px var(--title-font);
+  font: 24px var(--title-font);
   color: #0b3a9e;
 }
 
@@ -1046,7 +1062,7 @@ html.window-dragging * {
 .project-title {
   margin: 0;
   padding: 6px 12px;
-  font: bold 14px var(--title-font);
+  font: 12px var(--title-font);
   color: var(--xp-link);
   background: linear-gradient(90deg, #fff, #c6d3f7);
 }
@@ -1199,8 +1215,7 @@ html.window-dragging * {
 
 .dialog h1 {
   margin: 0 0 6px;
-  font-size: 16px;
-  font-weight: bold;
+  font-size: 18px;
 }
 
 /* A line break in the tagline is kept. */
@@ -1453,8 +1468,8 @@ html.window-dragging * {
 }
 
 .sm-user {
-  font: bold 16px var(--title-font);
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  font: 18px var(--title-font);
+  text-shadow: 0.0834em 0 currentColor, 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 .sm-body {
@@ -1532,7 +1547,7 @@ html.window-dragging * {
 }
 
 .sm-item-text small {
-  font-size: 11px;
+  font-size: 12px;
   color: #666;
 }
 
