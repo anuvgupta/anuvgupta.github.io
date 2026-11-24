@@ -43,6 +43,14 @@ const BLADES_PER_TUFT = 5;
 // BLADE_W is a blade's usual base width in metres.
 const MIN_BLADE_PX = 1.6;
 const BLADE_W = 0.02;
+// The hill's skyline as seen from the (fixed) viewpoint: the highest ground
+// angle in each direction, out past the grass's reach. Far blades are
+// capped so their tips rise at most SKY_MARGIN radians above it, so the
+// crest is the hill's own clean edge with a fine, even fuzz, not a ragged
+// fringe of tufts (blades just behind the crest only ever showed as tips).
+const HORIZON_SIZE = 1024; // directions across the half circle in view
+const HORIZON_REACH = 400; // metres
+const SKY_MARGIN = 0.0012; // radians (about 0.07 degrees)
 const TUFT_RADIUS = 0.14;
 
 function bladeGeometry(segments) {
@@ -121,6 +129,8 @@ export class Grass {
       uFullRadius: { value: this.fullRadius },
       uPixelWiden: { value: 1 }, // blades broaden under the pixelated modes
       uPixelAngle: { value: 0.001 }, // radians one pixel spans (setPixelAngle)
+      uHorizon: { value: null }, // skyline elevation per direction (see computeHorizon)
+      uHorizonAz: { value: new THREE.Vector2(-Math.PI / 2, Math.PI / 2) },
       uRadius: { value: this.radius },
       uSunDir: { value: sun.direction },
       uSunColor: { value: sun.color },
@@ -180,8 +190,36 @@ export class Grass {
     return lo;
   }
 
+  // The skyline's elevation angle (radians) in each direction across the
+  // half circle the view faces (azimuth from -x, the view direction).
+  computeHorizon(cam) {
+    const data = new Float32Array(HORIZON_SIZE);
+    const [a0, a1] = [this.uniforms.uHorizonAz.value.x, this.uniforms.uHorizonAz.value.y];
+    for (let i = 0; i < HORIZON_SIZE; i++) {
+      const a = a0 + ((a1 - a0) * (i + 0.5)) / HORIZON_SIZE;
+      const dx = -Math.cos(a);
+      const dz = Math.sin(a);
+      let best = -Math.PI / 2;
+      for (let r = 4; r <= HORIZON_REACH; r += r < 160 ? 0.5 : 2) {
+        best = Math.max(best, Math.atan2(this.terrain.heightAt(cam.x + dx * r, cam.z + dz * r) - cam.y, r));
+      }
+      data[i] = best;
+    }
+    if (this.horizonTex) this.horizonTex.dispose();
+    // Half float, so it can be filtered smoothly between directions (full
+    // float filtering needs an extension) without stepping the crest line.
+    const half = new Uint16Array(HORIZON_SIZE);
+    for (let i = 0; i < HORIZON_SIZE; i++) half[i] = THREE.DataUtils.toHalfFloat(data[i]);
+    this.horizonTex = new THREE.DataTexture(half, HORIZON_SIZE, 1, THREE.RedFormat, THREE.HalfFloatType);
+    this.horizonTex.magFilter = this.horizonTex.minFilter = THREE.LinearFilter;
+    this.horizonTex.needsUpdate = true;
+    this.uniforms.uHorizon.value = this.horizonTex;
+    this.horizonFrom = cam.clone();
+  }
+
   update(camera) {
     const cam = camera.position;
+    if (!this.horizonFrom || !this.horizonFrom.equals(cam)) this.computeHorizon(cam);
     const ctx = Math.floor(cam.x / TILE);
     const ctz = Math.floor(cam.z / TILE);
     const moved = ctx !== this.centerTile.x || ctz !== this.centerTile.z;
@@ -242,6 +280,8 @@ export class Grass {
           uniform float uRadius;
           uniform float uPixelWiden;
           uniform float uPixelAngle;
+          uniform sampler2D uHorizon;
+          uniform vec2 uHorizonAz;
           uniform vec3 uSunDir;
           attribute vec4 aBlade;
           varying float vTrans;
@@ -340,6 +380,16 @@ export class Grass {
           // short green stubble past the tall grass, a green fringe on the dirt.
           float present = step( fract( tr * 5.17 + 0.71 ) * 0.98 + 0.01, density );
           float bladeH = ( 0.42 + 0.22 * tr + 0.14 * br ) * tall * mix( 0.75, 1.0, density ) * present * thin * fade;
+          // Far off, no tip rises more than SKY_MARGIN above the hill's
+          // skyline (Grass.computeHorizon), so the crest stays a clean edge.
+          {
+            vec3 dv = vec3( root.x, ground, root.y ) - cameraPosition;
+            float rr = length( dv.xz );
+            float az = atan( dv.z, -dv.x );
+            float sky = texture( uHorizon, vec2( ( az - uHorizonAz.x ) / ( uHorizonAz.y - uHorizonAz.x ), 0.5 ) ).r;
+            float capH = max( 0.0, tan( sky + ${SKY_MARGIN} ) * rr - dv.y );
+            bladeH = mix( bladeH, min( bladeH, capH ), smoothstep( 40.0, 80.0, dist ) );
+          }
           float bladeW = ( 0.016 + 0.008 * br2 ) * widen * uPixelWiden * step( 0.02, bladeH );
 
           // Tuft lean: shared direction, per-blade spread; some blades stand, some lie over.
