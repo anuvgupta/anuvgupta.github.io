@@ -978,9 +978,10 @@ html.window-dragging * {
     linear-gradient(180deg, var(--aero-sky-top) 0%, var(--aero-sky-mid) 38%, var(--aero-sky-low) 100%);
 }
 
-/* Glass panel with a glossy top highlight. */
+/* Glass panel with a glossy top highlight. Its text is all lowercase, links included. */
 .about-card {
   position: relative;
+  text-transform: lowercase;
   overflow: hidden;
   display: flex;
   flex-direction: column;
