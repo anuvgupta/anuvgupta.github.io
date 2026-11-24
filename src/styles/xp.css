@@ -52,6 +52,16 @@ input {
   color: inherit;
 }
 
+/* Every button shows the hand cursor; disabled ones keep the arrow. */
+button,
+.xp-btn {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: default;
+}
+
 /* The font's own spacing is tight; one font pixel more between letters, at every size (on every element,
    since form controls don't inherit it). */
 * {
@@ -599,6 +609,7 @@ html.window-dragging * {
 .title-controls button:disabled {
   opacity: 0.45;
   filter: none;
+  cursor: default;
 }
 
 .title-controls button::before,
@@ -918,7 +929,6 @@ html.window-dragging * {
   background: none;
   text-align: left;
   white-space: nowrap;
-  cursor: default;
 }
 
 .menu-dropdown button:hover,
@@ -931,6 +941,7 @@ html.window-dragging * {
 .menu-dropdown button:disabled {
   color: #a7a6aa;
   background: none;
+  cursor: default;
 }
 
 .menu-sep {
@@ -1550,7 +1561,6 @@ html.window-dragging * {
   border-radius: 2px;
   background: none;
   text-align: left;
-  cursor: default;
 }
 
 .sm-item:hover,
