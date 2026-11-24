@@ -15,7 +15,7 @@
   ],
   "projects": [
     {
-      "name": "SkyTube: Watch YouTube while playing Skyrim",
+      "name": "SkyTube: Watch YouTube While Playing Skyrim",
       "year": 2026,
       "description": "Video player mod for Skyrim. Watch YouTube, streams, or videos while you play. Auto-pauses during dialogue. Picture-in-picture with resize, drag, fade. Resumes last video when you load in. SKSE plugin, no ESP, nothing in saves.",
       "github": ["https://github.com/anuvgupta/skytube"],
@@ -145,7 +145,7 @@
     {
       "title": "Recents",
       "projects": [
-        "SkyTube: Watch YouTube while playing Skyrim",
+        "SkyTube: Watch YouTube While Playing Skyrim",
         "Project Portfolio",
         "Murk3D",
         "Self-Hosted Voice Assistant",
@@ -184,7 +184,7 @@
         "Murk3D",
         "CityScape",
         "PiWii",
-        "SkyTube: Watch YouTube while playing Skyrim",
+        "SkyTube: Watch YouTube While Playing Skyrim",
         "Rubbr.io"
       ]
     },
