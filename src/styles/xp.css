@@ -873,6 +873,34 @@ html.window-dragging * {
   outline-offset: -3px;
 }
 
+/* Up one folder: a flat toolbar button that lights up on hover, like Explorer's. */
+.address-up {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 22px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  background: none;
+}
+
+.address-up:hover {
+  border-color: #c3c0ae;
+  background: linear-gradient(180deg, #fff, #f1efe6);
+}
+
+.address-up:active {
+  background: #e3e1d5;
+}
+
+.address-up:focus-visible {
+  outline: 1px dotted #000;
+  outline-offset: -3px;
+}
+
 /* Green Go arrow. */
 .address-go-icon {
   position: relative;

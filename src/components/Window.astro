@@ -9,8 +9,8 @@ interface Props {
 const { page, open = false } = Astro.props;
 const { icon, fit, address: hasAddress, maximize: canMaximize } = PAGE_TYPES[page.type];
 const titleId = `win-title-${page.id}`;
-// The page's public address; the desktop script swaps in the address it was actually opened from.
-const address = `${Astro.site?.href ?? '/'}#${page.id}`;
+// Explorer-style folder path: each page is a folder under the home folder (the desktop).
+const path = `~/${page.id}`;
 ---
 
 <section class:list={["window", { "window-fit": fit }]} id={page.id} data-page={page.id} role="dialog" aria-labelledby={titleId} hidden={!open}>
@@ -43,13 +43,17 @@ const address = `${Astro.site?.href ?? '/'}#${page.id}`;
   </nav>
   {hasAddress && (
     <div class="address-bar">
+      <!-- Up one folder is ~, the desktop, so it closes the window. -->
+      <button class="address-up" type="button" data-action="close" aria-label="Up one folder" title="Up one folder">
+        <img src="/img/icons/folder-up.svg" alt="" width="16" height="16" draggable="false" />
+      </button>
       <span class="address-label" aria-hidden="true">Address</span>
       <div class="address-field">
-        <img src="/img/icons/globe.svg" alt="" width="16" height="16" draggable="false" />
-        <input class="address-input" type="text" value={address} readonly spellcheck="false" aria-label="Address" />
+        <img src={icon} alt="" width="16" height="16" draggable="false" />
+        <input class="address-input" type="text" value={path} readonly spellcheck="false" aria-label="Address" />
         <span class="address-drop" aria-hidden="true"></span>
       </div>
-      <a class="address-go" href={`#${page.id}`} title={`Go to ${address}`}><span class="address-go-icon" aria-hidden="true"></span>Go</a>
+      <a class="address-go" href={`#${page.id}`} title={`Go to ${path}`}><span class="address-go-icon" aria-hidden="true"></span>Go</a>
     </div>
   )}
   <div class="window-body" tabindex="-1">

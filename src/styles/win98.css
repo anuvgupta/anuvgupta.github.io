@@ -208,17 +208,17 @@ html.ui-98,
   border-top-color: #000;
 }
 
-.ui-98 .address-go {
+.ui-98 :is(.address-go, .address-up) {
   border: 0;
   border-radius: 0;
 }
 
-.ui-98 .address-go:hover {
+.ui-98 :is(.address-go, .address-up):hover {
   background: none;
   box-shadow: var(--thin-raised);
 }
 
-.ui-98 .address-go:active {
+.ui-98 :is(.address-go, .address-up):active {
   background: none;
   box-shadow: var(--thin-sunken);
 }
