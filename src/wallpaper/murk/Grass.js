@@ -422,6 +422,9 @@ export class Grass {
           // wind blows at its speed, stronger where and when it blows harder.
           float bigPhase = ( dot( root, uWindDir ) - uWindTravel ) * 0.074 + texture( uNoise, root * 0.0045 + 0.37 ).g * 4.0;
           float big = sin( bigPhase ) * clamp( w * 1.3, 0.35, 1.0 );
+          // A passing gust front (Wind.updateGust) lays the grass over, near
+          // and far, and the swath shows lighter where it presses.
+          float gust = gustAt( root );
           // (Each blade's own flutter, a slow sway every 4-7 s: the game's
           // 2-3 s flicker read as frantic on a still view.)
           float flutter = sin( uTime * ( 0.9 + br * 0.6 ) + br * 6.28 + dot( root, uWindDir ) * 0.6 ) * 0.5 * ( 1.0 - calm );
@@ -505,6 +508,7 @@ export class Grass {
           // same waves, as group light and dark sweeps rolling over the hill.
           // (Centred on the usual breeze, so on average the colour holds.)
           vColor.rgb *= mix( 1.0, clamp( 1.0 + 0.45 * ( sweep - 0.27 ) + 0.55 * big, 0.55, 1.5 ), calm );
+          vColor.rgb *= 1.0 + 0.22 * gust;
 `
         );
 

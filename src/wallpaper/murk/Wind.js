@@ -4,7 +4,7 @@
 // (the game's lakes, village, realms and woods are gone).
 import * as THREE from 'three';
 import { createNoise2D, smoothstep } from './noise.js';
-import { WORLD_HALF } from '../terrain.js';
+import { WORLD_HALF, VIEW } from '../terrain.js';
 
 const WORLD_SIZE = WORLD_HALF * 2;
 
@@ -29,6 +29,21 @@ const PHASES = {
 };
 
 const rand = (a, b) => a + Math.random() * (b - a);
+
+// Now and then (on top of the weather above) a gust front sweeps the whole
+// view: a broad, ragged-edged swath of stronger wind that comes over from
+// beyond the hill, down its face, across the meadow and out past the
+// viewer, laying the grass over as it passes. It follows the wind's
+// direction when it starts, along a path measured from the viewpoint.
+const GUST = {
+  first: [20, 40], // seconds before the first one
+  every: [45, 120], // seconds between them
+  from: -260, // metres along the wind from the viewer where it starts...
+  to: 40, // ...and where it ends, past the viewer
+  speed: [9, 13], // metres a second
+  strength: [0.6, 1.0],
+  halfWidth: [90, 140], // metres across the wind
+};
 
 export class Wind {
   constructor() {
@@ -64,6 +79,8 @@ export class Wind {
     // second (the pixelated modes), so a gust reads as a few big moves
     // instead of a constant shimmer of single pixels.
     this.stepHz = 0;
+    // The occasional gust front (GUST, updateGust).
+    this.gust = { active: false, wait: rand(...GUST.first), dir: new THREE.Vector2(1, 0), pos: 0, start: 0, end: 1, speed: 12, strength: 0, envelope: 0, halfWidth: 100, center: 0 };
     this._stepAcc = 0;
 
     this.uniforms = {
@@ -76,6 +93,11 @@ export class Wind {
       uWindOffset: { value: this.offset.clone() },
       uWindOffsetSlow: { value: this.offsetSlow.clone() },
       uWindRipple: { value: this.ripple.clone() },
+      uGustDir: { value: new THREE.Vector2(1, 0) },
+      uGustPos: { value: 0 },
+      uGustCenter: { value: 0 },
+      uGustHalfWidth: { value: 100 },
+      uGustStrength: { value: 0 },
       uWindMap: { value: this.mapTexture },
     };
   }
@@ -97,6 +119,7 @@ export class Wind {
 
   update(dt) {
     this.time += dt;
+    this.updateGust(dt);
     this.phaseTime -= dt;
     if (this.phaseTime <= 0) this.pickPhase();
 
@@ -139,6 +162,41 @@ export class Wind {
     this.uniforms.uWindOffset.value.copy(this.offset);
     this.uniforms.uWindOffsetSlow.value.copy(this.offsetSlow);
     this.uniforms.uWindRipple.value.copy(this.ripple);
+    const g = this.gust;
+    this.uniforms.uGustStrength.value = g.active ? g.strength * g.envelope : 0;
+    if (g.active) {
+      this.uniforms.uGustDir.value.copy(g.dir);
+      this.uniforms.uGustPos.value = g.pos;
+      this.uniforms.uGustCenter.value = g.center;
+      this.uniforms.uGustHalfWidth.value = g.halfWidth;
+    }
+  }
+
+  // The occasional gust front (GUST): wait, then sweep from beyond the hill
+  // to past the viewer, easing in and out at the ends of its path.
+  updateGust(dt) {
+    const g = this.gust;
+    if (!g.active) {
+      g.wait -= dt;
+      if (g.wait > 0) return;
+      g.active = true;
+      g.dir.copy(this.direction);
+      const along = VIEW.x * g.dir.x + VIEW.z * g.dir.y;
+      g.start = along + GUST.from;
+      g.end = along + GUST.to;
+      g.pos = g.start;
+      g.speed = rand(...GUST.speed);
+      g.strength = rand(...GUST.strength);
+      g.halfWidth = rand(...GUST.halfWidth);
+      g.center = -VIEW.x * g.dir.y + VIEW.z * g.dir.x + rand(-40, 40);
+    }
+    g.pos += g.speed * dt;
+    const t = (g.pos - g.start) / (g.end - g.start);
+    g.envelope = smoothstep(0, 0.15, t) * (1 - smoothstep(0.85, 1, t));
+    if (t >= 1) {
+      g.active = false;
+      g.wait = rand(...GUST.every);
+    }
   }
 
   // Bake the windiness map from the land: ridges and hilltops (ground
@@ -247,6 +305,23 @@ export const WIND_GLSL = /* glsl */ `
   uniform vec2 uWindOffsetSlow;
   uniform vec2 uWindRipple;
   uniform sampler2D uWindMap;
+  uniform vec2 uGustDir;
+  uniform float uGustPos;
+  uniform float uGustCenter;
+  uniform float uGustHalfWidth;
+  uniform float uGustStrength;
+
+  // The occasional gust front here (Wind.updateGust): a sharp leading edge
+  // with a longer tail behind it, across a broad swath with ragged sides.
+  float gustAt( vec2 p ) {
+    if ( uGustStrength <= 0.0 ) return 0.0;
+    float along = dot( p, uGustDir ) - uGustPos; // > 0: not reached yet
+    float prof = along > 0.0 ? exp( -along * along / 144.0 ) : exp( -along * along / 1600.0 );
+    float lat = dot( p, vec2( -uGustDir.y, uGustDir.x ) ) - uGustCenter;
+    float rag = texture( uNoise, vec2( lat * 0.004, along * 0.003 ) + 0.71 ).r;
+    float side = 1.0 - smoothstep( 0.6, 1.0, abs( lat ) / ( uGustHalfWidth * ( 0.7 + 0.6 * rag ) ) );
+    return uGustStrength * prof * side;
+  }
 
   // How exposed this spot is: 0.15 deep shelter .. 1 a bare ridge.
   float windExposure( vec2 p ) {
@@ -264,6 +339,6 @@ export const WIND_GLSL = /* glsl */ `
     float slow = smoothstep( 0.3, 0.8, texture( uNoise, qs * 0.006 ).g ) * 0.9 + 0.17;
     float local = mix( slow, fast, e );
     float strength = mix( uWindSlow, uWindStrength, e );
-    return strength * ( 0.35 + local * 1.2 ) * ( 0.35 + 0.65 * e );
+    return strength * ( 0.35 + local * 1.2 ) * ( 0.35 + 0.65 * e ) + gustAt( p ) * 0.7;
   }
 `;
