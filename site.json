@@ -135,14 +135,6 @@
     },
     {
       "section": "All-Time",
-      "name": "Nestor",
-      "description": "Home automation from scratch: Arduino and ESP32 devices for audio-reactive LED lights, an IR TV remote and a smart lamp, all run from a Node.js server over MQTT.",
-      "screenshots": [
-        { "src": "content/projects/nestor.png", "alt": "Nestor's sign-in screen" }
-      ]
-    },
-    {
-      "section": "All-Time",
       "name": "rubbr",
       "description": "A multiplayer .io-style car arena with socket.io and HTML5 canvas: crash cars, collect cash and race to the top of the leaderboard.",
       "screenshots": [
