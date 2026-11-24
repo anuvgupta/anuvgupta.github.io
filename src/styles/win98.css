@@ -52,7 +52,7 @@ html.ui-98,
 }
 
 /* The font has no bold; Windows drew bold bitmap text by overstriking it one pixel to the right. */
-.projects-page :is(b, strong, h1, h2, h3),
+.projects-page :is(b, strong, h1, h2, h3, .project-tab),
 .ui-98 :is(b, strong, h1, h2, h3, .title-text, .start-button, .task.active, .wp-title, .sm-user) {
   font-weight: normal;
   text-shadow: 0.0834em 0 currentColor; /* one font pixel at any size */
