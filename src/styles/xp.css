@@ -10,6 +10,10 @@
   --xp-frame: #0054e3;
   --xp-frame-edge: #00138c;
   --xp-link: #215dc6;
+  /* Etched and sunken edges on the window face: shadow, light, and the dark inner line. */
+  --face-shadow: #aca899;
+  --face-light: #fff;
+  --face-dark: #716f64;
   /* The plain desktop: without JavaScript, while the live wallpaper loads, and with it switched off.
      (Its two blues match DESKTOP_TOP and DESKTOP_BOTTOM in wallpaper-boot.ts.) */
   --desktop-bg: linear-gradient(180deg, #4a72a8, #2f5388);
@@ -1059,28 +1063,19 @@ html.window-dragging * {
   flex: none;
 }
 
-/* About: a classic Windows 98 dialog (grey face, sunken picture, etched rule, square 3D buttons)
-   filling a window sized to it. (.page.about outranks the narrow-screen .page padding.) */
+/* About: a plain dialog on the window face (sunken picture, etched rule, push buttons) filling a window
+   sized to it. It takes the theme's colours: XP's by day, Windows 98's at night (win98.css).
+   (.page.about outranks the narrow-screen .page padding.) */
 
 .page.about {
-  --w98-face: #c0c0c0;
-  --w98-light: #fff;
-  --w98-hilite: #dfdfdf;
-  --w98-shadow: #808080;
-  --w98-dark: #0a0a0a;
-  /* Raised and sunken 3D edges, drawn as two-pixel bevels. */
-  --w98-raised: inset -1px -1px var(--w98-dark), inset 1px 1px var(--w98-light), inset -2px -2px var(--w98-shadow),
-    inset 2px 2px var(--w98-hilite);
-  --w98-sunken: inset -1px -1px var(--w98-light), inset 1px 1px var(--w98-shadow), inset -2px -2px var(--w98-hilite),
-    inset 2px 2px var(--w98-dark);
   min-height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0;
   color: #000;
-  font: 12px "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Geneva, sans-serif;
-  background: var(--w98-face);
+  font: 12px var(--ui-font);
+  background: var(--xp-face);
 }
 
 /* The dialog's width, which the window fits around. */
@@ -1096,17 +1091,17 @@ html.window-dragging * {
   margin: 16px 16px 0;
   padding-bottom: 14px;
   /* Etched rule: a dark line over a light one. */
-  border-bottom: 1px solid var(--w98-shadow);
-  box-shadow: 0 1px var(--w98-light);
+  border-bottom: 1px solid var(--face-shadow);
+  box-shadow: 0 1px var(--face-light);
 }
 
 /* Sunken square frame instead of the rounded white one. */
 .about .user-tile {
   border: 2px solid;
-  border-color: var(--w98-shadow) var(--w98-light) var(--w98-light) var(--w98-shadow);
+  border-color: var(--face-shadow) var(--face-light) var(--face-light) var(--face-shadow);
   border-radius: 0;
   box-shadow: none;
-  outline: 1px solid var(--w98-dark);
+  outline: 1px solid var(--face-dark);
   outline-offset: -3px;
 }
 
@@ -1135,28 +1130,6 @@ html.window-dragging * {
 .about .xp-btn {
   min-width: 75px;
   justify-content: center;
-  padding: 4px 12px;
-  color: #000;
-  border: 0;
-  border-radius: 0;
-  background: var(--w98-face);
-  box-shadow: var(--w98-raised);
-}
-
-.about .xp-btn:hover {
-  box-shadow: var(--w98-raised);
-}
-
-.about .xp-btn:active {
-  padding: 5px 11px 3px 13px;
-  background: var(--w98-face);
-  box-shadow: var(--w98-sunken);
-}
-
-.about .xp-btn:focus-visible {
-  outline: 1px dotted #000;
-  outline-offset: -5px;
-  box-shadow: var(--w98-raised);
 }
 
 @media (max-width: 420px) {
