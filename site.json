@@ -16,7 +16,7 @@
   "projects": [
     {
       "name": "SkyTube: Watch videos while playing Skyrim",
-      "description": "Video player mod for Skyrim. Watch YouTube, streams, or your own video files in a small picture-in-picture window while you play. Pauses itself while you talk to someone, works in fullscreen, and remembers where you left off. SKSE plugin only: no ESP, nothing in your saves.",
+      "description": "Video player mod for Skyrim. Watch YouTube, streams, or videos while you play. Auto-pauses during dialogue. Picture-in-picture with resize, drag, fade. Resumes last video when you load in. SKSE plugin, no ESP, nothing in saves.",
       "github": ["https://github.com/anuvgupta/skytube"],
       "links": [
         { "label": "Download", "url": "https://github.com/anuvgupta/skytube/releases/latest" }
