@@ -1,5 +1,5 @@
 /* Windows 98 skin, shown at night (html.ui-98; see scripts/ui-theme.ts). It reuses xp.css's layout and
-   swaps the chrome: grey bevelled faces, square corners, navy title bars, and a dark blue gradient taskbar. */
+   swaps the chrome: grey bevelled faces, square corners, navy title bars, and a grey taskbar. */
 
 html.ui-98 {
   --ui-font: "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Geneva, sans-serif;
@@ -445,9 +445,10 @@ html.ui-98 {
 
 /* ------------------------------------------------------------------ Taskbar */
 
-/* Dark blue with a gradient and a light top edge, holding grey Windows 98 buttons. */
+/* The window face with a raised top edge. */
 .ui-98 .taskbar {
-  background: linear-gradient(180deg, #4a5fb4 0, #4a5fb4 1px, #23348c 2px, #18266f 45%, #0e1952 100%);
+  background: var(--xp-face);
+  box-shadow: inset 0 1px var(--face-hilite), inset 0 2px var(--face-light);
 }
 
 .ui-98 .start-button {
@@ -512,9 +513,14 @@ html.ui-98 {
   height: calc(var(--taskbar-h) - 6px);
   margin: 3px 3px 3px 2px;
   padding: 0 10px;
+  color: #000;
   border: 0;
-  background: rgba(0, 0, 0, 0.15);
-  box-shadow: inset 1px 1px rgba(0, 0, 0, 0.45), inset -1px -1px rgba(255, 255, 255, 0.35);
+  background: none;
+  box-shadow: var(--thin-sunken);
+}
+
+.ui-98 .tray-icon:focus-visible {
+  outline-color: #000;
 }
 
 .ui-98 .clock {
