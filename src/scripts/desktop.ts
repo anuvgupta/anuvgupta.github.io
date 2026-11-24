@@ -20,6 +20,8 @@ type Win = {
   open: boolean;
   minimized: boolean;
   maximized: boolean;
+  /** Sized by its content: the script places it but never sets its width or height. */
+  fit: boolean;
   geom: Geom | null;
 };
 
@@ -46,9 +48,17 @@ let taskOrder = 0; // keeps taskbar buttons in the order windows were opened
 
 const desktopSize = () => ({ w: desktopEl.clientWidth, h: desktopEl.clientHeight });
 
-function defaultGeom(): Geom {
+function defaultGeom(win: Win): Geom {
   const { w: dw, h: dh } = desktopSize();
   const step = openCount % 6;
+  if (win.fit) {
+    // Centred a little above the middle, cascading like the others.
+    const { width, height } = win.el.getBoundingClientRect();
+    const offset = step * (dw < 700 ? 10 : 28);
+    const left = clamp(Math.round((dw - width) / 2) + offset, 0, dw - width);
+    const top = clamp(Math.round((dh - height) / 3) + offset, 0, dh - height);
+    return { left, top, width, height };
+  }
   if (dw < 700) {
     const top = 6 + step * 10;
     return { left: 6, top, width: dw - 12, height: Math.max(220, dh - top - 6) };
@@ -71,6 +81,7 @@ function applyGeom(win: Win) {
   const s = win.el.style;
   s.left = `${win.geom.left}px`;
   s.top = `${win.geom.top}px`;
+  if (win.fit) return;
   s.width = `${win.geom.width}px`;
   s.height = `${win.geom.height}px`;
 }
@@ -138,10 +149,10 @@ function openPage(id: string) {
   closeStartMenu();
   if (!win.open) {
     win.open = true;
-    win.geom = defaultGeom();
+    win.el.hidden = false;
+    win.geom = defaultGeom(win);
     openCount++;
     applyGeom(win);
-    win.el.hidden = false;
     win.task.hidden = false;
     win.task.style.order = String(++taskOrder);
     win.body.scrollTop = 0;
@@ -256,6 +267,7 @@ for (const el of $$('.window[data-page]', desktopEl)) {
     open: !el.hidden,
     minimized: false,
     maximized: false,
+    fit: el.classList.contains('window-fit'),
     geom: null,
   };
   wins.set(id, win);

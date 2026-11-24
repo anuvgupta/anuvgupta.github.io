@@ -621,6 +621,24 @@ html.window-dragging * {
   border-radius: 0;
 }
 
+/* Window sized by its content (About). Before the script places it, it sits roughly centred. */
+
+.window.window-fit {
+  left: max(6px, calc(50% - 170px));
+  top: 18%;
+  width: auto;
+  max-width: calc(100% - 12px);
+  height: auto;
+}
+
+.window-fit .window-body {
+  flex: none;
+}
+
+.window-fit.maximized .window-body {
+  flex: 1;
+}
+
 /* Wallpaper loading window: a small dialog with XP's block progress bar */
 
 .window.loader-window {
@@ -1041,10 +1059,10 @@ html.window-dragging * {
   flex: none;
 }
 
-/* About: a classic Windows 98 dialog (grey bevelled panel, navy gradient title bar, sunken picture,
-   etched rule, square 3D buttons) on the old teal desktop. */
+/* About: a classic Windows 98 dialog (grey face, sunken picture, etched rule, square 3D buttons)
+   filling a window sized to it. (.page.about outranks the narrow-screen .page padding.) */
 
-.about {
+.page.about {
   --w98-face: #c0c0c0;
   --w98-light: #fff;
   --w98-hilite: #dfdfdf;
@@ -1059,35 +1077,21 @@ html.window-dragging * {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px 20px;
+  padding: 0;
   color: #000;
   font: 12px "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Geneva, sans-serif;
-  background: #008080;
+  background: var(--w98-face);
 }
 
 .about-card {
-  width: min(100%, 380px);
-  padding: 3px;
-  background: var(--w98-face);
-  box-shadow: var(--w98-raised), 2px 2px 0 rgba(0, 0, 0, 0.35);
-}
-
-.about-titlebar {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  height: 18px;
-  padding: 0 3px;
-  font-weight: bold;
-  color: #fff;
-  background: linear-gradient(90deg, #000080, #1084d0);
+  max-width: 100%;
 }
 
 .about-body {
   display: flex;
   align-items: center;
   gap: 16px;
-  margin: 16px 14px 0;
+  margin: 16px 16px 0;
   padding-bottom: 14px;
   /* Etched rule: a dark line over a light one. */
   border-bottom: 1px solid var(--w98-shadow);
@@ -1123,7 +1127,7 @@ html.window-dragging * {
 .about-links {
   justify-content: flex-end;
   gap: 6px;
-  padding: 12px 14px 11px;
+  padding: 12px 16px 14px;
 }
 
 .about .xp-btn {
@@ -1524,6 +1528,11 @@ html.window-dragging * {
     --win-w: calc(100% - 12px);
     top: 6px;
     height: calc(100% - 12px);
+  }
+
+  .window.window-fit {
+    width: auto;
+    height: auto;
   }
 
   .page {

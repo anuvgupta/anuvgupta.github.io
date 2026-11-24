@@ -1,8 +1,9 @@
 /** Theme-level mappings: which page types exist and which icon each page type and link uses. */
 
+// fit: the window sizes itself to its content instead of filling most of the desktop.
 export const PAGE_TYPES = {
-  projects: { icon: '/img/icons/projects.svg' },
-  about: { icon: '/img/icons/about.svg' },
+  projects: { icon: '/img/icons/projects.svg', fit: false },
+  about: { icon: '/img/icons/about.svg', fit: true },
 } as const;
 
 export const LINK_ICONS = {

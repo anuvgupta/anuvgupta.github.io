@@ -7,13 +7,13 @@ interface Props {
   open?: boolean;
 }
 const { page, open = false } = Astro.props;
-const icon = PAGE_TYPES[page.type].icon;
+const { icon, fit } = PAGE_TYPES[page.type];
 const titleId = `win-title-${page.id}`;
 // The page's public address; the desktop script swaps in the address it was actually opened from.
 const address = `${Astro.site?.href ?? '/'}#${page.id}`;
 ---
 
-<section class="window" id={page.id} data-page={page.id} role="dialog" aria-labelledby={titleId} hidden={!open}>
+<section class:list={["window", { "window-fit": fit }]} id={page.id} data-page={page.id} role="dialog" aria-labelledby={titleId} hidden={!open}>
   <div class="title-bar">
     <img class="title-icon" src={icon} alt="" draggable="false" />
     <span class="title-text" id={titleId}>{page.title}</span>
