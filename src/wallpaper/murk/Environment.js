@@ -166,6 +166,13 @@ export class Environment {
     }
     u.cloudNightCol = { value: new THREE.Vector3() };
     u.cloudMoonDir = { value: new THREE.Vector3(0, 1, 0) };
+    // The clouds drift forward, away into the distance (-x, the way the view
+    // looks), leaning 5-20 degrees left or right, picked at random each
+    // visit. Features move along -cloudDrift on the cloud plane. Fast enough
+    // to see: drifting straight away reads far slower than sideways, and at
+    // the game's speed (about 1) they looked still.
+    const lean = THREE.MathUtils.degToRad(5 + Math.random() * 15) * (Math.random() < 0.5 ? -1 : 1);
+    u.cloudDrift = { value: new THREE.Vector2(Math.cos(lean), Math.sin(lean)).multiplyScalar(4.5) };
 
     // A second sky in its own scene, rendered into the image-based lighting.
     this.envScene = new THREE.Scene();
@@ -430,7 +437,7 @@ export class Environment {
     if (this.stars.material.userData.shader) {
       const ss = this.stars.material.userData.shader.uniforms;
       const su = this.sky.material.uniforms;
-      for (const k of ['time', 'cloudSpeed', 'cloudScale', 'cloudCoverage', 'cloudDensity']) if (su[k]) ss[k].value = su[k].value;
+      for (const k of ['time', 'cloudSpeed', 'cloudScale', 'cloudCoverage', 'cloudDensity', 'cloudDrift']) if (su[k]) ss[k].value = su[k].value;
     }
     this.stars.material.opacity = starFactor;
     if (this.stars.material.userData.shader) this.stars.material.userData.shader.uniforms.uTime.value = this.starTime || 0;
@@ -612,6 +619,7 @@ function createStars(moonAt) {
   m.onBeforeCompile = (shader) => {
     shader.uniforms.uTime = { value: 0 };
     for (const k of ['time', 'cloudSpeed', 'cloudScale', 'cloudCoverage', 'cloudDensity']) shader.uniforms[k] = { value: 0 };
+    shader.uniforms.cloudDrift = { value: new THREE.Vector2() };
     m.userData.shader = shader;
     shader.vertexShader = shader.vertexShader
       .replace('#include <common>', '#include <common>\nattribute vec3 aStar;\nuniform float uTime;\nvarying float vElev;\nvarying float vTwinkle;\nvarying float vFlick;\nvarying float vOut;\nvarying float vCloud;\n' + CLOUD_BANKS_GLSL)

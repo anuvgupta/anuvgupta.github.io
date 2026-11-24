@@ -15,13 +15,10 @@
 // through churn(): a rotational domain warp, so the masses roll, curl and tear
 // as they drift rather than sliding across the sky as a stamp.
 //
-// The drift, on the cloud plane: features move along -DRIFT. The game's
-// (0.9, 0.35) carried them mostly along -x, which is straight away from the
-// wallpaper's westward view, so they barely seemed to move. This carries them
-// across the view to the right (-z) with a little lean away, about 2.7 times
-// as fast: a bank takes a few minutes to cross the screen. The shapes still
-// churn at the same pace.
-const DRIFT = 'vec2( 0.35, 2.6 )';
+// The drift, on the cloud plane, is the cloudDrift uniform: features move
+// along -cloudDrift. The wallpaper sets it to carry the clouds forward into
+// the distance with a slight lean to one side (see Environment).
+const DRIFT = 'cloudDrift';
 
 export const CLOUD_STYLES = ['realistic', 'ghibli', 'painterly'];
 // Where the chosen style is kept. (Renamed when painterly became the
@@ -52,6 +49,7 @@ export function saveCloudStyle(style) {
 // cloudNightCol: the moonlit colour of a cloud by night (blue- or
 // violet-grey, brighter while the moon is up); cloudMoonDir: toward the moon.
 const COMMON = /* glsl */ `
+  uniform vec2 cloudDrift;
   uniform vec3 cloudNightCol;
   uniform vec3 cloudMoonDir;
   // Worley-ish billow: distance to jittered cell centres gives cauliflower lobes.
@@ -276,6 +274,7 @@ const STYLES = {
 // for things behind the clouds (the stars), with the Sky shader's noise
 // copied so the two agree. Reads the sky's own cloud uniforms.
 export const CLOUD_BANKS_GLSL = /* glsl */ `
+  uniform vec2 cloudDrift;
   uniform float time;
   uniform float cloudSpeed;
   uniform float cloudScale;
