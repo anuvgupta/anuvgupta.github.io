@@ -58,7 +58,7 @@
     },
     {
       "name": "git-autosync",
-      "description": "Auto-commits, rebases and pushes any git repo on a schedule, each repo with its own scheduler and lock. Works on macOS, Linux (cron or systemd) and Windows.",
+      "description": "Auto-commits, syncs, and pushes any git repo on a schedule, each repo with its own scheduler and lock. Works on macOS (launchd), Linux (cron or systemd) and Windows. Great for AI-managed markdown knowledge bases.",
       "github": ["https://github.com/anuvgupta/git-autosync"]
     },
     {
