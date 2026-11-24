@@ -45,7 +45,7 @@
     },
     {
       "name": "PiWii",
-      "description": "Turns a Raspberry Pi into a network-fed USB drive for a softmodded Wii. A Wii Menu-style web app converts and uploads games, and the Pi copies them onto the drive whenever the Wii goes idle.",
+      "description": "A Raspberry Pi that powers a 1 TB SSD and passes the whole drive through to a softmodded Wii as its USB drive, so the Wii's loader sees one huge game library. A Wii Menu-style web app converts and uploads games over the network, and the Pi copies them onto the SSD whenever the Wii goes idle.",
       "screenshots": [
         { "src": "content/projects/piwii.png", "alt": "piwii's Wii Menu-style library page" }
       ],
