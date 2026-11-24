@@ -16,6 +16,9 @@ const imageModules = import.meta.glob<{ default: ImageMetadata }>(
 const images = new Map(
   Object.entries(imageModules).map(([path, mod]) => [path.replace(/^\//, ''), mod.default])
 );
+// Videos (silent loops that play like GIFs) are copied as-is and referenced by URL.
+const videoModules = import.meta.glob<string>('/content/**/*.{mp4,webm}', { eager: true, query: '?url', import: 'default' });
+const videos = new Map(Object.entries(videoModules).map(([path, url]) => [path.replace(/^\//, ''), url]));
 const normalizePath = (p: string) => p.trim().replace(/^\.?\//, '');
 
 const url = z
@@ -53,9 +56,26 @@ const link = z.strictObject({
 // keeps validation errors specific, e.g. "Image not found" rather than "Invalid input".
 const shorthand = (key: string) => (v: unknown) => (typeof v === 'string' ? { [key]: v } : v);
 
+// A screenshot is an image, or a video that plays silently on a loop.
+const media = z
+  .string()
+  .superRefine((value, ctx) => {
+    const key = normalizePath(value);
+    if (!images.has(key) && !videos.has(key)) {
+      ctx.addIssue({
+        code: 'custom',
+        message: `Image or video not found: "${value}". Put it under content/ and use its path from the repo root, e.g. "content/projects/shot.png".`,
+      });
+    }
+  })
+  .transform((value) => {
+    const key = normalizePath(value);
+    return images.has(key) ? { image: images.get(key)! } : { video: videos.get(key)! };
+  });
+
 const screenshot = z.preprocess(
   shorthand('src'),
-  z.strictObject({ src: image, alt: z.string().optional() }).transform(({ src, alt }) => ({ image: src, alt }))
+  z.strictObject({ src: media, alt: z.string().optional() }).transform(({ src, alt }) => ({ ...src, alt }))
 );
 
 const repo = z.preprocess(shorthand('url'), z.strictObject({ url, label: z.string().min(1).optional() }));

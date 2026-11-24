@@ -67,7 +67,11 @@ const panelId = (i: number) => `${page.id}-panel-${i}`;
                   <div class="project-shots">
                     {p.screenshots.map((s, i) => {
                       const alt = s.alt ?? `${p.name} screenshot ${i + 1}`;
-                      return (
+                      return 'video' in s ? (
+                        <a href={s.video} target="_blank" rel="noopener" title="Open full size">
+                          <video src={s.video} autoplay muted loop playsinline preload="auto" aria-label={alt} />
+                        </a>
+                      ) : (
                         <a href={s.image.src} target="_blank" rel="noopener" title="Open full size">
                           {s.image.format === 'svg' ? (
                             <img src={s.image.src} alt={alt} width={s.image.width} height={s.image.height} loading="lazy" decoding="async" />

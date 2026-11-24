@@ -1077,7 +1077,7 @@ html.window-dragging * {
   outline: none;
 }
 
-.project-shots img {
+.project-shots :is(img, video) {
   display: block;
   width: 100%;
   height: auto;
