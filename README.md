@@ -58,5 +58,5 @@ npm run preview    # serve the production build
 
 ## Changing the theme
 
-- **Wallpaper:** `public/img/wallpaper.svg`. To use a photo, add it to `public/img/` and change the `background` URL on `body` in `src/styles/xp.css`.
+- **Wallpaper:** the live scene is in `src/wallpaper/`. The plain blue desktop behind it (shown without JavaScript, while it loads, and when it's switched off) is `--desktop-bg` in `src/styles/xp.css`.
 - **New page type:** add it to `PAGE_TYPES` in `src/theme.ts`, write a component for it in `src/components/`, and render it for that type in `src/pages/index.astro`.

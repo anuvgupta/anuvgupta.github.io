@@ -19,23 +19,29 @@ const marks = [
     <button id="wp-collapse" class="wp-collapse" type="button" aria-expanded="true" aria-controls="wp-body" title="Hide options"></button>
   </div>
   <div id="wp-body" class="wp-body">
-    <div class="wp-row">
-      <label for="wp-time">Time of day</label>
-      <output id="wp-readout" for="wp-time"></output>
-    </div>
-    <input id="wp-time" class="wp-slider" type="range" min="0" max="24" step="0.0833333" value="12" aria-describedby="wp-readout" />
-    <div class="wp-ticks" aria-hidden="true">
-      {
-        marks.map((m) => (
-          <span class:list={['wp-tick', `wp-tick-${m.align}`]} style={`left: ${pct(m.at)}`}>
-            {m.label}
-          </span>
-        ))
-      }
-    </div>
-    <label class="wp-live">
-      <input id="wp-live" type="checkbox" checked />
-      Follow my clock
+    <fieldset id="wp-time-group" class="wp-time-group">
+      <div class="wp-row">
+        <label for="wp-time">Time of day</label>
+        <output id="wp-readout" for="wp-time"></output>
+      </div>
+      <input id="wp-time" class="wp-slider" type="range" min="0" max="24" step="0.0833333" value="12" aria-describedby="wp-readout" />
+      <div class="wp-ticks" aria-hidden="true">
+        {
+          marks.map((m) => (
+            <span class:list={['wp-tick', `wp-tick-${m.align}`]} style={`left: ${pct(m.at)}`}>
+              {m.label}
+            </span>
+          ))
+        }
+      </div>
+      <label class="wp-live">
+        <input id="wp-live" type="checkbox" checked />
+        Follow my clock
+      </label>
+    </fieldset>
+    <label class="wp-switch-row">
+      <span>Show wallpaper</span>
+      <input id="wp-enabled" class="xp-switch" type="checkbox" role="switch" checked />
     </label>
   </div>
 </section>

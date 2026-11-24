@@ -1,4 +1,4 @@
-/* Windows XP-style desktop. All chrome is drawn with CSS; icons and wallpaper are SVGs in /img. */
+/* Windows XP-style desktop. All chrome is drawn with CSS; icons are SVGs in /img. */
 
 :root {
   --taskbar-h: 34px;
@@ -10,7 +10,9 @@
   --xp-frame: #0054e3;
   --xp-frame-edge: #00138c;
   --xp-link: #215dc6;
-  --desktop-blue: #476ea4; /* plain desktop while the live wallpaper loads (matches DESKTOP_BLUE in wallpaper-boot.ts) */
+  /* The plain desktop: without JavaScript, while the live wallpaper loads, and with it switched off.
+     (Its two blues match DESKTOP_TOP and DESKTOP_BOTTOM in wallpaper-boot.ts.) */
+  --desktop-bg: linear-gradient(180deg, #4a72a8, #2f5388);
   color-scheme: light;
 }
 
@@ -30,7 +32,7 @@ body {
 body {
   font: 12px/1.4 var(--ui-font);
   color: #000;
-  background: #3a7bd5 url("/img/wallpaper.svg") center / cover no-repeat;
+  background: #3d629a var(--desktop-bg);
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
   -webkit-text-size-adjust: 100%;
@@ -48,15 +50,10 @@ input {
 
 /* ---------------------------------------------------------------- Wallpaper */
 
-/* Without JavaScript the static wallpaper on <body> shows. With it, the page
-   is plain blue while the live wallpaper loads (its loading window sits on top),
-   and the static one comes back only if the live one can't run. */
-html.js body {
-  background: var(--desktop-blue);
-}
-
-html.js.wallpaper-fallback body {
-  background: #3a7bd5 url("/img/wallpaper.svg") center / cover no-repeat;
+/* The live wallpaper sits over the plain blue desktop on <body>. Switched off,
+   it's hidden but keeps its size, so switching it back on needs no resize. */
+html.wallpaper-off .wallpaper {
+  visibility: hidden;
 }
 
 .wallpaper {
@@ -280,6 +277,86 @@ html:not(.js) .window[hidden]:target {
 
 .wp-live input {
   margin: 0;
+}
+
+.wp-time-group {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.wp-time-group:disabled {
+  opacity: 0.5;
+}
+
+.wp-switch-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 8px;
+  padding-top: 7px;
+  border-top: 1px solid #c5c2b2;
+  box-shadow: inset 0 1px #fff;
+  cursor: pointer;
+}
+
+/* An on/off switch drawn in the XP palette: a sunken track that turns green when on. */
+.xp-switch {
+  position: relative;
+  flex: none;
+  width: 30px;
+  height: 16px;
+  margin: 0;
+  border: 1px solid #7f9db9;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #dcdad0, #f4f3ee);
+  box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.18);
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+
+.xp-switch::before {
+  content: "";
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 12px;
+  height: 12px;
+  border: 1px solid #1c5180;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #fff, #e6eefc 45%, #c0d0ef);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+  transition: translate 0.15s ease-out;
+}
+
+.xp-switch:checked {
+  border-color: #2b8a2b;
+  background: linear-gradient(180deg, #3fb63f, #6fd46f);
+}
+
+.xp-switch:checked::before {
+  translate: 14px 0;
+}
+
+.xp-switch:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.xp-switch:focus-visible {
+  outline: 1px dotted #000;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .xp-switch,
+  .xp-switch::before {
+    transition: none;
+  }
 }
 
 .desktop-icons {

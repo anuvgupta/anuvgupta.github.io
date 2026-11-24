@@ -4,8 +4,10 @@
  * blue away in pixel blocks.
  *
  * The scene itself is a separate chunk (src/wallpaper), loaded with a dynamic
- * import so the rest of the page never waits on it. If WebGL 2 is missing or
- * anything fails, the page falls back to the static wallpaper.
+ * import so the rest of the page never waits on it. It can be switched off
+ * from the widget (remembered in localStorage), which leaves the plain blue
+ * desktop and stops drawing. If WebGL 2 is missing or anything fails, the
+ * plain desktop stays.
  */
 import { SUNRISE, SUNSET, NOON } from '../wallpaper/sun.js';
 import { BOTTOM_Z, nextZ } from './zorder';
@@ -13,10 +15,6 @@ import { BOTTOM_Z, nextZ } from './zorder';
 const root = document.documentElement;
 const host = document.getElementById('wallpaper');
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-function fallback() {
-  root.classList.add('wallpaper-fallback');
-}
 
 function hasWebGL2() {
   try {
@@ -31,7 +29,9 @@ function hasWebGL2() {
 const STEP_MS = 110; // one block at a time, like the real thing
 const BLOCK = 12; // XP's progress blocks: 12px wide, 2px apart
 const BLOCK_GAP = 2;
-const DESKTOP_BLUE = '#476ea4';
+// The plain desktop's gradient, top to bottom (matches --desktop-bg in xp.css).
+const DESKTOP_TOP = '#4a72a8';
+const DESKTOP_BOTTOM = '#2f5388';
 
 /**
  * The loading dialog: an XP window with a block progress bar. It can be
@@ -197,7 +197,10 @@ class Cover {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     this.canvas.width = Math.round(this.canvas.clientWidth * dpr);
     this.canvas.height = Math.round(this.canvas.clientHeight * dpr);
-    this.ctx.fillStyle = DESKTOP_BLUE;
+    const g = this.ctx.createLinearGradient(0, 0, 0, this.canvas.height);
+    g.addColorStop(0, DESKTOP_TOP);
+    g.addColorStop(1, DESKTOP_BOTTOM);
+    this.ctx.fillStyle = g;
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
   };
 
@@ -265,83 +268,138 @@ function formatHours(h: number) {
   return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
 }
 
-function setupWidget(api: WallpaperApi) {
-  const widget = document.getElementById('wallpaper-widget');
-  if (!widget) return;
-  const slider = document.getElementById('wp-time') as HTMLInputElement;
-  const readout = document.getElementById('wp-readout') as HTMLOutputElement;
-  const live = document.getElementById('wp-live') as HTMLInputElement;
-  const collapse = document.getElementById('wp-collapse') as HTMLButtonElement;
-  const body = document.getElementById('wp-body')!;
+const ENABLED_KEY = 'wallpaper.enabled';
 
-  const show = () => {
-    const h = api.getTime();
-    if (live.checked) slider.value = String(h);
-    readout.textContent = `${formatHours(h)} · ${phaseName(h)}`;
-  };
-  slider.addEventListener('input', () => {
-    live.checked = false;
-    api.setTime(Number(slider.value));
-    show();
-  });
-  live.addEventListener('change', () => {
-    api.setTime(live.checked ? null : Number(slider.value));
-    show();
-  });
-  setInterval(() => live.checked && show(), 15_000);
+function savedEnabled() {
+  try {
+    return localStorage.getItem(ENABLED_KEY) !== 'false';
+  } catch {
+    return true;
+  }
+}
+
+/**
+ * The options widget. It shows once the scene is running, or straight away
+ * when the wallpaper is switched off (so it can be switched back on). The
+ * time-of-day controls wait for the scene, which loads on first switch-on.
+ */
+class Widget {
+  el = document.getElementById('wallpaper-widget')!;
+  slider = document.getElementById('wp-time') as HTMLInputElement;
+  readout = document.getElementById('wp-readout') as HTMLOutputElement;
+  live = document.getElementById('wp-live') as HTMLInputElement;
+  timeGroup = document.getElementById('wp-time-group') as HTMLFieldSetElement;
+  enabled = document.getElementById('wp-enabled') as HTMLInputElement;
+  api: WallpaperApi | null = null;
+
+  constructor(onToggle: (on: boolean) => void) {
+    this.slider.addEventListener('input', () => {
+      this.live.checked = false;
+      this.api?.setTime(Number(this.slider.value));
+      this.show();
+    });
+    this.live.addEventListener('change', () => {
+      this.api?.setTime(this.live.checked ? null : Number(this.slider.value));
+      this.show();
+    });
+    setInterval(() => this.live.checked && this.show(), 15_000);
+    this.enabled.addEventListener('change', () => {
+      try {
+        localStorage.setItem(ENABLED_KEY, String(this.enabled.checked));
+      } catch {}
+      onToggle(this.enabled.checked);
+    });
+    this.setupCollapse();
+  }
 
   // Collapsed by default; opening or closing it is remembered for next time. (The earlier
   // 'wallpaper.widget' key was saved as open on every visit, so it isn't read.)
-  const setOpen = (open: boolean) => {
-    body.hidden = !open;
-    collapse.setAttribute('aria-expanded', String(open));
-    collapse.title = open ? 'Hide options' : 'Show options';
-    widget.classList.toggle('collapsed', !open);
-  };
-  let open = false;
-  try {
-    open = localStorage.getItem('wallpaper.widgetOpen') === 'true';
-  } catch {}
-  setOpen(open);
-  // The whole title bar toggles it; a click on the arrow button bubbles up to it.
-  collapse.parentElement!.addEventListener('click', () => {
-    setOpen(body.hidden);
+  setupCollapse() {
+    const collapse = document.getElementById('wp-collapse') as HTMLButtonElement;
+    const body = document.getElementById('wp-body')!;
+    const setOpen = (open: boolean) => {
+      body.hidden = !open;
+      collapse.setAttribute('aria-expanded', String(open));
+      collapse.title = open ? 'Hide options' : 'Show options';
+      this.el.classList.toggle('collapsed', !open);
+    };
+    let open = false;
     try {
-      localStorage.setItem('wallpaper.widgetOpen', String(!body.hidden));
+      open = localStorage.getItem('wallpaper.widgetOpen') === 'true';
     } catch {}
-  });
+    setOpen(open);
+    // The whole title bar toggles it; a click on the arrow button bubbles up to it.
+    collapse.parentElement!.addEventListener('click', () => {
+      setOpen(body.hidden);
+      try {
+        localStorage.setItem('wallpaper.widgetOpen', String(!body.hidden));
+      } catch {}
+    });
+  }
 
-  show();
-  widget.hidden = false;
+  show() {
+    if (!this.api) return;
+    const h = this.api.getTime();
+    if (this.live.checked) this.slider.value = String(h);
+    this.readout.textContent = `${formatHours(h)} · ${phaseName(h)}`;
+  }
+
+  // Reflects the switch, the scene, and whether it's mid-load (when the switch waits).
+  update(on: boolean, loading: boolean) {
+    this.enabled.checked = on;
+    this.enabled.disabled = loading;
+    this.timeGroup.disabled = !on || !this.api;
+    this.show();
+    this.el.hidden = false;
+  }
 }
 
 // ---------------------------------------------------------------- boot
 
-async function boot() {
-  if (!host) return fallback();
-  if (!hasWebGL2()) return fallback();
-  const cover = new Cover(host);
+let on = savedEnabled();
+let loading = false;
+let widget: Widget;
+
+function setOn(next: boolean) {
+  on = next;
+  root.classList.toggle('wallpaper-off', !on);
+  if (on && !widget.api) void load();
+  else widget.update(on, loading);
+}
+
+// Loads the scene behind the cover and loading window. The widget appears once it's running.
+async function load() {
+  if (loading) return;
+  loading = true;
+  if (!widget.el.hidden) widget.update(on, true);
+  const cover = new Cover(host!);
   const loader = new Loader();
   try {
     // The chunk's download counts as the first stretch of the bar.
     loader.setProgress(0.06);
     const mod = await import('../wallpaper/index.js');
     loader.setProgress(0.2);
-    const api: WallpaperApi = await mod.startWallpaper(host, {
+    widget.api = await mod.startWallpaper(host!, {
       onProgress: (f: number) => loader.setProgress(0.2 + 0.8 * f),
-      isHidden: () => !!document.querySelector('.window.maximized:not([hidden])'),
+      // Nothing to draw while it's switched off or a window covers the whole desktop.
+      isHidden: () => !on || !!document.querySelector('.window.maximized:not([hidden])'),
     });
     await new Promise<void>((resolve) => loader.finish(resolve));
     loader.close();
-    root.classList.add('wallpaper-live');
-    setupWidget(api);
+    loading = false;
+    widget.update(on, false);
     await cover.dissolve();
   } catch (err) {
     console.error('Live wallpaper unavailable:', err);
     loader.close();
-    fallback();
+    loading = false;
+    widget.el.hidden = true; // it can't be switched on, so there's nothing to offer
     await cover.dissolve();
   }
 }
 
-boot();
+// Without WebGL 2 there's no live wallpaper to offer: the plain desktop stays and the widget stays hidden.
+if (host && hasWebGL2()) {
+  widget = new Widget(setOn);
+  setOn(on);
+}
