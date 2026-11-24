@@ -116,7 +116,7 @@
     },
     {
       "name": "block.js",
-      "description": "A JavaScript library for building web UIs from modular, event-driven templates, without writing HTML.",
+      "description": "A lightweight JavaScript library for building web UIs from modular, event-driven templates. Never touch HTML again. Made in B.C. (Before Claude) so, use at your own risk!",
       "screenshots": [
         { "src": "content/projects/blockjs.png", "alt": "block.js logo" }
       ],
