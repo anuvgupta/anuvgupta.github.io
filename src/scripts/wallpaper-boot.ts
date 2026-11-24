@@ -291,7 +291,8 @@ function setupWidget(api: WallpaperApi) {
     open = localStorage.getItem('wallpaper.widgetOpen') === 'true';
   } catch {}
   setOpen(open);
-  collapse.addEventListener('click', () => {
+  // The whole title bar toggles it; a click on the arrow button bubbles up to it.
+  collapse.parentElement!.addEventListener('click', () => {
     setOpen(body.hidden);
     try {
       localStorage.setItem('wallpaper.widgetOpen', String(!body.hidden));
