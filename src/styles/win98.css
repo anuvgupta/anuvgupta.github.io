@@ -32,6 +32,12 @@ html.ui-98 {
   font-smooth: never;
 }
 
+/* The font's own spacing is tight; one font pixel more between letters, at every size (on every
+   element, since form controls don't inherit it). */
+.ui-98 * {
+  letter-spacing: 0.0834em;
+}
+
 .ui-98 :is(.page, .address-bar, .address-input, .wp-widget, .wp-ticks, .sm-item-text small) {
   font-size: 12px;
 }
@@ -39,7 +45,7 @@ html.ui-98 {
 /* The font has no bold; Windows drew bold bitmap text by overstriking it one pixel to the right. */
 .ui-98 :is(b, strong, h1, h2, h3, .title-text, .start-button, .task.active, .wp-title, .sm-user) {
   font-weight: normal;
-  text-shadow: 1px 0 currentColor;
+  text-shadow: 0.0834em 0 currentColor; /* one font pixel at any size */
 }
 
 /* ------------------------------------------------------------------ Windows */
@@ -81,7 +87,6 @@ html.ui-98 {
 
 .ui-98 .title-text {
   font: 12px var(--title-font);
-  letter-spacing: 0;
 }
 
 .ui-98 .window.inactive .title-text {
@@ -472,8 +477,7 @@ html.ui-98 {
   gap: 4px;
   border-radius: 0;
   color: #000;
-  font: 12px/1 var(--ui-font);
-  letter-spacing: 0;
+  font: 18px/1 var(--ui-font);
   text-transform: capitalize;
   background: var(--xp-face);
   box-shadow: var(--raised);
