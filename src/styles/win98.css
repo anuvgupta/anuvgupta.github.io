@@ -4,7 +4,7 @@
 html.ui-98 {
   --ui-font: "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Geneva, sans-serif;
   --title-font: var(--ui-font);
-  --taskbar-h: 30px;
+  --taskbar-h: 32px;
   --xp-face: #c0c0c0;
   --xp-select: #000080;
   --xp-link: #000080;
@@ -452,7 +452,7 @@ html.ui-98 {
   gap: 4px;
   border-radius: 0;
   color: #000;
-  font: bold 12px/1 var(--ui-font);
+  font: bold 14px/1 var(--ui-font);
   letter-spacing: 0;
   text-shadow: none;
   text-transform: capitalize;
@@ -462,8 +462,8 @@ html.ui-98 {
 }
 
 .ui-98 .start-logo {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   translate: none;
   filter: none;
 }
