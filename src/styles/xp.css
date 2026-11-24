@@ -335,6 +335,11 @@ html:not(.js) .window[hidden]:target {
   cursor: pointer;
 }
 
+/* Room between the slider's labels and "Follow my clock". */
+.wp-ticks + .wp-switch-row {
+  margin-top: 10px;
+}
+
 .wp-time-group:disabled .wp-switch-row {
   cursor: default;
 }
