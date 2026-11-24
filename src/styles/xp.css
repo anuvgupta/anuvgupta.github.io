@@ -843,6 +843,19 @@ html.window-dragging * {
 
 /* Projects (styled after the XP Explorer task pane) */
 
+.project-section {
+  margin: 22px 0 0;
+  padding-bottom: 3px;
+  font: bold 16px var(--title-font);
+  color: #0b3a9e;
+  border-bottom: 1px solid;
+  border-image: linear-gradient(90deg, #7a96df, transparent) 1;
+}
+
+.project-section + .project {
+  margin-top: 10px;
+}
+
 .project {
   margin-top: 16px;
   border-radius: 4px 4px 0 0;

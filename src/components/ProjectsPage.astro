@@ -9,6 +9,15 @@ interface Props {
   projects: Project[];
 }
 const { page, projects } = Astro.props;
+
+const groups: { title?: string; projects: Project[] }[] = [];
+for (const p of projects) {
+  const last = groups.at(-1);
+  if (last && last.title === p.section) last.projects.push(p);
+  else groups.push({ title: p.section, projects: [p] });
+}
+// Under section headings, project titles drop a level.
+const ProjectTitle = groups.some((g) => g.title) ? 'h3' : 'h2';
 ---
 
 <div class="page">
@@ -18,39 +27,44 @@ const { page, projects } = Astro.props;
   </header>
   {projects.length === 0 && <p class="notice">No projects yet.</p>}
   {
-    projects.map((p) => (
-      <article class="project">
-        <h2 class="project-title">{p.name}</h2>
-        <div class="project-content">
-          {p.description && <p class="project-desc">{p.description}</p>}
-          {p.screenshots.length > 0 && (
-            <div class="project-shots">
-              {p.screenshots.map((s, i) => {
-                const alt = s.alt ?? `${p.name} screenshot ${i + 1}`;
-                return (
-                  <a href={s.image.src} target="_blank" rel="noopener" title="Open full size">
-                    {s.image.format === 'svg' ? (
-                      <img src={s.image.src} alt={alt} width={s.image.width} height={s.image.height} loading="lazy" decoding="async" />
-                    ) : (
-                      <Image src={s.image} alt={alt} widths={[400, 800, 1200]} sizes="(max-width: 699px) 100vw, 320px" loading="lazy" />
-                    )}
-                  </a>
-                );
-              })}
+    groups.map((g) => (
+      <Fragment>
+        {g.title && <h2 class="project-section">{g.title}</h2>}
+        {g.projects.map((p) => (
+          <article class="project">
+            <ProjectTitle class="project-title">{p.name}</ProjectTitle>
+            <div class="project-content">
+              {p.description && <p class="project-desc">{p.description}</p>}
+              {p.screenshots.length > 0 && (
+                <div class="project-shots">
+                  {p.screenshots.map((s, i) => {
+                    const alt = s.alt ?? `${p.name} screenshot ${i + 1}`;
+                    return (
+                      <a href={s.image.src} target="_blank" rel="noopener" title="Open full size">
+                        {s.image.format === 'svg' ? (
+                          <img src={s.image.src} alt={alt} width={s.image.width} height={s.image.height} loading="lazy" decoding="async" />
+                        ) : (
+                          <Image src={s.image} alt={alt} widths={[400, 800, 1200]} sizes="(max-width: 699px) 100vw, 320px" loading="lazy" />
+                        )}
+                      </a>
+                    );
+                  })}
+                </div>
+              )}
+              {(p.github.length > 0 || p.links.length > 0) && (
+                <div class="project-links">
+                  {p.github.map((g) => (
+                    <LinkButton href={g.url} label={g.label ?? (p.github.length > 1 ? repoName(g.url) : 'GitHub')} icon={LINK_ICONS.github} />
+                  ))}
+                  {p.links.map((l) => (
+                    <LinkButton href={l.url} label={l.label} icon={LINK_ICONS.link} />
+                  ))}
+                </div>
+              )}
             </div>
-          )}
-          {(p.github.length > 0 || p.links.length > 0) && (
-            <div class="project-links">
-              {p.github.map((g) => (
-                <LinkButton href={g.url} label={g.label ?? (p.github.length > 1 ? repoName(g.url) : 'GitHub')} icon={LINK_ICONS.github} />
-              ))}
-              {p.links.map((l) => (
-                <LinkButton href={l.url} label={l.label} icon={LINK_ICONS.link} />
-              ))}
-            </div>
-          )}
-        </div>
-      </article>
+          </article>
+        ))}
+      </Fragment>
     ))
   }
 </div>

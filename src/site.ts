@@ -61,6 +61,8 @@ const screenshot = z.preprocess(
 const repo = z.preprocess(shorthand('url'), z.strictObject({ url, label: z.string().min(1).optional() }));
 
 const project = z.strictObject({
+  // Consecutive projects with the same section are listed under one heading.
+  section: z.string().min(1).optional(),
   name: z.string().min(1),
   description: z.string().optional(),
   screenshots: z.array(screenshot).max(3, 'At most 3 screenshots per project').default([]),
