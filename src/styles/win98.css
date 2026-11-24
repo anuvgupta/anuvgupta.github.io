@@ -378,26 +378,26 @@ html.ui-98,
   box-shadow: var(--sunken);
 }
 
-/* At night only the projects page's background changes, to a dim grey; its headings turn light to stay readable. */
+/* At night only the projects page's background changes, to near-black; its headings turn light to stay readable. */
 
 .ui-98 .window-body:has(> .projects-page) {
-  background: #4a4a4a;
+  background: #222;
 }
 
 .ui-98 .projects-page :is(.page-header h1, .project-section) {
-  color: #c4d4ff;
+  color: #9db9ff;
 }
 
 .ui-98 .projects-page .page-header {
-  border-image: linear-gradient(90deg, #a9bdf5, rgba(169, 189, 245, 0)) 1;
+  border-image: linear-gradient(90deg, #6f8fe6, rgba(111, 143, 230, 0)) 1;
 }
 
 .ui-98 .projects-page .project-section {
-  border-image: linear-gradient(90deg, #8ea4e0, transparent) 1;
+  border-image: linear-gradient(90deg, #4f6bb8, transparent) 1;
 }
 
 .ui-98 .projects-page .page-header p {
-  color: #d4d4d4;
+  color: #a0a0a0;
 }
 
 /* ------------------------------------------------------------------ Desktop */
