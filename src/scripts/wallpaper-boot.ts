@@ -201,8 +201,9 @@ class Cover {
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
   };
 
-  // Blocks clear from the middle of the screen outward. Each block's turn is
-  // its distance from the centre plus some jitter, so the edge stays ragged.
+  // Blocks clear from the middle of the screen outward as a growing rectangle
+  // with the screen's proportions. Each block's turn is how far out it sits
+  // (0 at the centre, 1 at the edges) plus some jitter, so the edge stays ragged.
   dissolve(ms = reducedMotion ? 0 : 650): Promise<void> {
     window.removeEventListener('resize', this.resize);
     const { canvas, ctx } = this;
@@ -212,11 +213,11 @@ class Cover {
     const rows = Math.ceil(canvas.height / cell);
     const cx = canvas.width / 2;
     const cy = canvas.height / 2;
-    const far = Math.hypot(cx, cy);
     const JITTER = 0.25;
     const turn = Array.from({ length: cols * rows }, (_, i) => {
-      const d = Math.hypot(((i % cols) + 0.5) * cell - cx, (Math.floor(i / cols) + 0.5) * cell - cy);
-      return (d / far) * (1 - JITTER) + Math.random() * JITTER;
+      const dx = Math.abs(((i % cols) + 0.5) * cell - cx) / cx;
+      const dy = Math.abs((Math.floor(i / cols) + 0.5) * cell - cy) / cy;
+      return Math.min(1, Math.max(dx, dy)) * (1 - JITTER) + Math.random() * JITTER;
     });
     const order = turn.map((_, i) => i).sort((a, b) => turn[a]! - turn[b]!);
     return new Promise((resolve) => {
