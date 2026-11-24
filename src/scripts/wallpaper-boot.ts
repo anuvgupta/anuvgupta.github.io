@@ -205,7 +205,7 @@ class Cover {
   // rounded rectangle with the screen's proportions. Each block's turn is how
   // far out it sits (0 at the centre, 1 in the corners) plus some jitter, so
   // the edge stays ragged.
-  dissolve(ms = reducedMotion ? 0 : 650): Promise<void> {
+  dissolve(ms = reducedMotion ? 0 : 300): Promise<void> {
     window.removeEventListener('resize', this.resize);
     const { canvas, ctx } = this;
     const dpr = canvas.width / Math.max(1, canvas.clientWidth);
