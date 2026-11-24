@@ -405,16 +405,18 @@ export class Grass {
           // grass still leans and sways as much, only more slowly.)
           float w = windAt( root ) * 2.2 + 0.05;
           // Far off the field sways as one: each blade's own phase and
-          // flutter fade out and the lean eases, so wide distant blades roll
-          // with the waves instead of jittering against each other.
+          // flutter fade out, so wide distant blades roll with the waves
+          // instead of jittering against each other. (Their full lean stays;
+          // the field-wide light and dark sweeps are added to their colour.)
           float calm = smoothstep( 25.0, 90.0, dist );
-          w *= 1.0 - 0.35 * calm;
           // Waves roll across the field quickly where it's exposed, slowly
           // in shelter (two waves blended, so neither ever shears).
           float we = windExposure( root );
           float waveF = sin( dot( root, uWindDir ) * 0.22 - uWindTravel * 0.9 + tr * 2.0 * ( 1.0 - calm ) );
           float waveS = sin( dot( root, uWindDir ) * 0.16 - uWindTravelSlow * 0.7 + tr * 2.0 * ( 1.0 - calm ) );
           float wave = mix( waveS, waveF, we ) * 0.5 + 0.5;
+          // How far the field leans here, for the far blades' group shading.
+          float sweep = w * ( 0.25 + 0.55 * wave );
           // (Each blade's own flutter, a slow sway every 4-7 s: the game's
           // 2-3 s flicker read as frantic on a still view.)
           float flutter = sin( uTime * ( 0.9 + br * 0.6 ) + br * 6.28 + dot( root, uWindDir ) * 0.6 ) * 0.5 * ( 1.0 - calm );
@@ -493,6 +495,11 @@ export class Grass {
           vColor.rgb = col * ( 0.96 + 0.08 * br ) * realmGrassTint( root );
           // Olive rather than lime: ease the saturation toward a warm grey.
           { float gl = dot( vColor.rgb, vec3( 0.3, 0.59, 0.11 ) ); vColor.rgb = mix( vColor.rgb, vec3( gl ) * vec3( 1.06, 1.0, 0.8 ), 0.15 ); }
+          // From afar you can't see a blade sway, only the field go lighter
+          // where a wave lays it over and darker where it stands back up: the
+          // same waves, as group light and dark sweeps rolling over the hill.
+          // (Centred on the usual breeze, so on average the colour holds.)
+          vColor.rgb *= mix( 1.0, clamp( 1.0 + 0.45 * ( sweep - 0.27 ), 0.72, 1.35 ), calm );
 `
         );
 
