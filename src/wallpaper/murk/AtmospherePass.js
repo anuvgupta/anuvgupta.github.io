@@ -319,7 +319,9 @@ const compositeShader = {
         // The land in front of a hidden sun takes none of its glow: the halo
         // and shafts land on the ground only as far as the disc is in view,
         // so a sun behind the hill leaves no pale column down its face.
-        float onLand = isSky ? 1.0 : open * open;
+        // (Steep: a sun mostly hidden leaves the hill nearly dark, while a
+        // sun in full view lights it exactly as before.)
+        float onLand = isSky ? 1.0 : open * open * open;
         color += uSunColor * disc * uDiscStrength;
         color += uSunColor * corona * uGlowStrength * coronaK * onLand * ( 0.7 + 0.3 * headroom );
         color += uSunColor * shaft * uShaftStrength * onLand * ( 0.7 + 0.3 * headroom );
@@ -368,7 +370,9 @@ const compositeShader = {
             spokes += w * bri * exp( -d * d / 0.0092 );
           }
           spokes *= exp( -length( pv - c ) * 9.0 ) * 0.5 * ( 1.0 + 0.1 * b3 );
-          color += uSunColor * ( ghosts + streak + spokes ) * facing * openG * uSunVisible * ( 0.6 + 0.4 * headroom );
+          // On the land, the glare too goes with the disc: no faint starburst
+          // painted on the hill in front of a sun set behind it.
+          color += uSunColor * ( ghosts + streak + spokes ) * facing * openG * onLand * uSunVisible * ( 0.6 + 0.4 * headroom );
         }
       }
 
