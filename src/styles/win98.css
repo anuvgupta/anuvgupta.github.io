@@ -460,13 +460,14 @@ html.ui-98 {
   box-shadow: var(--raised);
 }
 
-/* On/off switches: a square sunken white well with a raised grey knob, filled navy when on. */
+/* On/off switches: a square sunken grey well with a raised grey knob, filled with the title bars'
+   navy gradient when on. */
 .ui-98 .xp-switch {
   width: 40px;
   height: 20px;
   border: 0;
   border-radius: 0;
-  background: #fff;
+  background: #a9a9a9;
   box-shadow: var(--sunken);
 }
 
@@ -483,7 +484,7 @@ html.ui-98 {
 }
 
 .ui-98 .xp-switch:checked {
-  background: #000080;
+  background: var(--navy-bar);
 }
 
 .ui-98 .xp-switch:checked::before {
