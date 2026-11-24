@@ -43,7 +43,7 @@
       ]
     },
     {
-      "name": "notes-sync – Search iCloud Notes with AI",
+      "name": "notes-sync – Search Notes with AI",
       "year": 2026,
       "description": "Access your iCloud notes via AI search tools like vector search and/or Claude. Keeps a folder of Markdown files in sync with Apple Notes every 15 seconds, so Obsidian, grep or Basic Memory's semantic search can read your notes. Plain Python, run as a macOS launchd agent.",
       "github": ["https://github.com/anuvgupta/apple-notes-sync"]
@@ -149,7 +149,7 @@
         "Project Portfolio",
         "Murk3D",
         "Self-Hosted Voice Assistant",
-        "notes-sync – Search iCloud Notes with AI",
+        "notes-sync – Search Notes with AI",
         "PiWii",
         "turnstile-solver",
         "git-autosync",
@@ -192,7 +192,7 @@
       "title": "Tools",
       "projects": [
         "turnstile-solver",
-        "notes-sync – Search iCloud Notes with AI",
+        "notes-sync – Search Notes with AI",
         "git-autosync",
         "block.js – Simple UI Prototyping",
         "b.js – Build Automation Script"
