@@ -1326,6 +1326,7 @@ html.window-dragging * {
 
 .clock {
   white-space: nowrap;
+  -webkit-text-stroke: 0.4px currentColor; /* a touch heavier than plain Tahoma */
 }
 
 .balloon {
