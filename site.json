@@ -124,17 +124,6 @@
     },
     {
       "section": "B.C. (Before Claude)",
-      "name": "audiU",
-      "description": "Music recommendations from a neural network: Keras deep learning and ensemble models trained on Spotify data suggest songs you'll like.",
-      "github": ["https://github.com/anuvgupta/audiU"]
-    },
-    {
-      "section": "B.C. (Before Claude)",
-      "name": "UT Ticket Exchange",
-      "description": "An auction site where UT Austin students buy and sell sporting-event tickets. Built for IEEE Computer Society, 2020–21."
-    },
-    {
-      "section": "B.C. (Before Claude)",
       "name": "rubbr",
       "description": "A multiplayer .io-style car arena with socket.io and HTML5 canvas: crash cars, collect cash and race to the top of the leaderboard.",
       "screenshots": [
