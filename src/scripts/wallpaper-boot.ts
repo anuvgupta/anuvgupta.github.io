@@ -8,7 +8,7 @@
  * anything fails, the page falls back to the static wallpaper.
  */
 import { SUNRISE, SUNSET, NOON } from '../wallpaper/sun.js';
-import { nextZ } from './zorder';
+import { BOTTOM_Z, nextZ } from './zorder';
 
 const root = document.documentElement;
 const host = document.getElementById('wallpaper');
@@ -52,7 +52,13 @@ class Loader {
   constructor() {
     this.win.hidden = false;
     this.task.hidden = false;
-    this.raise();
+    // Alone on the desktop it opens in front; with a page window already open it opens behind it, inactive.
+    if (document.querySelector('.window[data-page]:not([hidden])')) {
+      this.win.style.zIndex = String(BOTTOM_Z);
+      this.setActive(false);
+    } else {
+      this.raise();
+    }
     this.win.querySelector('.tb-min')!.addEventListener('click', () => this.setMinimized(true));
     this.task.addEventListener('click', () => {
       if (this.win.hidden) this.setMinimized(false);

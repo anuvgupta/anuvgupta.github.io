@@ -1,5 +1,8 @@
 /** Stacking order shared by every window on the desktop: the page windows and the wallpaper loader. */
-let top = 10;
+/** Below every window that has been brought forward. */
+export const BOTTOM_Z = 10;
+
+let top = BOTTOM_Z;
 
 export const nextZ = () => ++top;
 
