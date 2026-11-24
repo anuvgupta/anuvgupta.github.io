@@ -829,32 +829,310 @@ html.window-dragging * {
   flex: none;
 }
 
-/* About */
+/* About: Frutiger Aero. Sky, glossy hills, drifting light ribbons and rising bubbles behind a glass card.
+   Everything moves with transform and opacity only, and holds still under reduced motion. */
 
 .about {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px 56px;
+  text-align: center;
+  font-family: "Segoe UI", Frutiger, "Frutiger Linotype", "Trebuchet MS", sans-serif;
+  background: linear-gradient(180deg, #1f86dc 0%, #55b6f0 34%, #a9e0fb 64%, #e4f7ff 100%);
+}
+
+.aero-scene {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  container-type: size;
+  pointer-events: none;
+}
+
+.aero-scene > * {
+  position: absolute;
+}
+
+.aero-glow {
+  top: -90px;
+  left: -70px;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.35) 30%, rgba(255, 255, 255, 0) 68%);
+  animation: aero-pulse 7s ease-in-out infinite alternate;
+}
+
+.aero-ribbon {
+  top: 16%;
+  left: -30%;
+  width: 160%;
+  height: 46%;
+  border-radius: 50%;
+  border-top: 2px solid rgba(255, 255, 255, 0.75);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0) 38%);
+  rotate: -7deg;
+  animation: aero-drift 14s ease-in-out infinite alternate;
+}
+
+.aero-ribbon-2 {
+  top: 30%;
+  border-top-color: rgba(214, 246, 255, 0.6);
+  rotate: 5deg;
+  animation-duration: 18s;
+  animation-direction: alternate-reverse;
+}
+
+.aero-hill {
+  bottom: -34%;
+  left: -18%;
+  width: 82%;
+  height: 58%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 45% 18%, #c8f58a 0%, #6fd04a 34%, #34a032 70%, #1f7a26 100%);
+  box-shadow: inset 0 10px 16px rgba(255, 255, 255, 0.55);
+  animation: aero-bob 9s ease-in-out infinite alternate;
+}
+
+.aero-hill-2 {
+  left: auto;
+  right: -22%;
+  bottom: -40%;
+  width: 90%;
+  background: radial-gradient(ellipse at 50% 16%, #a6ec74 0%, #52bd3f 36%, #268b2c 72%, #17661f 100%);
+  animation-duration: 11s;
+  animation-direction: alternate-reverse;
+}
+
+.aero-bubble {
+  bottom: calc(-1 * var(--s) - 10px);
+  left: var(--x);
+  width: var(--s);
+  height: var(--s);
+  animation: aero-rise var(--d) linear var(--t) infinite;
+}
+
+.aero-bubble::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.95) 0 9%, rgba(255, 255, 255, 0.2) 24%, rgba(190, 236, 255, 0.12) 56%, rgba(255, 255, 255, 0.6) 71%, rgba(255, 255, 255, 0) 73%);
+  box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.5);
+  animation: aero-sway calc(var(--d) / 4) ease-in-out infinite alternate;
+}
+
+.aero-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 40px 20px;
+  max-width: 100%;
+  padding: 26px 36px 24px;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(236, 249, 255, 0.55));
+  box-shadow:
+    0 14px 34px rgba(8, 64, 128, 0.28),
+    inset 0 1px 0 #fff,
+    inset 0 -12px 24px rgba(255, 255, 255, 0.35);
+  animation: aero-float 6s ease-in-out infinite alternate;
+}
+
+/* Glossy reflection across the card's top half. */
+.aero-card::before {
+  content: "";
+  position: absolute;
+  inset: 1px 1px 52% 1px;
+  border-radius: 19px 19px 50% 50% / 19px 19px 22px 22px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.1));
+  pointer-events: none;
+}
+
+.aero-card > * {
+  position: relative;
+}
+
+.about .user-tile {
+  position: relative;
+  border-radius: 10px;
+  box-shadow:
+    0 0 0 1px rgba(9, 70, 130, 0.25),
+    0 6px 16px rgba(8, 64, 128, 0.35);
+}
+
+/* A shine that sweeps across the picture every few seconds. */
+.about .user-tile::after {
+  content: "";
+  position: absolute;
+  inset: -20% auto -20% -60%;
+  width: 45%;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0));
+  rotate: 20deg;
+  animation: aero-shine 6s ease-in-out 1s infinite;
 }
 
 .about h1 {
-  margin: 16px 0 2px;
-  font: bold 28px var(--title-font);
-  color: #0b3a9e;
+  margin: 16px 0 4px;
+  font: 600 30px/1.15 "Segoe UI", Frutiger, "Frutiger Linotype", "Trebuchet MS", sans-serif;
+  color: #0c5bb5;
+  background: linear-gradient(180deg, #2a8ee8 0%, #0a4fa3 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 1px 0 #fff) drop-shadow(0 0 6px rgba(255, 255, 255, 0.9));
 }
 
 .tagline {
   margin: 0 0 18px;
   font-size: 15px;
-  color: #555;
+  color: #1d4f7a;
 }
 
 .about-links {
   justify-content: center;
+  gap: 10px;
+}
+
+/* Aqua pill buttons for the About links. */
+.about .xp-btn {
+  gap: 7px;
+  min-height: 30px;
+  padding: 4px 16px 4px 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  text-shadow: 0 1px 1px rgba(0, 45, 100, 0.55);
+  border: 1px solid #1f74bf;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #a7e2ff 0%, #4fb6f2 48%, #1e8ad9 52%, #48b8f4 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.85),
+    0 3px 8px rgba(8, 64, 128, 0.3);
+  transition: box-shadow 0.2s, filter 0.2s;
+}
+
+.about .xp-btn:hover {
+  filter: brightness(1.08);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.85),
+    0 0 12px rgba(120, 214, 255, 0.95),
+    0 3px 8px rgba(8, 64, 128, 0.3);
+}
+
+.about .xp-btn:active {
+  filter: brightness(0.92);
+  background: linear-gradient(180deg, #3aa2e6 0%, #1a7fcf 50%, #2d98e2 100%);
+  box-shadow: inset 0 2px 4px rgba(0, 40, 90, 0.4);
+}
+
+.about .xp-btn:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+.about .xp-btn img {
+  width: 20px;
+  height: 20px;
+  padding: 2px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 30%, #fff, #e3f3ff);
+  box-shadow: 0 1px 2px rgba(0, 45, 100, 0.4);
+}
+
+@keyframes aero-rise {
+  0% {
+    translate: 0 0;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 0.9;
+  }
+  100% {
+    translate: 0 calc(-100cqh - var(--s) - 20px);
+    opacity: 0;
+  }
+}
+
+@keyframes aero-sway {
+  from {
+    translate: calc(-1 * var(--w)) 0;
+  }
+  to {
+    translate: var(--w) 0;
+  }
+}
+
+@keyframes aero-float {
+  from {
+    translate: 0 3px;
+  }
+  to {
+    translate: 0 -4px;
+  }
+}
+
+@keyframes aero-bob {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: 0 -8px;
+  }
+}
+
+@keyframes aero-drift {
+  from {
+    translate: -3% 0;
+  }
+  to {
+    translate: 3% 6px;
+  }
+}
+
+@keyframes aero-pulse {
+  from {
+    opacity: 0.75;
+    scale: 0.94;
+  }
+  to {
+    opacity: 1;
+    scale: 1.06;
+  }
+}
+
+@keyframes aero-shine {
+  0%,
+  60% {
+    translate: 0 0;
+  }
+  100% {
+    translate: 420% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about *,
+  .about *::before,
+  .about *::after {
+    animation: none !important;
+  }
+
+  .aero-bubble {
+    bottom: var(--y);
+  }
+
+  .about .user-tile::after {
+    display: none;
+  }
 }
 
 /* User picture tile (Start menu + About) */
