@@ -281,18 +281,18 @@ export class Environment {
     const golden = (1 - smoothstep(0.02, 0.45, elev)) * smoothstep(-0.14, 0.0, elev);
     this.nightFactor = 1 - smoothstep(-0.2, 0.02, elev);
 
-    // Some nights are clouded in scattered banks with clear sky between
-    // (they used to cover nearly all of it), some clear (each night's own
-    // throw, noon to noon); the moon lights the clouds blue- or violet-grey.
+    // The night keeps scattered banks with clear sky between, a little more
+    // or less of them from one visit to the next (one throw per page load, so
+    // the whole night matches: picked per calendar night, scrubbing the time
+    // past midnight jumped to the night before, often cloudy one side and
+    // clear the other); the moon lights them blue- or violet-grey.
     {
-      const night = Math.floor((this.dayCount * 24 + this.timeOfDay - 12) / 24);
       const hash = (k) => {
-        const s = Math.sin((night + this.nightSeed) * 127.1 + k * 311.7) * 43758.5453;
+        const s = Math.sin(this.nightSeed * 127.1 + k * 311.7) * 43758.5453;
         return s - Math.floor(s);
       };
-      const cloudy = this.nightClouds !== undefined ? this.nightClouds : hash(1) < 0.5 ? 1 : 0;
       const su = this.sky.material.uniforms;
-      if (su.cloudCoverage) su.cloudCoverage.value = THREE.MathUtils.lerp(DAY_CLOUDS, cloudy ? 0.42 : 0.05, this.nightFactor);
+      if (su.cloudCoverage) su.cloudCoverage.value = THREE.MathUtils.lerp(DAY_CLOUDS, 0.2 + 0.14 * hash(1), this.nightFactor);
       const moon = this.viewMoonDirection(sunTime, this._cloudMoon || (this._cloudMoon = new THREE.Vector3()));
       su.cloudMoonDir.value.copy(moon);
       const lit = 0.35 + 0.65 * smoothstep(-0.05, 0.25, moon.y);
