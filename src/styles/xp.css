@@ -1369,6 +1369,63 @@ html.window-dragging * {
   border-radius: 6px;
 }
 
+/* The profile picture (here, on the About page, and the Start button's logo) glows softly in and out, and every
+   few seconds a shine sweeps across it from top right to bottom left at a slight angle. */
+:is(.user-tile, .start-logo) {
+  position: relative;
+}
+
+:is(.user-tile, .start-logo)::before,
+:is(.user-tile, .start-logo)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+:is(.user-tile, .start-logo)::before {
+  background: #fff;
+  opacity: 0;
+  animation: picture-glow 5s ease-in-out infinite alternate;
+}
+
+:is(.user-tile, .start-logo)::after {
+  background: linear-gradient(242deg, transparent 38%, rgba(255, 255, 255, 0.12) 45%, rgba(255, 255, 255, 0.6) 50%,
+      rgba(255, 255, 255, 0.12) 55%, transparent 62%)
+    0 100% / 300% 300% no-repeat;
+  animation: picture-shine 7s ease-in-out infinite;
+}
+
+/* The Start button's logo has no frame, so its glow and shine follow the icon's own shape. */
+.start-logo::before,
+.start-logo::after {
+  -webkit-mask: url("/img/icons/circuit.svg") center / contain no-repeat;
+  mask: url("/img/icons/circuit.svg") center / contain no-repeat;
+}
+
+@keyframes picture-glow {
+  to {
+    opacity: 0.07;
+  }
+}
+
+@keyframes picture-shine {
+  0% {
+    background-position: 0 100%;
+  }
+  14%,
+  100% {
+    background-position: 100% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :is(.user-tile, .start-logo)::before,
+  :is(.user-tile, .start-logo)::after {
+    animation: none;
+  }
+}
+
 /* ------------------------------------------------------------------ Taskbar */
 
 .taskbar {
