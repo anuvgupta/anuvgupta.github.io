@@ -22,12 +22,17 @@ const MOON_YAW_RISE = 0.38; // radians right of straight ahead
 const MOON_YAW_SET = 0.2;
 // Cloud cover by day: scattered banks with plenty of open sky.
 const DAY_CLOUDS = 0.36;
+// The afternoon's deeper blue (hours): none before DEEP_START, full at
+// DEEP_FULL, gone again by DEEP_END.
+const DEEP_START = 13;
+const DEEP_FULL = 15.5;
+const DEEP_END = 18.25;
 
 // The sky's final output: soft-clip the in-scatter so a low sun grades into
 // a glow rather than a white-out, and cap it so bloom never runs away. Goes
 // on after the cloud style is spliced in (the splice replaces the tail).
 function finishSkyFragment(fragment) {
-  return fragment.replace(
+  return fragment.replace('void main()', 'uniform float skyDeep;\nvoid main()').replace(
     'gl_FragColor = vec4( texColor, 1.0 );',
     `{
       // Hue-preserving soft clip: compress luminance, keep the colour ratio,
@@ -43,6 +48,11 @@ function finishSkyFragment(fragment) {
       // Only on the open sky: tinted too, the clouds went a dim lavender.
       float clear = 1.0 - smoothstep( 0.0, 0.45, skyCloudA );
       texColor = mix( texColor, texColor * vec3( 0.32, 0.54, 1.05 ), dayF * up * clear );
+      // Through the afternoon (skyDeep, by the hour) it saturates further,
+      // to Bliss's blues: deep at the top, lighter toward the horizon.
+      float deepUp = smoothstep( 0.0, 0.45, direction.y );
+      vec3 deep = mix( vec3( 0.55, 0.52, 1.2 ), vec3( 0.1, 0.13, 1.3 ), deepUp );
+      texColor = mix( texColor, texColor * deep, skyDeep * clear );
     }
     {
       // Golden hour: the whole horizon warms, not just the sun's side.
@@ -166,6 +176,7 @@ export class Environment {
     }
     u.cloudNightCol = { value: new THREE.Vector3() };
     u.cloudMoonDir = { value: new THREE.Vector3(0, 1, 0) };
+    u.skyDeep = { value: 0 };
     // The clouds drift forward, away into the distance (-x, the way the view
     // looks), leaning 5-20 degrees left or right, picked at random each
     // visit. Features move along -cloudDrift on the cloud plane. Fast enough
@@ -273,6 +284,9 @@ export class Environment {
     this.focusHeight = focus.y;
 
     const sunTime = this.timeOfDay;
+    // The afternoon sky deepens to Bliss blue from 1 PM to 3:30 PM, then eases
+    // back into the usual sunset sky by about 6:15 PM.
+    this.sky.material.uniforms.skyDeep.value = smoothstep(DEEP_START, DEEP_FULL, sunTime) * (1 - smoothstep(DEEP_FULL, DEEP_END, sunTime));
     const sunDir = this.computeSunDirection(sunTime, this.sunDir);
     // The view looks west, so mirror the morning half of the sun's path onto
     // the west as well: it rises over the hill just as it sets there. The two
