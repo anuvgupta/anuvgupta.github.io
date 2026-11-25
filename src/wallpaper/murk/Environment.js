@@ -25,12 +25,11 @@ const DAY_CLOUDS = 0.36;
 // The afternoon's deeper blue (hours): none before DEEP_START, rising
 // slowly until DEEP_FULL, then easing back out into the sunset by DEEP_END.
 // The rise follows a ramp that would only be complete at DEEP_RAMP_END but
-// stops at DEEP_FULL, about 82% of the way: the full ramp to 3:30 came out
-// too blue, and Anuv liked its 2:50 strength, so that is now the most it
-// reaches, at 3:30.
+// stops at DEEP_FULL, about 68% of the way: the full ramp to 3:30 came out
+// too blue, and so did 82% (its old 2:50 strength).
 const DEEP_START = 13;
 const DEEP_FULL = 15.5;
-const DEEP_RAMP_END = 16.41;
+const DEEP_RAMP_END = 17.0;
 const DEEP_END = 18.25;
 
 // The sky's final output: soft-clip the in-scatter so a low sun grades into
