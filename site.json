@@ -115,7 +115,11 @@
       "name": "Sketchy – Image Gen Sketchpad",
       "year": 2024,
       "description": "A website for generating images with Stable Diffusion: a ComfyUI worker on RunPod's serverless GPUs, AWS infrastructure in CDK, and a simple web frontend.",
-      "github": ["https://github.com/anuvgupta/image-gen-frontend", "https://github.com/anuvgupta/image-gen-infra", "https://github.com/anuvgupta/runpod-worker-comfyui", "https://github.com/anuvgupta/runpod-pod-downloader"],
+      "github": [
+        { "url": "https://github.com/anuvgupta/runpod-worker-comfyui", "label": "Worker" },
+        { "url": "https://github.com/anuvgupta/image-gen-infra", "label": "Infra" },
+        { "url": "https://github.com/anuvgupta/image-gen-frontend", "label": "Frontend" }
+      ],
       "links": [
         { "label": "Website", "url": "https://images.anuv.me" }
       ]
