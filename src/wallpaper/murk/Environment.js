@@ -27,9 +27,9 @@ const DAY_CLOUDS = 0.36;
 // DEEP_END. The rise follows a ramp that would only be complete at
 // DEEP_RAMP_END but stops at DEEP_FULL, about 68% of the way (the full
 // ramp, and then 82% of it, came out too blue).
-const DEEP_START = 11.75;
+const DEEP_START = 11;
 const DEEP_FULL = 16.75;
-const DEEP_RAMP_END = 19.79;
+const DEEP_RAMP_END = 20.24;
 const DEEP_END = 18.5;
 
 // The sky's final output: soft-clip the in-scatter so a low sun grades into
@@ -289,7 +289,7 @@ export class Environment {
     this.focusHeight = focus.y;
 
     const sunTime = this.timeOfDay;
-    // The afternoon sky deepens toward Bliss blue from 11:45 AM to 4:45 PM, then
+    // The afternoon sky deepens toward Bliss blue from 11 AM to 4:45 PM, then
     // eases back into the usual sunset sky by about 6:30 PM.
     const rise = smoothstep(DEEP_START, DEEP_RAMP_END, Math.min(sunTime, DEEP_FULL));
     this.sky.material.uniforms.skyDeep.value = rise * (1 - smoothstep(DEEP_FULL, DEEP_END, sunTime));
