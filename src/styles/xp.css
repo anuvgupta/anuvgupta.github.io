@@ -1375,7 +1375,7 @@ html.window-dragging * {
 }
 
 /* The profile picture (here, on the About page, and the Start button's logo) glows softly in and out, and every
-   few seconds a shine sweeps across it from top right to bottom left at a slight angle. */
+   now and then a broad shine sweeps slowly across it from right to left, tilted slightly. */
 :is(.user-tile, .start-logo) {
   position: relative;
 }
@@ -1395,10 +1395,10 @@ html.window-dragging * {
 }
 
 :is(.user-tile, .start-logo)::after {
-  background: linear-gradient(242deg, transparent 38%, rgba(255, 255, 255, 0.12) 45%, rgba(255, 255, 255, 0.6) 50%,
-      rgba(255, 255, 255, 0.12) 55%, transparent 62%)
-    0 100% / 300% 300% no-repeat;
-  animation: picture-shine 7s ease-in-out infinite;
+  background: linear-gradient(100deg, transparent 32%, rgba(255, 255, 255, 0.14) 42%, rgba(255, 255, 255, 0.55) 50%,
+      rgba(255, 255, 255, 0.14) 58%, transparent 68%)
+    0 0 / 300% 100% no-repeat;
+  animation: picture-shine 14s ease-in-out infinite;
 }
 
 /* The Start button's logo has no frame, so its glow and shine follow the icon's own shape. */
@@ -1416,9 +1416,9 @@ html.window-dragging * {
 
 @keyframes picture-shine {
   0% {
-    background-position: 0 100%;
+    background-position: 0 0;
   }
-  14%,
+  13%,
   100% {
     background-position: 100% 0;
   }
