@@ -30,6 +30,9 @@ const FAR_COVER = 'mix( 0.35, 1.0, smoothstep( 0.03, 0.28, direction.y ) )';
 // 15% and the cirrus fades out; from 0.12 rad (about 7 degrees) up nothing
 // changes.
 const HORIZON_CLEAR = 'smoothstep( 0.04, 0.12, direction.y )';
+// By night the clouds are drawn this much as opaque as by day, so the dark
+// sky (and the stars, which use the same share) shows through them.
+export const NIGHT_CLOUD_ALPHA = '0.6';
 
 export const CLOUD_STYLES = ['realistic', 'ghibli', 'painterly'];
 // Where the chosen style is kept. (Renamed when painterly became the
@@ -255,14 +258,16 @@ const STYLES = {
       float glowK = smoothstep( 0.05, -0.03, vSunDirection.y ) * smoothstep( -0.22, -0.08, vSunDirection.y );
       float sunSide = clamp( 0.5 + 0.5 * dot( normalize( direction.xz + vec2( 1e-5, 0.0 ) ), normalize( vSunDirection.xz + vec2( 1e-5, 0.0 ) ) ), 0.0, 1.0 );
       bankColor += vec3( 0.06, 0.026, 0.034 ) * glowK * ( 0.3 + 0.7 * sunSide * sunSide ) * ( 1.0 - 0.4 * shadow );
-      float aBank = dens * horizonFade * clamp( cloudDensity * 1.5, 0.0, 0.75 );
+      // By night the clouds are thinner veils: their opacity falls to
+      // NIGHT_CLOUD_ALPHA of the day's, so the night sky shows through.
+      float nightK = 1.0 - dayFactor;
+      float aBank = dens * horizonFade * clamp( cloudDensity * 1.5, 0.0, 0.75 ) * mix( 1.0, ${NIGHT_CLOUD_ALPHA}, nightK );
       texColor -= L0 * 0.04 * aBank;
       texColor = mix( texColor, mix( texColor, bankColor, Fex ), aBank );
       // By night the moon lights them: blue- or violet-grey, a little above
       // the sky, paler on the moon's side and darker in their bellies, their
       // rims silvered near the moon itself. Laid on directly (through the
       // air's extinction above, the blue went and they turned brown).
-      float nightK = 1.0 - dayFactor;
       float moonC = clamp( dot( direction, cloudMoonDir ), 0.0, 1.0 );
       vec3 nightCloud = cloudNightCol * ( 1.0 - 0.5 * shadow ) * ( 0.8 + 0.2 * dens ) + cloudNightCol * 3.0 * pow( moonC, 16.0 ) * ( 0.3 + edge );
       texColor = mix( texColor, nightCloud, aBank * nightK );
@@ -274,7 +279,7 @@ const STYLES = {
       float breakup = noise( st * 0.4 + 4.0 ) * 0.5 + 0.5;
       // (Fewer strokes far off, as the banks: the threshold rises toward the horizon.)
       float cirrusTh = 0.66 + 0.14 * ( 1.0 - farCover ) / 0.65;
-      float cirrus = smoothstep( cirrusTh, cirrusTh + 0.18, streak ) * smoothstep( 0.52, 0.74, breakup ) * 0.2 * horizonClear * horizonClear;
+      float cirrus = smoothstep( cirrusTh, cirrusTh + 0.18, streak ) * smoothstep( 0.52, 0.74, breakup ) * 0.2 * horizonClear * horizonClear * mix( 1.0, ${NIGHT_CLOUD_ALPHA}, nightK );
       vec3 cirrusColor = ( skyAmb * 1.2 + sunCol * 1.0 ) * max( dayFactor, 0.03 );
       texColor = mix( texColor, mix( texColor, cirrusColor, Fex ), cirrus * horizonFade );
       texColor = mix( texColor, cloudNightCol * 0.8, cirrus * horizonFade * nightK );

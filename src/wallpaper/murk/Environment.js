@@ -6,7 +6,7 @@
 import * as THREE from 'three';
 import { Sky } from 'three/addons/objects/Sky.js';
 import { smoothstep, mulberry32 } from './noise.js';
-import { applyCloudStyle, CLOUD_BANKS_GLSL } from './clouds.js';
+import { applyCloudStyle, CLOUD_BANKS_GLSL, NIGHT_CLOUD_ALPHA } from './clouds.js';
 import { SUNRISE, SUNSET, DAY_LENGTH } from '../sun.js';
 
 const LATITUDE_TILT = 0.6; // radians; noon sun sits ~56° up in the south (+z)
@@ -639,7 +639,7 @@ function createStars(moonAt) {
         `{
           // Distance from the centre in units of the star's radius.
           float rr = length( gl_PointCoord - 0.5 ) * vSprite / ( vStar * 0.5 );
-          diffuseColor.a *= exp( -rr * rr * 3.2 ) * smoothstep( 0.02, 0.35, vElev ) * ( 0.85 + 0.3 * vTwinkle ) * mix( 0.85, 1.0, vFlick ) * ( 1.0 - 0.9 * vOut ) * ( 1.0 - min( 1.0, vCloud * 1.35 ) );
+          diffuseColor.a *= exp( -rr * rr * 3.2 ) * smoothstep( 0.02, 0.35, vElev ) * ( 0.85 + 0.3 * vTwinkle ) * mix( 0.85, 1.0, vFlick ) * ( 1.0 - 0.9 * vOut ) * ( 1.0 - min( 1.0, vCloud * 1.35 * ${NIGHT_CLOUD_ALPHA} ) );
         }
         #include <opaque_fragment>`
       );
