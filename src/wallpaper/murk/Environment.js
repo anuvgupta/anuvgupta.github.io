@@ -22,10 +22,15 @@ const MOON_YAW_RISE = 0.38; // radians right of straight ahead
 const MOON_YAW_SET = 0.2;
 // Cloud cover by day: scattered banks with plenty of open sky.
 const DAY_CLOUDS = 0.36;
-// The afternoon's deeper blue (hours): none before DEEP_START, full at
-// DEEP_FULL, gone again by DEEP_END.
+// The afternoon's deeper blue (hours): none before DEEP_START, rising
+// slowly until DEEP_FULL, then easing back out into the sunset by DEEP_END.
+// The rise follows a ramp that would only be complete at DEEP_RAMP_END but
+// stops at DEEP_FULL, about 82% of the way: the full ramp to 3:30 came out
+// too blue, and Anuv liked its 2:50 strength, so that is now the most it
+// reaches, at 3:30.
 const DEEP_START = 13;
 const DEEP_FULL = 15.5;
+const DEEP_RAMP_END = 16.41;
 const DEEP_END = 18.25;
 
 // The sky's final output: soft-clip the in-scatter so a low sun grades into
@@ -284,9 +289,10 @@ export class Environment {
     this.focusHeight = focus.y;
 
     const sunTime = this.timeOfDay;
-    // The afternoon sky deepens to Bliss blue from 1 PM to 3:30 PM, then eases
-    // back into the usual sunset sky by about 6:15 PM.
-    this.sky.material.uniforms.skyDeep.value = smoothstep(DEEP_START, DEEP_FULL, sunTime) * (1 - smoothstep(DEEP_FULL, DEEP_END, sunTime));
+    // The afternoon sky deepens toward Bliss blue from 1 PM to 3:30 PM, then
+    // eases back into the usual sunset sky by about 6:15 PM.
+    const rise = smoothstep(DEEP_START, DEEP_RAMP_END, Math.min(sunTime, DEEP_FULL));
+    this.sky.material.uniforms.skyDeep.value = rise * (1 - smoothstep(DEEP_FULL, DEEP_END, sunTime));
     const sunDir = this.computeSunDirection(sunTime, this.sunDir);
     // The view looks west, so mirror the morning half of the sun's path onto
     // the west as well: it rises over the hill just as it sets there. The two
