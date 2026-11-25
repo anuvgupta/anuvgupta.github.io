@@ -363,6 +363,21 @@ html.ui-98,
   outline-offset: 1px;
 }
 
+/* Several repos sit together in a small Windows 98 group box titled GitHub. */
+.repo-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 2px 8px 8px;
+  border: 1px solid var(--face-shadow);
+  box-shadow: 1px 1px var(--face-light), inset 1px 1px var(--face-light);
+}
+
+.repo-group legend {
+  padding: 0 3px;
+}
+
 :is(.ui-98, .projects-page) .xp-btn {
   padding: 4px 12px 4px 9px;
   border: 0;

@@ -138,9 +138,17 @@ const panelId = (i: number) => `${page.id}-panel-${i}`;
                 )}
                 {(p.github.length > 0 || p.links.length > 0) && (
                   <div class="project-links">
-                    {p.github.map((g) => (
-                      <LinkButton href={g.url} label={g.label ?? (p.github.length > 1 ? repoName(g.url) : 'GitHub')} icon={LINK_ICONS.github} />
-                    ))}
+                    {p.github.length === 1 && (
+                      <LinkButton href={p.github[0].url} label={p.github[0].label ?? 'GitHub'} icon={LINK_ICONS.github} />
+                    )}
+                    {p.github.length > 1 && (
+                      <fieldset class="repo-group">
+                        <legend>GitHub</legend>
+                        {p.github.map((g) => (
+                          <LinkButton href={g.url} label={g.label ?? repoName(g.url)} icon={LINK_ICONS.github} />
+                        ))}
+                      </fieldset>
+                    )}
                     {p.links.map((l) => (
                       <LinkButton href={l.url} label={l.label} icon={LINK_ICONS.link} />
                     ))}
