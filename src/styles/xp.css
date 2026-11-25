@@ -1210,9 +1210,9 @@ html.window-dragging * {
   gap: 6px;
 }
 
-/* A button sharing a row with a taller repo group keeps its own height. */
+/* Buttons line up on their text, so one beside a repo group sits level with the buttons inside it. */
 .project-links {
-  align-items: flex-start;
+  align-items: last baseline;
 }
 
 /* XP push button, used for links */
