@@ -23,14 +23,14 @@ const MOON_YAW_SET = 0.2;
 // Cloud cover by day: scattered banks with plenty of open sky.
 const DAY_CLOUDS = 0.36;
 // The afternoon's deeper blue (hours): none before DEEP_START, rising
-// slowly until DEEP_FULL, then easing back out into the sunset by DEEP_END.
-// The rise follows a ramp that would only be complete at DEEP_RAMP_END but
-// stops at DEEP_FULL, about 68% of the way: the full ramp to 3:30 came out
-// too blue, and so did 82% (its old 2:50 strength).
+// slowly until DEEP_FULL (4:45 PM), then easing back out into the sunset by
+// DEEP_END. The rise follows a ramp that would only be complete at
+// DEEP_RAMP_END but stops at DEEP_FULL, about 68% of the way (the full
+// ramp, and then 82% of it, came out too blue).
 const DEEP_START = 13;
-const DEEP_FULL = 15.5;
-const DEEP_RAMP_END = 17.0;
-const DEEP_END = 18.25;
+const DEEP_FULL = 16.75;
+const DEEP_RAMP_END = 19.03;
+const DEEP_END = 18.5;
 
 // The sky's final output: soft-clip the in-scatter so a low sun grades into
 // a glow rather than a white-out, and cap it so bloom never runs away. Goes
@@ -53,9 +53,10 @@ function finishSkyFragment(fragment) {
       float clear = 1.0 - smoothstep( 0.0, 0.45, skyCloudA );
       texColor = mix( texColor, texColor * vec3( 0.32, 0.54, 1.05 ), dayF * up * clear );
       // Through the afternoon (skyDeep, by the hour) it saturates further,
-      // to Bliss's blues: deep at the top, lighter toward the horizon.
-      float deepUp = smoothstep( 0.0, 0.45, direction.y );
-      vec3 deep = mix( vec3( 0.55, 0.52, 1.2 ), vec3( 0.1, 0.13, 1.3 ), deepUp );
+      // to Bliss's blues: deep at the top, lighter toward the horizon, but
+      // carried well down the sky so the middle doesn't stay nearly white.
+      float deepUp = smoothstep( -0.03, 0.32, direction.y );
+      vec3 deep = mix( vec3( 0.3, 0.36, 1.28 ), vec3( 0.15, 0.21, 1.28 ), deepUp );
       texColor = mix( texColor, texColor * deep, skyDeep * clear );
     }
     {
@@ -288,8 +289,8 @@ export class Environment {
     this.focusHeight = focus.y;
 
     const sunTime = this.timeOfDay;
-    // The afternoon sky deepens toward Bliss blue from 1 PM to 3:30 PM, then
-    // eases back into the usual sunset sky by about 6:15 PM.
+    // The afternoon sky deepens toward Bliss blue from 1 PM to 4:45 PM, then
+    // eases back into the usual sunset sky by about 6:30 PM.
     const rise = smoothstep(DEEP_START, DEEP_RAMP_END, Math.min(sunTime, DEEP_FULL));
     this.sky.material.uniforms.skyDeep.value = rise * (1 - smoothstep(DEEP_FULL, DEEP_END, sunTime));
     const sunDir = this.computeSunDirection(sunTime, this.sunDir);
