@@ -32,7 +32,7 @@ const FAR_COVER = 'mix( 0.35, 1.0, smoothstep( 0.03, 0.28, direction.y ) )';
 const HORIZON_CLEAR = 'smoothstep( 0.04, 0.12, direction.y )';
 // By night the clouds are drawn this much as opaque as by day, so the dark
 // sky (and the stars, which use the same share) shows through them.
-export const NIGHT_CLOUD_ALPHA = '0.6';
+export const NIGHT_CLOUD_ALPHA = '0.45';
 
 export const CLOUD_STYLES = ['realistic', 'ghibli', 'painterly'];
 // Where the chosen style is kept. (Renamed when painterly became the
