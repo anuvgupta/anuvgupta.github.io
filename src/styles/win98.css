@@ -374,12 +374,17 @@ html.ui-98,
   box-shadow: 1px 1px var(--face-light), inset 1px 1px var(--face-light);
 }
 
+/* The title sits on the card's grey, which hides the box's edge lines behind it. */
 .repo-group legend {
   padding: 0 3px;
+  background: var(--xp-face);
 }
 
+/* 22px tall like a Windows 98 push button: the 16px icon and one 16px line of text, with 3px above and below. */
 :is(.ui-98, .projects-page) .xp-btn {
-  padding: 4px 12px 4px 9px;
+  min-height: 0;
+  padding: 3px 12px 3px 9px;
+  line-height: 16px;
   border: 0;
   border-radius: 0;
   background: var(--xp-face);
@@ -397,7 +402,7 @@ html.ui-98,
 }
 
 :is(.ui-98, .projects-page) .xp-btn:active {
-  padding: 5px 11px 3px 10px;
+  padding: 4px 11px 2px 10px;
   background: var(--xp-face);
   box-shadow: var(--sunken);
 }

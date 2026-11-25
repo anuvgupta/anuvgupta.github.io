@@ -1210,6 +1210,11 @@ html.window-dragging * {
   gap: 6px;
 }
 
+/* A button sharing a row with a taller repo group keeps its own height. */
+.project-links {
+  align-items: flex-start;
+}
+
 /* XP push button, used for links */
 
 .xp-btn {
