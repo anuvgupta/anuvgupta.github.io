@@ -24,7 +24,7 @@ export const UI_DAY_END = 19;
 export const CLAUDE_ERA_START = 2024;
 
 /** The user picture in the Start menu header and on the About page. */
-export const USER_PICTURE = '/img/icons/circuit.svg';
+export const USER_PICTURE = '/img/icons/terminal.svg';
 
 export function repoName(url: string) {
   try {

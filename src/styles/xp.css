@@ -1358,13 +1358,18 @@ html.window-dragging * {
     1px 2px 4px rgba(0, 0, 0, 0.4);
 }
 
-/* The picture's board is drawn with rounded corners at 1.25–30.75 of its 32-unit box. Scaling by 32/27
-   crops it to 2.5–29.5, inside the corner curves, so the board fills the frame edge to edge. */
+/* The picture's terminal window spans 14 of its 16 units across and starts 2 units down. Scaling by 16/14 and
+   lifting it puts the window's edges and title bar on the frame; the screen's black fills the strip below. */
+.user-tile {
+  background: #14161a;
+}
+
 .user-tile img {
   display: block;
   width: 100%;
   height: 100%;
-  scale: 1.19;
+  scale: 1.143;
+  translate: 0 -7.14%;
 }
 
 .user-tile-lg {
@@ -1405,8 +1410,8 @@ html.window-dragging * {
 /* The Start button's logo has no frame, so its glow and shine follow the icon's own shape. */
 .start-logo::before,
 .start-logo::after {
-  -webkit-mask: url("/img/icons/circuit.svg") center / contain no-repeat;
-  mask: url("/img/icons/circuit.svg") center / contain no-repeat;
+  -webkit-mask: url("/img/icons/terminal.svg") center / contain no-repeat;
+  mask: url("/img/icons/terminal.svg") center / contain no-repeat;
 }
 
 @keyframes picture-glow {
@@ -1489,14 +1494,14 @@ html.window-dragging * {
   cursor: pointer;
 }
 
-/* Circuit-board mark in the logo slot, sized up from XP's ~17px flag so its detail reads. */
+/* Terminal mark in the logo slot, at 16px so each of its art pixels lands on whole screen pixels. */
 .start-logo {
   flex: none;
-  width: 22px;
-  height: 22px;
+  width: 16px;
+  height: 16px;
   /* The button's 2px bottom padding puts the text's ink at the bar's centre; this puts the icon there too. */
   translate: 0 1px;
-  background: url("/img/icons/circuit.svg") center / contain no-repeat;
+  background: url("/img/icons/terminal.svg") center / contain no-repeat;
   filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.5));
 }
 
