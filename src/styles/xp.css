@@ -383,7 +383,8 @@ html:not(.js) .window[hidden]:target {
 }
 
 /* An on/off switch drawn in the XP palette: a sunken track, darker on the left and brighter on the
-   right, that turns green when on. */
+   right, that turns periwinkle blue when on (the blue of XP's Explorer task pane, not the taskbar's or title
+   bars'). */
 .xp-switch {
   position: relative;
   flex: none;
@@ -408,7 +409,7 @@ html:not(.js) .window[hidden]:target {
   width: 12px;
   height: 12px;
   border: 1px solid;
-  border-color: inherit; /* the track's outline: blue-grey off, green on */
+  border-color: inherit; /* the track's outline: blue-grey off, periwinkle on */
   border-radius: 50%;
   background: linear-gradient(180deg, #fff, #e6eefc 45%, #c0d0ef);
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
@@ -416,8 +417,8 @@ html:not(.js) .window[hidden]:target {
 }
 
 .xp-switch:checked {
-  border-color: #2b8a2b;
-  background: linear-gradient(90deg, #2a952a, #7fdc7f);
+  border-color: #3f5fbf;
+  background: linear-gradient(90deg, #5574d8, #a5c3f7);
 }
 
 .xp-switch:checked::before {
