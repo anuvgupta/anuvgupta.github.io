@@ -614,6 +614,12 @@ html.ui-98,
   background: #000080;
 }
 
+/* Windows 98 drew its selection rectangle as a dotted outline with nothing inside. */
+.ui-98 .marquee {
+  border: 1px dotted #fff;
+  background: none;
+}
+
 /* Wallpaper widget: a small Windows 98 tool window. */
 
 .ui-98 .wp-widget {

@@ -514,6 +514,14 @@ html:not(.js) .window[hidden]:target {
   outline: none;
 }
 
+/* The selection rectangle drawn by dragging on the empty desktop. */
+.marquee {
+  position: absolute;
+  pointer-events: none;
+  border: 1px solid #3a6fd8;
+  background: rgba(58, 111, 216, 0.3);
+}
+
 /* ------------------------------------------------------------------ Windows */
 
 .window {

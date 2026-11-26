@@ -356,37 +356,122 @@ for (const menu of $$('.menu', desktopEl)) {
 // ---------------------------------------------------------------- desktop icons
 
 const icons = $$<HTMLAnchorElement>('.desktop-icon', iconsEl);
+const selected = () => icons.filter((el) => el.classList.contains('selected'));
+let anchorIcon: HTMLElement | null = null; // where a Shift-click range starts
 
-function selectIcon(btn: HTMLElement | null) {
-  for (const el of icons) el.classList.toggle('selected', el === btn);
+function selectIcons(sel: Iterable<HTMLElement>) {
+  const set = new Set(sel);
+  for (const el of icons) el.classList.toggle('selected', set.has(el));
+}
+
+/** Opens every selected icon's window, in desktop order, so the last one ends up in front. */
+function openSelected() {
+  for (const el of selected()) openPage(el.dataset.page!);
 }
 
 for (const btn of icons) {
   const id = btn.dataset.page!;
   let pointerType = 'mouse';
+  let collapse = 0; // a plain click inside a multi-selection narrows it to this icon, unless it was a double-click
   btn.addEventListener('pointerdown', (e) => {
     pointerType = e.pointerType || 'mouse';
-    selectIcon(btn);
+    clearTimeout(collapse);
+    if (e.button !== 0) return;
+    const was = selected();
+    if (e.shiftKey && anchorIcon) {
+      const [a, b] = [icons.indexOf(anchorIcon as HTMLAnchorElement), icons.indexOf(btn)].sort((x, y) => x - y);
+      selectIcons(icons.slice(a, b + 1));
+    } else if (e.ctrlKey || e.metaKey) {
+      btn.classList.toggle('selected');
+      anchorIcon = btn;
+    } else if (!was.includes(btn)) {
+      selectIcons([btn]);
+      anchorIcon = btn;
+    }
   });
-  // Mouse: double-click opens. Touch and pen: a single tap opens. (The icons
-  // are links to #page so they work without the script; with it, the click
-  // never follows the link.)
+  // Mouse: double-click opens (every selected icon). Touch and pen: a single tap opens. (The icons are links to
+  // #page so they work without the script; with it, the click never follows the link.)
   btn.addEventListener('click', (e) => {
     e.preventDefault();
-    if (pointerType !== 'mouse') openPage(id);
+    if (pointerType !== 'mouse') return openPage(id);
+    if (e.detail === 1 && !e.shiftKey && !e.ctrlKey && !e.metaKey && selected().length > 1) {
+      collapse = window.setTimeout(() => {
+        selectIcons([btn]);
+        anchorIcon = btn;
+      }, 500);
+    }
   });
-  btn.addEventListener('dblclick', () => openPage(id));
+  btn.addEventListener('dblclick', () => {
+    clearTimeout(collapse);
+    if (btn.classList.contains('selected')) openSelected();
+    else openPage(id);
+  });
   btn.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      openPage(id);
+      openSelected();
     }
   });
-  btn.addEventListener('focus', () => selectIcon(btn));
+  // Tabbing to an icon selects just it; a click (focus that isn't focus-visible) already handled the selection.
+  btn.addEventListener('focus', () => {
+    if (btn.matches(':focus-visible') && !btn.classList.contains('selected')) {
+      selectIcons([btn]);
+      anchorIcon = btn;
+    }
+  });
 }
 
+// Dragging on the empty desktop draws a selection rectangle; it selects the icons it touches (with Ctrl or Cmd,
+// it flips them against what was already selected). A plain click on the empty desktop clears the selection.
 desktopEl.addEventListener('pointerdown', (e) => {
-  if (e.target === desktopEl || e.target === iconsEl) selectIcon(null);
+  if (e.target !== desktopEl && e.target !== iconsEl) return;
+  const additive = e.ctrlKey || e.metaKey;
+  if (!additive) selectIcons([]);
+  if (e.pointerType === 'touch' || e.button !== 0) return;
+  e.preventDefault(); // no text selection while dragging
+  (document.activeElement as HTMLElement | null)?.blur();
+  const before = new Set(selected());
+  const box = desktopEl.getBoundingClientRect();
+  const x0 = e.clientX;
+  const y0 = e.clientY;
+  const marquee = document.createElement('div');
+  marquee.className = 'marquee';
+  marquee.hidden = true;
+  iconsEl.after(marquee);
+  desktopEl.setPointerCapture(e.pointerId);
+
+  const move = (ev: PointerEvent) => {
+    const x1 = clamp(ev.clientX, box.left, box.right);
+    const y1 = clamp(ev.clientY, box.top, box.bottom);
+    const r = { left: Math.min(x0, x1), top: Math.min(y0, y1), right: Math.max(x0, x1), bottom: Math.max(y0, y1) };
+    marquee.hidden = false;
+    Object.assign(marquee.style, {
+      left: `${r.left - box.left}px`,
+      top: `${r.top - box.top}px`,
+      width: `${r.right - r.left}px`,
+      height: `${r.bottom - r.top}px`,
+    });
+    // An icon is touched when the rectangle overlaps its picture or its label, not the empty space around them.
+    const hit = (el: Element) => {
+      const q = el.getBoundingClientRect();
+      return q.left < r.right && q.right > r.left && q.top < r.bottom && q.bottom > r.top;
+    };
+    selectIcons(
+      icons.filter((el) => {
+        const inside = hit($('.icon-img', el)!) || hit($('.icon-label', el)!);
+        return additive ? inside !== before.has(el) : inside;
+      }),
+    );
+  };
+  const end = () => {
+    marquee.remove();
+    desktopEl.removeEventListener('pointermove', move);
+    desktopEl.removeEventListener('pointerup', end);
+    desktopEl.removeEventListener('pointercancel', end);
+  };
+  desktopEl.addEventListener('pointermove', move);
+  desktopEl.addEventListener('pointerup', end);
+  desktopEl.addEventListener('pointercancel', end);
 });
 
 // ---------------------------------------------------------------- Start menu
