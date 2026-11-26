@@ -1373,9 +1373,9 @@ html.window-dragging * {
   border-radius: 6px;
 }
 
-/* The profile picture (here, on the About page, and the Start button's logo) glows softly in and out, and every
-   7 seconds a broad, slightly tilted shine sweeps slowly across it: left to right three times, then once right
-   to left. */
+/* The profile picture (here, on the About page, and the Start button's logo) glows in and out in a few steps, and
+   every 7 seconds a broad, slightly tilted pixel shine sweeps slowly across it: left to right three times, then
+   once right to left. */
 :is(.user-tile, .start-logo) {
   position: relative;
 }
@@ -1391,14 +1391,14 @@ html.window-dragging * {
 :is(.user-tile, .start-logo)::before {
   background: #fff;
   opacity: 0;
-  animation: picture-glow 5s ease-in-out infinite alternate;
+  animation: picture-glow 5s steps(4) infinite alternate;
 }
 
 :is(.user-tile, .start-logo)::after {
-  background: linear-gradient(100deg, transparent 32%, rgba(255, 255, 255, 0.14) 42%, rgba(255, 255, 255, 0.55) 50%,
-      rgba(255, 255, 255, 0.14) 58%, transparent 68%)
-    100% 0 / 300% 100% no-repeat;
-  animation: picture-shine 28s ease-in-out infinite;
+  /* A pixel-art band drawn on the picture's own 14×12 grid, three pictures wide, that moves one art pixel at a
+     time (28 steps per sweep). */
+  background: url("/img/shine.svg") 100% 0 / 300% 100% no-repeat;
+  animation: picture-shine 28s steps(28) infinite;
 }
 
 /* The Start button's logo has no frame, so its glow and shine follow the icon's own shape. */
