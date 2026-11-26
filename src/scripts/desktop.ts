@@ -365,7 +365,7 @@ function selectIcons(sel: Iterable<HTMLElement>) {
 }
 
 // Delete (or Backspace, a Mac's delete key) removes the selected icons while the desktop has focus. Nothing is
-// saved: reloading the page, or the tray's Reset desktop button, brings them back.
+// saved: reloading the page brings them back.
 let desktopFocused = false;
 document.addEventListener('pointerdown', (e) => {
   const t = e.target as Node;
@@ -382,12 +382,6 @@ document.addEventListener('keydown', (e) => {
     el.hidden = true;
     el.classList.remove('selected');
   }
-  anchorIcon = null;
-});
-
-$('#tray-reset')!.addEventListener('click', () => {
-  for (const el of icons) el.hidden = false;
-  selectIcons([]);
   anchorIcon = null;
 });
 
