@@ -1345,11 +1345,13 @@ html.window-dragging * {
 
 /* User picture tile (Start menu + About) */
 
+/* The picture is a 14×12 pixel-art terminal window, so the frame keeps that shape: 3.5 screen pixels per art
+   pixel here, 8 in the large one. */
 .user-tile {
   flex: none;
   display: block;
-  width: 44px;
-  height: 44px;
+  width: 49px;
+  height: 42px;
   overflow: hidden;
   border: 2px solid #fff;
   border-radius: 4px;
@@ -1358,22 +1360,14 @@ html.window-dragging * {
     1px 2px 4px rgba(0, 0, 0, 0.4);
 }
 
-/* The picture's terminal window spans 14 of its 16 units across and starts 2 units down. Scaling by 16/14 and
-   lifting it puts the window's edges and title bar on the frame; the screen's black fills the strip below. */
-.user-tile {
-  background: #14161a;
-}
-
 .user-tile img {
   display: block;
   width: 100%;
   height: 100%;
-  scale: 1.143;
-  translate: 0 -7.14%;
 }
 
 .user-tile-lg {
-  width: 96px;
+  width: 112px;
   height: 96px;
   border-width: 3px;
   border-radius: 6px;
@@ -1494,11 +1488,11 @@ html.window-dragging * {
   cursor: pointer;
 }
 
-/* Terminal mark in the logo slot, at 16px so each of its art pixels lands on whole screen pixels. */
+/* Terminal mark in the logo slot: its 14×12 art pixels at 1.5 screen pixels each (3 on a 2× display). */
 .start-logo {
   flex: none;
-  width: 16px;
-  height: 16px;
+  width: 21px;
+  height: 18px;
   /* The button's 2px bottom padding puts the text's ink at the bar's centre; this puts the icon there too. */
   translate: 0 1px;
   background: url("/img/icons/terminal.svg") center / contain no-repeat;
