@@ -1403,10 +1403,10 @@ html.window-dragging * {
 }
 
 :is(.user-tile, .start-logo)::after {
-  /* A pixel-art band on a grid 3× finer than the picture's 14×12 pixels, three pictures wide, that moves one of
-     its own pixels at a time (84 steps per sweep). */
+  /* A soft band sampled on a fine pixel grid (64 pixels per picture width), three pictures wide, that moves one of
+     its own pixels at a time (128 steps per sweep), so it's just slightly pixelated. */
   background: url("/img/shine.svg") 100% 0 / 300% 100% no-repeat;
-  animation: picture-shine 48s steps(84) infinite;
+  animation: picture-shine 48s steps(128) infinite;
 }
 
 /* The Start button's logo has no frame, so its glow and shine follow the icon's own shape. */
