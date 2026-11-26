@@ -378,9 +378,11 @@ for (const btn of icons) {
     clearTimeout(collapse);
     if (e.button !== 0) return;
     const was = selected();
-    if (e.shiftKey && anchorIcon) {
-      const [a, b] = [icons.indexOf(anchorIcon as HTMLAnchorElement), icons.indexOf(btn)].sort((x, y) => x - y);
-      selectIcons(icons.slice(a, b + 1));
+    if (e.shiftKey) {
+      // Adds every icon from the last one clicked (or the first icon) through this one to the selection.
+      const from = icons.indexOf((anchorIcon ?? icons[0]) as HTMLAnchorElement);
+      const [a, b] = [from, icons.indexOf(btn)].sort((x, y) => x - y);
+      selectIcons([...was, ...icons.slice(a, b + 1)]);
     } else if (e.ctrlKey || e.metaKey) {
       btn.classList.toggle('selected');
       anchorIcon = btn;
@@ -421,11 +423,11 @@ for (const btn of icons) {
   });
 }
 
-// Dragging on the empty desktop draws a selection rectangle; it selects the icons it touches (with Ctrl or Cmd,
-// it flips them against what was already selected). A plain click on the empty desktop clears the selection.
+// Dragging on the empty desktop draws a selection rectangle; it selects the icons it touches (with Shift, Ctrl or
+// Cmd held, in addition to what was already selected). A plain click on the empty desktop clears the selection.
 desktopEl.addEventListener('pointerdown', (e) => {
   if (e.target !== desktopEl && e.target !== iconsEl) return;
-  const additive = e.ctrlKey || e.metaKey;
+  const additive = e.shiftKey || e.ctrlKey || e.metaKey;
   if (!additive) selectIcons([]);
   if (e.pointerType === 'touch' || e.button !== 0) return;
   e.preventDefault(); // no text selection while dragging
@@ -459,7 +461,7 @@ desktopEl.addEventListener('pointerdown', (e) => {
     selectIcons(
       icons.filter((el) => {
         const inside = hit($('.icon-img', el)!) || hit($('.icon-label', el)!);
-        return additive ? inside !== before.has(el) : inside;
+        return inside || (additive && before.has(el));
       }),
     );
   };
