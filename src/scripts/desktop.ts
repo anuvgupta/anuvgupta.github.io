@@ -361,8 +361,35 @@ let anchorIcon: HTMLElement | null = null; // where a Shift-click range starts
 
 function selectIcons(sel: Iterable<HTMLElement>) {
   const set = new Set(sel);
-  for (const el of icons) el.classList.toggle('selected', set.has(el));
+  for (const el of icons) el.classList.toggle('selected', set.has(el) && !el.hidden);
 }
+
+// Delete (or Backspace, a Mac's delete key) removes the selected icons while the desktop has focus. Nothing is
+// saved: reloading the page, or the tray's Reset desktop button, brings them back.
+let desktopFocused = false;
+document.addEventListener('pointerdown', (e) => {
+  const t = e.target as Node;
+  desktopFocused = t === desktopEl || iconsEl.contains(t);
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Delete' && e.key !== 'Backspace') return;
+  const active = document.activeElement;
+  const onDesktop = active && active !== document.body ? iconsEl.contains(active) : desktopFocused;
+  const doomed = selected();
+  if (!onDesktop || !doomed.length) return;
+  e.preventDefault();
+  for (const el of doomed) {
+    el.hidden = true;
+    el.classList.remove('selected');
+  }
+  anchorIcon = null;
+});
+
+$('#tray-reset')!.addEventListener('click', () => {
+  for (const el of icons) el.hidden = false;
+  selectIcons([]);
+  anchorIcon = null;
+});
 
 /** Opens every selected icon's window, in desktop order, so the last one ends up in front. */
 function openSelected() {
