@@ -1383,14 +1383,12 @@ html.window-dragging * {
 }
 
 /* The profile picture (here, on the About page, and the Start button's logo) glows in and out in a few steps, and
-   every 12 seconds a broad, slightly tilted pixel shine sweeps slowly across it: left to right three times, then
-   once right to left. */
+   every 12 seconds light sweeps across it (scripts/shine.ts draws that on a canvas). */
 :is(.user-tile, .start-logo) {
   position: relative;
 }
 
-:is(.user-tile, .start-logo)::before,
-:is(.user-tile, .start-logo)::after {
+:is(.user-tile, .start-logo)::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -1403,16 +1401,18 @@ html.window-dragging * {
   animation: picture-glow 5s steps(4) infinite alternate;
 }
 
-:is(.user-tile, .start-logo)::after {
-  /* A soft band sampled on a fine pixel grid (64 pixels per picture width), three pictures wide, that moves one of
-     its own pixels at a time (128 steps per sweep), so it's just slightly pixelated. */
-  background: url("/img/shine.svg") 100% 0 / 300% 100% no-repeat;
-  animation: picture-shine 48s steps(128) infinite;
+/* The shimmer's canvas: chunky pixels, scaled up without smoothing, adding light to the picture beneath. */
+.picture-shine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  image-rendering: pixelated;
+  mix-blend-mode: plus-lighter;
 }
 
-/* The Start button's logo has no frame, so its glow and shine follow the icon's own shape. */
-.start-logo::before,
-.start-logo::after {
+/* The Start button's logo has no frame, so its glow follows the icon's own shape. */
+.start-logo::before {
   -webkit-mask: url("/img/icons/terminal.svg") center / contain no-repeat;
   mask: url("/img/icons/terminal.svg") center / contain no-repeat;
 }
@@ -1423,39 +1423,8 @@ html.window-dragging * {
   }
 }
 
-/* Lowering the position carries the band left to right, raising it right to left; while the band is off the
-   picture it can jump back instantly. Each sweep takes 3.75% of the cycle (about 1.8s). */
-@keyframes picture-shine {
-  0% {
-    background-position: 100% 0;
-  }
-  3.75%,
-  24.99% {
-    background-position: 0 0;
-  }
-  25% {
-    background-position: 100% 0;
-  }
-  28.75%,
-  49.99% {
-    background-position: 0 0;
-  }
-  50% {
-    background-position: 100% 0;
-  }
-  53.75%,
-  75% {
-    background-position: 0 0;
-  }
-  78.75%,
-  100% {
-    background-position: 100% 0;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  :is(.user-tile, .start-logo)::before,
-  :is(.user-tile, .start-logo)::after {
+  :is(.user-tile, .start-logo)::before {
     animation: none;
   }
 }
