@@ -5,14 +5,14 @@
  * without smoothing: a soft main band with a bright core, a faint second reflection trailing it, brightness
  * that drifts along the band and through the pass, and that depends on the surface underneath (the glossy
  * title bar and the green prompt catch more light than the black screen), plus a few star-shaped glints that
- * flash as the band crosses them. Three passes go left to right, then one right to left. With reduced motion
- * there is no shimmer.
+ * flash as the band crosses them. Each pass is a quick glint, left to right or right to left at random. With
+ * reduced motion there is no shimmer.
  */
 
 const PERIOD = 12; // seconds between passes
-const PASS = 2.1; // seconds a pass takes
+const PASS = 0.75; // seconds a pass takes: a quick glint, not a slow sweep
 const LEVELS = 10; // brightness steps, so the light itself looks a little pixelated
-const FPS = 30;
+const FPS = 60;
 
 // The picture is a 14×12 pixel-art terminal window: a two-row title bar over a black screen with a green ">_".
 const ART_W = 14;
@@ -79,7 +79,7 @@ function setup(host: HTMLElement, px: number): Shine | null {
 }
 
 /**
- * Draws pass number `n` (every fourth runs right to left) at progress `p` (0–1). Positions are in picture units:
+ * Draws pass number `n` (each picks left to right or right to left at random) at progress `p` (0–1). Positions are in picture units:
  * x across 0–1, y down 0–1.
  */
 function draw(s: Shine, n: number, p: number) {
@@ -87,7 +87,7 @@ function draw(s: Shine, n: number, p: number) {
   const w = s.host.clientWidth;
   const h = s.host.clientHeight;
   const d = img.data;
-  const rtl = n % 4 === 3;
+  const rtl = hash(n * 3.7 + 1) < 0.5;
   const seed = n % 997; // a different look each pass
   // The band's centre runs from well off one side to well off the other, easing in and out.
   const travel = -0.55 + 2.1 * easeInOut(p);
